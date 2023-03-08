@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Navbar, UnstyledButton, Tooltip, Title } from "@mantine/core";
-import { MessageSquare, Settings, User } from "react-feather";
+import { MessageSquare, Settings } from "react-feather";
+import { closeAllModals, openConfirmModal } from "@mantine/modals";
+import { useNavigate } from "react-router";
 import useSideMenuStyles from "./SideMenu.styles";
 import useHandleSignout from "../../Hooks/useHandleSignout";
-import { closeAllModals, openConfirmModal } from "@mantine/modals";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
@@ -35,6 +36,7 @@ const linksMockdata = [
 
 const SideMenu = (): JSX.Element => {
   const { handleSignout } = useHandleSignout();
+  const navigate = useNavigate();
 
   const { classes, cx } = useSideMenuStyles();
   const [active, setActive] = useState("Messages");
@@ -52,7 +54,9 @@ const SideMenu = (): JSX.Element => {
         className={cx(classes.mainLink, {
           [classes.mainLinkActive]: link.label === active,
         })}
-        onClick={() => setActive(link.label)}
+        onClick={() => {
+          setActive(link.label);
+        }}
       >
         {link.icon}
       </UnstyledButton>
@@ -127,6 +131,7 @@ const SideMenu = (): JSX.Element => {
         onClick={(event) => {
           event.preventDefault();
           setActiveLink(link.id.toString());
+          navigate(`/chat/${link.id}`);
         }}
       >
         {link.name}
