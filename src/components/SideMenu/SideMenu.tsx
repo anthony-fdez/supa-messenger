@@ -5,7 +5,6 @@ import useSideMenuStyles from "./SideMenu.styles";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
-  { icon: <User size={16} />, label: "Account", path: "/account" },
   { icon: <Settings size={16} />, label: "Settings", path: "/settings" },
 ];
 

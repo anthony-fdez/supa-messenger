@@ -87,7 +87,8 @@ const useSideMenuStyles = createStyles((theme) => ({
 
   link: {
     boxSizing: "border-box",
-    display: "block",
+    display: "flex",
+    alignItems: "center",
     textDecoration: "none",
     borderTopRightRadius: theme.radius.md,
     borderBottomRightRadius: theme.radius.md,
@@ -100,7 +101,6 @@ const useSideMenuStyles = createStyles((theme) => ({
     marginRight: theme.spacing.md,
     fontWeight: 500,
     height: 44,
-    lineHeight: 44,
 
     "&:hover": {
       backgroundColor:
