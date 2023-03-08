@@ -10,6 +10,7 @@ import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import Root from "./pages/root";
 import Error404 from "./pages/404/Error404";
 import AuthPage from "./pages/auth/AuthPage";
+import Chat from "./components/Chat/Chat";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL || "",
@@ -21,6 +22,12 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     errorElement: <Error404 />,
+    children: [
+      {
+        path: "/chat/:chatId",
+        element: <Chat />,
+      },
+    ],
   },
   {
     path: "/auth",
