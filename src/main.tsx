@@ -1,6 +1,5 @@
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
-import { NotificationsProvider } from "@mantine/notifications";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
@@ -62,9 +61,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         withGlobalStyles
       >
         <ModalsProvider>
-          <NotificationsProvider>
-            <RouterProvider router={router} />
-          </NotificationsProvider>
+          <RouterProvider router={router} />
         </ModalsProvider>
       </MantineProvider>
     </SessionContextProvider>
