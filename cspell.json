@@ -1,0 +1,22 @@
+{
+  "version": "0.2",
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [
+    "linebreak",
+    "mantine",
+    "Mantine",
+    "nextjs",
+    "nprogress",
+    "Signout",
+    "signup",
+    "Supa",
+    "supabase",
+    "tabler",
+    "upsert",
+    "zustand"
+  ],
+  "ignoreWords": [],
+  "import": []
+}

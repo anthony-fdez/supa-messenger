@@ -1,0 +1,63 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript",
+    "plugin:jest/recommended"
+  ],
+  "overrides": [],
+  "parser": "@typescript-eslint/parser",
+
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "import",
+    "jest",
+    "typescript-sort-keys"
+  ],
+  "rules": {
+    "react/no-unknown-property": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "quotes": ["error", "double", { "avoidEscape": true }],
+    "no-console": ["error"],
+    "no-duplicate-imports": "error",
+    "no-template-curly-in-string": "error",
+    "@typescript-eslint/indent": "off",
+    "no-restricted-syntax": ["error"],
+    "@typescript-eslint/quotes": ["error", "double"],
+    "@typescript-eslint/explicit-function-return-type": "warn",
+    "import/no-useless-path-segments": "off",
+    "import/no-cycle": "off",
+    "object-curly-newline": "off",
+    "max-lines": ["error", 400],
+    "arrow-body-style": "off",
+    "react/jsx-props-no-spreading": "off",
+    "typescript-sort-keys/interface": "error",
+    "typescript-sort-keys/string-enum": "error",
+    "react/jsx-sort-props": "error",
+    "operator-linebreak": "off",
+    "linebreak-style": "off",
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": ["arrow-function", "function-declaration"],
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "import/no-extraneous-dependencies": ["off"],
+    "react/require-default-props": "off"
+  }
+}
