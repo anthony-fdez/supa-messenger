@@ -44,16 +44,31 @@ const App = (): JSX.Element => {
     <SessionContextProvider supabaseClient={supabase}>
       <MantineProvider
         theme={{
+          // @ts-ignore
           colorScheme:
             preferences.theme === "system" ? colorScheme : preferences.theme,
-          primaryColor: "cyan",
+          primaryColor: "green",
           defaultRadius: "md",
-
+          colors: {
+            // override dark colors to change them for all components
+            dark: [
+              "#c2c2c2",
+              "#a7a7a7",
+              "#7e7e7e",
+              "#636363",
+              "#474747",
+              "#3f3f3f",
+              "#202020",
+              "#111111",
+              "#0f0f0f",
+              "#000000",
+            ],
+          },
           components: {
             Button: {
               defaultProps: {
                 size: "xs",
-                color: "cyan",
+                color: "green",
               },
             },
             Modal: {
