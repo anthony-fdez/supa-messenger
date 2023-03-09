@@ -1,11 +1,17 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Auth } from "@supabase/auth-ui-react";
 import React from "react";
-import { Card, useMantineTheme } from "@mantine/core";
+import { Card, useMantineTheme, Alert } from "@mantine/core";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { AlertCircle } from "react-feather";
 import styles from "./AuthUser.module.css";
 
-const AuthUser = (): JSX.Element => {
+interface Props {
+  message?: string;
+  messageHeader?: string;
+}
+
+const AuthUser = ({ message, messageHeader }: Props): JSX.Element => {
   const supabase = useSupabaseClient();
   const theme = useMantineTheme();
 
@@ -15,6 +21,14 @@ const AuthUser = (): JSX.Element => {
       withBorder
     >
       <h1>Account.</h1>
+      {message && (
+        <Alert
+          icon={<AlertCircle size={16} />}
+          title={messageHeader && messageHeader}
+        >
+          {message}
+        </Alert>
+      )}
       <Auth
         appearance={{
           theme: ThemeSupa,
