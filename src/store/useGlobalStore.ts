@@ -6,10 +6,15 @@ interface IUser {
   firstName: string | null;
   lastName: string | null;
   phoneNumber: string | null;
+  uid: string | null;
+}
+
+interface IPreferences {
+  theme: string;
 }
 
 interface IGlobalStateValues {
-  uid: string | null;
+  preferences: IPreferences;
   user: IUser | null;
 }
 
@@ -19,8 +24,10 @@ interface IGlobalState extends IGlobalStateValues {
 }
 
 const initialState: IGlobalStateValues = {
-  uid: null,
   user: null,
+  preferences: {
+    theme: "system",
+  },
 };
 
 const useGlobalStore = create<IGlobalState>()(

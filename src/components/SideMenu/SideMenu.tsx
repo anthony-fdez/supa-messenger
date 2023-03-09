@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Navbar, UnstyledButton, Tooltip, Title } from "@mantine/core";
 import { MessageSquare, Settings } from "react-feather";
-import { closeAllModals, openConfirmModal } from "@mantine/modals";
+import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
 import { useNavigate } from "react-router";
 import useSideMenuStyles from "./SideMenu.styles";
 import useHandleSignout from "../../Hooks/useHandleSignout";
+import useGlobalStore from "../../store/useGlobalStore";
+import ChangeThemeModal from "./ChangeThemeModal/ChangeThemeModal";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
@@ -37,6 +39,7 @@ const linksMockdata = [
 const SideMenu = (): JSX.Element => {
   const { handleSignout } = useHandleSignout();
   const navigate = useNavigate();
+  const { preferences } = useGlobalStore();
 
   const { classes, cx } = useSideMenuStyles();
   const [active, setActive] = useState("Messages");
@@ -54,7 +57,7 @@ const SideMenu = (): JSX.Element => {
         className={cx(classes.mainLink, {
           [classes.mainLinkActive]: link.label === active,
         })}
-        onClick={() => {
+        onClick={(): void => {
           setActive(link.label);
         }}
       >
@@ -86,10 +89,16 @@ const SideMenu = (): JSX.Element => {
             href="/"
             onClick={(event) => {
               event.preventDefault();
-              // Handle changing theme
+              openModal({
+                title: "Change Theme",
+                children: <ChangeThemeModal />,
+                overlayProps: {
+                  blur: 5,
+                },
+              });
             }}
           >
-            Theme: Light
+            {`Theme: ${preferences.theme}`}
           </a>
           <a
             className={cx(classes.link, {

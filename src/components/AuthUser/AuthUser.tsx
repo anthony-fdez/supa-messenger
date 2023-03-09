@@ -4,7 +4,9 @@ import React from "react";
 import { Card, useMantineTheme, Alert } from "@mantine/core";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { AlertCircle } from "react-feather";
+import { useColorScheme } from "@mantine/hooks";
 import styles from "./AuthUser.module.css";
+import useGlobalStore from "../../store/useGlobalStore";
 
 interface Props {
   message?: string;
@@ -14,6 +16,8 @@ interface Props {
 const AuthUser = ({ message, messageHeader }: Props): JSX.Element => {
   const supabase = useSupabaseClient();
   const theme = useMantineTheme();
+  const { preferences } = useGlobalStore();
+  const colorScheme = useColorScheme();
 
   return (
     <Card
@@ -32,6 +36,7 @@ const AuthUser = ({ message, messageHeader }: Props): JSX.Element => {
       <Auth
         appearance={{
           theme: ThemeSupa,
+
           variables: {
             default: {
               colors: {
@@ -45,7 +50,7 @@ const AuthUser = ({ message, messageHeader }: Props): JSX.Element => {
         redirectTo="/"
         socialLayout="horizontal"
         supabaseClient={supabase}
-        theme="light"
+        theme={preferences.theme === "system" ? colorScheme : preferences.theme}
       />
     </Card>
   );
