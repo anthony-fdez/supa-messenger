@@ -42,6 +42,7 @@ const AuthUser = ({ message, messageHeader }: Props): JSX.Element => {
           },
         }}
         providers={[]}
+        redirectTo="/"
         socialLayout="horizontal"
         supabaseClient={supabase}
         theme="light"

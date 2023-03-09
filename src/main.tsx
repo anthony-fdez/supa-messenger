@@ -11,7 +11,6 @@ import Root from "./pages/app/root";
 import Error404 from "./pages/404/Error404";
 import AuthPage from "./pages/Auth/AuthPage";
 import Chat from "./pages/app/Chat/Chat";
-import UnauthorizedPage from "./pages/Unauthorized/UnauthorizedPage";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL || "",
@@ -33,10 +32,6 @@ const router = createBrowserRouter([
   {
     path: "/auth",
     element: <AuthPage />,
-  },
-  {
-    path: "/unauthorized",
-    element: <UnauthorizedPage />,
   },
 ]);
 
