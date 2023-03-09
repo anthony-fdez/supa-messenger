@@ -11,6 +11,7 @@ import Error404 from "./pages/404/Error404";
 import AuthPage from "./pages/Auth/AuthPage";
 import Chat from "./pages/app/Chat/Chat";
 import useGlobalStore from "./store/useGlobalStore";
+import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL || "",
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/chat/:chatId",
         element: <Chat />,
+      },
+      {
+        path: "/account",
+        element: <UserPreferences />,
       },
     ],
   },

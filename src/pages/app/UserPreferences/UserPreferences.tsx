@@ -1,6 +1,6 @@
 import React from "react";
 
-const AccountPage = (): JSX.Element => {
+const UserPreferences = (): JSX.Element => {
   return (
     <div>
       <h1>Account</h1>
@@ -8,4 +8,4 @@ const AccountPage = (): JSX.Element => {
   );
 };
 
-export default AccountPage;
+export default UserPreferences;

@@ -13,18 +13,37 @@ interface IPreferences {
   theme: string;
 }
 
+interface IApp {
+  mainActiveSideMenu: string | null;
+  secondaryActiveSideMenu: string | null;
+}
+
 interface IGlobalStateValues {
+  app: IApp;
   preferences: IPreferences;
-  user: IUser | null;
+  user: IUser;
 }
 
 interface IGlobalState extends IGlobalStateValues {
   clearState: () => void;
+  setApp: (state: Partial<IApp>) => void;
+  setPreferences: (state: Partial<IPreferences>) => void;
   setState: (state: Partial<IGlobalStateValues>) => void;
+  setUser: (state: Partial<IUser>) => void;
 }
 
 const initialState: IGlobalStateValues = {
-  user: null,
+  user: {
+    email: null,
+    firstName: null,
+    lastName: null,
+    phoneNumber: null,
+    uid: null,
+  },
+  app: {
+    mainActiveSideMenu: null,
+    secondaryActiveSideMenu: null,
+  },
   preferences: {
     theme: "system",
   },
@@ -35,6 +54,30 @@ const useGlobalStore = create<IGlobalState>()(
     persist(
       (set) => ({
         ...initialState,
+        setPreferences: (newPreferences): void => {
+          set((state) => ({
+            preferences: {
+              ...state.preferences,
+              ...newPreferences,
+            },
+          }));
+        },
+        setApp: (newApp): void => {
+          set((state) => ({
+            app: {
+              ...state.app,
+              ...newApp,
+            },
+          }));
+        },
+        setUser: (newUser): void => {
+          set((state) => ({
+            user: {
+              ...state.user,
+              ...newUser,
+            },
+          }));
+        },
         setState: (newState): void => {
           set((state) => ({ ...state, ...newState }));
         },

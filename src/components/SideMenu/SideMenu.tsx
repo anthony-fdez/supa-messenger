@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Navbar, UnstyledButton, Tooltip, Title } from "@mantine/core";
 import { MessageSquare, Settings } from "react-feather";
 import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
@@ -39,11 +39,9 @@ const linksMockdata = [
 const SideMenu = (): JSX.Element => {
   const { handleSignout } = useHandleSignout();
   const navigate = useNavigate();
-  const { preferences } = useGlobalStore();
+  const { preferences, app, setApp } = useGlobalStore();
 
   const { classes, cx } = useSideMenuStyles();
-  const [active, setActive] = useState("Messages");
-  const [activeLink, setActiveLink] = useState("Settings");
 
   const mainLinks = mainLinksMockdata.map((link) => (
     <Tooltip
@@ -55,10 +53,10 @@ const SideMenu = (): JSX.Element => {
     >
       <UnstyledButton
         className={cx(classes.mainLink, {
-          [classes.mainLinkActive]: link.label === active,
+          [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
         })}
         onClick={(): void => {
-          setActive(link.label);
+          setApp({ mainActiveSideMenu: link.label });
         }}
       >
         {link.icon}
@@ -66,28 +64,33 @@ const SideMenu = (): JSX.Element => {
     </Tooltip>
   ));
 
-  const links = () => {
-    if (active === "Settings") {
+  const links = (): JSX.Element | JSX.Element[] => {
+    if (app.mainActiveSideMenu === "Settings") {
       return (
         <>
           <a
             className={cx(classes.link, {
-              [classes.linkActive]: activeLink === "Settings/Account",
+              [classes.linkActive]:
+                app.secondaryActiveSideMenu === "Settings/Account",
             })}
             href="/"
-            onClick={(event) => {
+            onClick={(event): void => {
               event.preventDefault();
-              setActiveLink("Settings/Account");
+              setApp({
+                secondaryActiveSideMenu: "Settings/Account",
+              });
+              navigate("/account");
             }}
           >
             User Preferences
           </a>
           <a
             className={cx(classes.link, {
-              [classes.linkActive]: activeLink === "Settings/Theme",
+              [classes.linkActive]:
+                app.secondaryActiveSideMenu === "Settings/Theme",
             })}
             href="/"
-            onClick={(event) => {
+            onClick={(event): void => {
               event.preventDefault();
               openModal({
                 title: "Change Theme",
@@ -102,10 +105,11 @@ const SideMenu = (): JSX.Element => {
           </a>
           <a
             className={cx(classes.link, {
-              [classes.linkActive]: activeLink === "Settings/Theme",
+              [classes.linkActive]:
+                app.secondaryActiveSideMenu === "Settings/Theme",
             })}
             href="/"
-            onClick={(event) => {
+            onClick={(event): void => {
               event.preventDefault();
 
               openConfirmModal({
@@ -134,12 +138,15 @@ const SideMenu = (): JSX.Element => {
       <a
         key={link.id}
         className={cx(classes.link, {
-          [classes.linkActive]: activeLink === link.id.toString(),
+          [classes.linkActive]:
+            app.secondaryActiveSideMenu === link.id.toString(),
         })}
         href="/"
-        onClick={(event) => {
+        onClick={(event): void => {
           event.preventDefault();
-          setActiveLink(link.id.toString());
+          setApp({
+            secondaryActiveSideMenu: link.id.toString(),
+          });
           navigate(`/chat/${link.id}`);
         }}
       >
@@ -163,7 +170,7 @@ const SideMenu = (): JSX.Element => {
             className={classes.title}
             order={4}
           >
-            {active}
+            {app.mainActiveSideMenu}
           </Title>
 
           {links()}

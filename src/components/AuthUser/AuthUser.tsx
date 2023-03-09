@@ -40,8 +40,8 @@ const AuthUser = ({ message, messageHeader }: Props): JSX.Element => {
           variables: {
             default: {
               colors: {
-                brand: theme.colors.cyan[6],
-                brandAccent: theme.colors.cyan[7],
+                brand: theme.colors.green[6],
+                brandAccent: theme.colors.green[7],
               },
             },
           },
