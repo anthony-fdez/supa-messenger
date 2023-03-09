@@ -2,13 +2,12 @@ import React from "react";
 import { createClient } from "@supabase/supabase-js";
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
-
+import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { useColorScheme } from "@mantine/hooks";
 import Root from "./pages/app/root";
 import Error404 from "./pages/404/Error404";
-import AuthPage from "./pages/Auth/AuthPage";
 import Chat from "./pages/app/Chat/Chat";
 import useGlobalStore from "./store/useGlobalStore";
 import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
@@ -33,10 +32,6 @@ const router = createBrowserRouter([
         element: <UserPreferences />,
       },
     ],
-  },
-  {
-    path: "/auth",
-    element: <AuthPage />,
   },
 ]);
 

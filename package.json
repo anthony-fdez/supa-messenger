@@ -1,7 +1,7 @@
 {
   "name": "supabase-chat",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -24,7 +24,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
-    "react-hook-form": "^7.42.1",
+    "react-hook-form": "^7.43.5",
     "react-router-dom": "^6.8.2",
     "sort-by": "^1.2.0",
     "supabase": "^1.42.4",

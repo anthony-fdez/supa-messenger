@@ -3,9 +3,8 @@ import { devtools, persist } from "zustand/middleware";
 
 interface IUser {
   email: string | null;
-  firstName: string | null;
-  lastName: string | null;
-  phoneNumber: string | null;
+  imageUrl: string | null;
+  name: string | null;
   uid: string | null;
 }
 
@@ -35,10 +34,9 @@ interface IGlobalState extends IGlobalStateValues {
 const initialState: IGlobalStateValues = {
   user: {
     email: null,
-    firstName: null,
-    lastName: null,
-    phoneNumber: null,
+    name: null,
     uid: null,
+    imageUrl: null,
   },
   app: {
     mainActiveSideMenu: "Messages",
