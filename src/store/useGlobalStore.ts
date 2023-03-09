@@ -41,7 +41,7 @@ const initialState: IGlobalStateValues = {
     uid: null,
   },
   app: {
-    mainActiveSideMenu: null,
+    mainActiveSideMenu: "Messages",
     secondaryActiveSideMenu: null,
   },
   preferences: {

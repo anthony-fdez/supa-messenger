@@ -18,7 +18,7 @@ const Root = (): JSX.Element => {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <SideMenu />
       <div className={styles.content}>
         <Outlet />
