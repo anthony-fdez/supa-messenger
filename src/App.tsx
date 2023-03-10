@@ -6,6 +6,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { useColorScheme } from "@mantine/hooks";
+import { Notifications } from "@mantine/notifications";
 import Root from "./pages/app/root";
 import Error404 from "./pages/404/Error404";
 import Chat from "./pages/app/Chat/Chat";
@@ -42,6 +43,7 @@ const App = (): JSX.Element => {
 
   return (
     <SessionContextProvider supabaseClient={supabase}>
+      <Notifications />
       <MantineProvider
         theme={{
           // @ts-ignore
