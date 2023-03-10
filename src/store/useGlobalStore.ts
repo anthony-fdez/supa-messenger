@@ -5,6 +5,7 @@ interface IUser {
   email: string | null;
   imageUrl: string | null;
   name: string | null;
+  registerComplete: boolean;
   uid: string | null;
 }
 
@@ -14,6 +15,7 @@ interface IPreferences {
 
 interface IApp {
   mainActiveSideMenu: string | null;
+  registerUserActiveStep: number;
   secondaryActiveSideMenu: string | null;
 }
 
@@ -37,10 +39,12 @@ const initialState: IGlobalStateValues = {
     name: null,
     uid: null,
     imageUrl: null,
+    registerComplete: false,
   },
   app: {
     mainActiveSideMenu: "Messages",
     secondaryActiveSideMenu: null,
+    registerUserActiveStep: 0,
   },
   preferences: {
     theme: "system",

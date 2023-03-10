@@ -2,13 +2,16 @@ import { Button, Divider, Flex, TextInput } from "@mantine/core";
 import React from "react";
 import { ArrowRight } from "react-feather";
 import { useForm } from "react-hook-form";
+import useGlobalStore from "../../../store/useGlobalStore";
 import { IStepProps } from "../RegisterUser";
 
 interface IFormValues {
   name: string;
 }
 
-const Step1 = ({ prevStep, nextStep, active }: IStepProps): JSX.Element => {
+const Step1 = ({ nextStep }: IStepProps): JSX.Element => {
+  const { user, setUser } = useGlobalStore();
+
   const {
     register,
     handleSubmit,
@@ -16,12 +19,10 @@ const Step1 = ({ prevStep, nextStep, active }: IStepProps): JSX.Element => {
   } = useForm<IFormValues>();
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    setUser({ name: data.name });
 
     nextStep();
   });
-
-  console.log(errors);
 
   return (
     <form onSubmit={onSubmit}>
@@ -34,6 +35,7 @@ const Step1 = ({ prevStep, nextStep, active }: IStepProps): JSX.Element => {
             message: "At least 5 letters",
           },
         })}
+        defaultValue={user.name || ""}
         description="This is going to be your public name"
         error={errors.name?.message}
         label="Name"

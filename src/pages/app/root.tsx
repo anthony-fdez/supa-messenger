@@ -20,7 +20,7 @@ const Root = (): JSX.Element => {
     );
   }
 
-  if (session && !user.name) {
+  if (session && !user.registerComplete) {
     return <RegisterUser />;
   }
 
