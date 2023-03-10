@@ -11,11 +11,10 @@ import {
   Avatar,
 } from "@mantine/core";
 import { ArrowLeft, Flag, Image, Trash, Upload, X } from "react-feather";
-import { useForm } from "react-hook-form";
-import { IStepProps } from "../RegisterUser";
 import { closeAllModals, openModal } from "@mantine/modals";
+import { IStepProps } from "../RegisterUser";
 
-const Step2 = ({ prevStep, nextStep, active }: IStepProps): JSX.Element => {
+const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
   const theme = useMantineTheme();
 
   const [profileImage, setProfileImage] = useState<File | null>(null);
