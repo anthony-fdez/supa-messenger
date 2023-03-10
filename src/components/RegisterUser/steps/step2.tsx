@@ -2,12 +2,12 @@ import { Button, Divider, Flex } from "@mantine/core";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
 import { ArrowLeft, Flag } from "react-feather";
+import { closeAllModals, openModal } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import { Database } from "../../../types/database.types";
 import UploadProfileImage from "../helpers/UploadProfileImage.tsx/UploadProfileImage";
 import { IStepProps } from "../RegisterUser";
-import { showNotification } from "@mantine/notifications";
 import useGlobalStore from "../../../store/useGlobalStore";
-import { closeAllModals, openModal } from "@mantine/modals";
 
 const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
   const session = useSession();
@@ -18,7 +18,7 @@ const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [isLoadingSavingData, setIsLoadingSavingData] = useState(false);
 
-  const handleSubmit = async (): void => {
+  const handleSubmit = async (): Promise<void> => {
     setIsLoadingSavingData(true);
 
     if (!session?.user.id) {
@@ -112,7 +112,7 @@ const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
       });
     }
 
-    setUser({
+    return setUser({
       uid: session.user.id,
       email: session.user.email,
       imageUrl: IMAGE_URL,
