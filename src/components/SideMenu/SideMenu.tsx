@@ -1,13 +1,19 @@
 import React from "react";
-import { Navbar, UnstyledButton, Tooltip, Title, Flex } from "@mantine/core";
+import {
+  Navbar,
+  UnstyledButton,
+  Tooltip,
+  Title,
+  CloseButton,
+} from "@mantine/core";
 import { MessageSquare, Settings } from "react-feather";
 import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
 import { useNavigate } from "react-router";
+import { useMediaQuery } from "@mantine/hooks";
 import useSideMenuStyles from "./SideMenu.styles";
 import useHandleSignout from "../../Hooks/useHandleSignout";
 import useGlobalStore from "../../store/useGlobalStore";
 import ChangeThemeModal from "./ChangeThemeModal/ChangeThemeModal";
-import { useMediaQuery } from "@mantine/hooks";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
@@ -173,6 +179,12 @@ const SideMenu = (): JSX.Element => {
             order={4}
           >
             {app.mainActiveSideMenu}
+            {isMobile && (
+              <CloseButton
+                onClick={(): void => setApp({ isMobileMenuOpen: false })}
+                size="lg"
+              />
+            )}
           </Title>
 
           {links()}

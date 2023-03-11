@@ -62,6 +62,9 @@ const useSideMenuStyles = createStyles((theme) => ({
   },
 
   title: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
     boxSizing: "border-box",
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
     marginBottom: theme.spacing.xl,
