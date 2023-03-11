@@ -84,6 +84,7 @@ const EditUser = ({ setIsEditingUser }: Props): JSX.Element => {
       .update({
         name: data.name,
         id: session?.user.id,
+        image_url: IMAGE_URL,
       })
       .eq("id", session.user.id);
 
