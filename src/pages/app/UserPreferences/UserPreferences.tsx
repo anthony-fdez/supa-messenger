@@ -1,10 +1,13 @@
 import { Avatar, Button, Divider, Flex } from "@mantine/core";
 import React, { useState } from "react";
 import { User } from "react-feather";
+import useLoadUserData from "../../../Hooks/useLoadUserData";
 import useGlobalStore from "../../../store/useGlobalStore";
 import EditUser from "./EditUser/EditUser";
 
 const UserPreferences = (): JSX.Element => {
+  useLoadUserData();
+
   const { user } = useGlobalStore();
 
   const [isEditingUser, setIsEditingUser] = useState(false);

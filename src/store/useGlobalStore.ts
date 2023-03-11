@@ -5,7 +5,7 @@ interface IUser {
   email: string | null;
   imageUrl: string | null;
   name: string | null;
-  registerComplete: boolean;
+  registerComplete: boolean | null;
   uid: string | null;
 }
 
