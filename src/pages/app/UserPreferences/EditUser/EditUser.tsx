@@ -69,8 +69,6 @@ const EditUser = ({ setIsEditingUser }: Props): JSX.Element => {
         .from("profile-images")
         .getPublicUrl(imageUploadData.path);
 
-      console.log(imageUrlData);
-
       if (!imageUrlData) {
         return showNotification({
           title: "Error.",
