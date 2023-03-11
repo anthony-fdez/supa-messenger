@@ -48,7 +48,7 @@ const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
       }
 
       const { data: imageUrlData } = await supabase.storage
-        .from("businesses")
+        .from("profile-images")
         .getPublicUrl(imageUploadData.path);
 
       if (!imageUrlData) {

@@ -7,12 +7,16 @@ import styles from "./UploadProfileImage.module.css";
 
 interface IUploadProfileImage {
   image: File | null;
+  imageUrl?: string | null;
   setImage: React.Dispatch<React.SetStateAction<File | null>>;
+  setImageUrl?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const UploadProfileImage = ({
   image,
   setImage,
+  imageUrl,
+  setImageUrl,
 }: IUploadProfileImage): JSX.Element => {
   const imageUpload = (): JSX.Element => {
     return (
@@ -71,7 +75,7 @@ const UploadProfileImage = ({
       return (
         <Card withBorder>
           <img
-            alt="Uploaded Business"
+            alt="Uploaded Profile"
             className={styles.image}
             src={src}
           />
@@ -85,6 +89,7 @@ const UploadProfileImage = ({
               leftIcon={<Trash size={16} />}
               onClick={(): void => {
                 setImage(null);
+                if (setImageUrl) setImageUrl(null);
               }}
               variant="outline"
             >
@@ -94,6 +99,10 @@ const UploadProfileImage = ({
         </Card>
       );
     };
+
+    // Adding the date at the end will fool the idiot browser into thinking its a new image
+    // preventing the fucking browser from cashing the image.
+    if (imageUrl) return imagePreviewCard(`${imageUrl}?${Date.now()}`);
 
     if (!image) {
       return (
@@ -112,7 +121,7 @@ const UploadProfileImage = ({
   };
 
   const returnCorrectComponent = (): JSX.Element => {
-    if (image) return imageUploaded();
+    if (image || imageUrl) return imageUploaded();
 
     return imageUpload();
   };
