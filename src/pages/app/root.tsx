@@ -48,6 +48,7 @@ const Root = (): JSX.Element => {
             onClose={(): void => setApp({ isMobileMenuOpen: false })}
             opened={app.isMobileMenuOpen}
             overlayProps={{ blur: 5 }}
+            position="right"
             withCloseButton
             zIndex={20}
           >
