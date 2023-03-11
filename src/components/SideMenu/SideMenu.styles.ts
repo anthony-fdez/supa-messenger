@@ -19,6 +19,7 @@ const useSideMenuStyles = createStyles((theme) => ({
   container: {
     position: "fixed",
     zIndex: 0,
+    top: 0,
   },
   main: {
     flex: 1,
