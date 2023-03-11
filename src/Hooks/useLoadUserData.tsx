@@ -42,8 +42,8 @@ const useLoadUserData = (): void => {
 
     getUserData().finally(() => {
       setTimeout(() => {
-        setApp({ isLoading: true });
-      }, 5000);
+        setApp({ isLoading: false });
+      }, 2000);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, supabase]);
