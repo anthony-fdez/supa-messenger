@@ -1,25 +1,23 @@
-import { Drawer } from "@mantine/core";
+import { ActionIcon, Burger, Drawer } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useSession } from "@supabase/auth-helpers-react";
-import React, { useState } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import AuthUser from "../../components/AuthUser/AuthUser";
 import RegisterUser from "../../components/RegisterUser/RegisterUser";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import useLoadUserData from "../../Hooks/useLoadUserData";
 import useGlobalStore from "../../store/useGlobalStore";
-import styles from "./root.module.css";
+import useRootStyles from "./useRootStyles";
 
 const Root = (): JSX.Element => {
   useLoadUserData();
 
+  const { classes } = useRootStyles();
+
   const isMobile = useMediaQuery("(max-width: 900px)");
   const session = useSession();
-  const { user } = useGlobalStore();
-
-  console.log(isMobile);
-
-  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const { user, app, setApp } = useGlobalStore();
 
   if (!session) {
     return (
@@ -35,20 +33,31 @@ const Root = (): JSX.Element => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={classes.container}>
       {isMobile ? (
-        <Drawer
-          style={{ position: "relative" }}
-          onClose={(): void => setIsSideMenuOpen(false)}
-          opened={isSideMenuOpen}
-        >
-          <SideMenu />
-        </Drawer>
+        <>
+          <div className={classes.header}>
+            <h3>App name</h3>
+            <ActionIcon
+              onClick={(): void => setApp({ isMobileMenuOpen: true })}
+            >
+              <Burger opened={app.isMobileMenuOpen} />
+            </ActionIcon>
+          </div>
+          <Drawer
+            onClose={(): void => setApp({ isMobileMenuOpen: false })}
+            opened={app.isMobileMenuOpen}
+            overlayProps={{ blur: 5 }}
+            withCloseButton
+            zIndex={20}
+          >
+            <SideMenu />
+          </Drawer>
+        </>
       ) : (
         <SideMenu />
       )}
-      <SideMenu />
-      <div className={styles.content}>
+      <div className={classes.content}>
         <Outlet />
       </div>
     </div>
