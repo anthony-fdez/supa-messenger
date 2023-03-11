@@ -31,8 +31,6 @@ const useLoadUserData = (): void => {
         });
       }
 
-      console.log(data);
-
       setUser({
         name: data?.name,
         email: data?.email,
