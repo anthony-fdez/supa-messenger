@@ -1,4 +1,5 @@
 import { Button, Divider, Flex, Grid, TextInput } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { closeAllModals, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -25,6 +26,10 @@ const EditUser = ({ setIsEditingUser }: Props): JSX.Element => {
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(user.imageUrl);
   const [isSavingChanges, setIsSavingChanges] = useState(false);
+
+  const isMobile = useMediaQuery("(max-width: 900px)");
+
+  const COL_SPAN = isMobile ? 12 : 6;
 
   const {
     register,
@@ -136,7 +141,7 @@ const EditUser = ({ setIsEditingUser }: Props): JSX.Element => {
       <h1>Edit Profile</h1>
       <Divider mb={20} />
       <Grid>
-        <Grid.Col span={6}>
+        <Grid.Col span={COL_SPAN}>
           <UploadProfileImage
             image={image}
             imageUrl={imageUrl}
@@ -144,7 +149,7 @@ const EditUser = ({ setIsEditingUser }: Props): JSX.Element => {
             setImageUrl={setImageUrl}
           />
         </Grid.Col>
-        <Grid.Col span={6}>
+        <Grid.Col span={COL_SPAN}>
           <TextInput
             {...register("name", {
               required: "Your name is required",
@@ -170,6 +175,7 @@ const EditUser = ({ setIsEditingUser }: Props): JSX.Element => {
           color="red"
           leftIcon={<Trash size={16} />}
           mr={10}
+          onClick={(): void => setIsEditingUser(false)}
           variant="outline"
         >
           Cancel
