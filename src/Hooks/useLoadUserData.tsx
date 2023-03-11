@@ -8,10 +8,14 @@ const useLoadUserData = (): void => {
   const session = useSession();
   const supabase = useSupabaseClient<Database>();
 
-  const { setUser } = useGlobalStore();
+  const { setUser, setApp } = useGlobalStore();
 
   useEffect(() => {
     if (!session) return;
+
+    setApp({
+      isLoading: true,
+    });
 
     const getUserData = async (): Promise<void> => {
       const { data, error } = await supabase
@@ -36,7 +40,11 @@ const useLoadUserData = (): void => {
       });
     };
 
-    getUserData();
+    getUserData().finally(() => {
+      setTimeout(() => {
+        setApp({ isLoading: true });
+      }, 5000);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, supabase]);
 };

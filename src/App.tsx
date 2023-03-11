@@ -12,6 +12,7 @@ import Error404 from "./pages/404/Error404";
 import Chat from "./pages/app/Chat/Chat";
 import useGlobalStore from "./store/useGlobalStore";
 import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
+import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL || "",
@@ -91,6 +92,7 @@ const App = (): JSX.Element => {
       >
         <ModalsProvider>
           <RouterProvider router={router} />
+          <LoadingOverlay />
         </ModalsProvider>
       </MantineProvider>
     </SessionContextProvider>

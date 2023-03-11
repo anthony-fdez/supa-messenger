@@ -14,6 +14,7 @@ interface IPreferences {
 }
 
 interface IApp {
+  isLoading: boolean;
   mainActiveSideMenu: string | null;
   registerUserActiveStep: number;
   secondaryActiveSideMenu: string | null;
@@ -42,6 +43,7 @@ const initialState: IGlobalStateValues = {
     registerComplete: false,
   },
   app: {
+    isLoading: false,
     mainActiveSideMenu: "Messages",
     secondaryActiveSideMenu: null,
     registerUserActiveStep: 0,

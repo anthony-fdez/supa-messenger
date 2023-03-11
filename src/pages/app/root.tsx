@@ -4,10 +4,13 @@ import { Outlet } from "react-router-dom";
 import AuthUser from "../../components/AuthUser/AuthUser";
 import RegisterUser from "../../components/RegisterUser/RegisterUser";
 import SideMenu from "../../components/SideMenu/SideMenu";
+import useLoadUserData from "../../Hooks/useLoadUserData";
 import useGlobalStore from "../../store/useGlobalStore";
 import styles from "./root.module.css";
 
 const Root = (): JSX.Element => {
+  useLoadUserData();
+
   const session = useSession();
   const { user } = useGlobalStore();
 
