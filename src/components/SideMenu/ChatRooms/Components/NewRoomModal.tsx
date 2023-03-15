@@ -4,6 +4,7 @@ import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import useGlobalStore, { IRoom } from "../../../../store/useGlobalStore";
 import { Database } from "../../../../types/database.types";
 
 interface FormValues {
@@ -16,13 +17,15 @@ const NewRoomModal = (): JSX.Element => {
 
   const [isLoadingCreatingRoom, setIsLoadingCreatingRoom] = useState(false);
 
+  const { setRooms } = useGlobalStore();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data): Promise<void> => {
     setIsLoadingCreatingRoom(true);
 
     if (!session?.user.id) {
@@ -60,9 +63,15 @@ const NewRoomModal = (): JSX.Element => {
         user_id: session.user.id,
         room_id: roomData.id,
       })
-      .select();
+      .select(
+        `
+        *,
+        users (
+         *
+        )`,
+      );
 
-    if (participantError) {
+    if (participantError || !participantData) {
       setIsLoadingCreatingRoom(false);
 
       return showNotification({
@@ -72,8 +81,29 @@ const NewRoomModal = (): JSX.Element => {
       });
     }
 
+    const roomFormattedData: IRoom = {
+      ...roomData,
+      participants: [],
+    };
+
+    participantData.forEach((participant) => {
+      roomFormattedData.participants.push({
+        ...participant,
+        userData: participant.users,
+      });
+
+      try {
+        // @ts-ignore
+        delete roomFormattedData.users;
+      } catch (e) {
+        // console.log("failed lol");
+      }
+    });
+
+    setRooms(roomFormattedData);
+
     setIsLoadingCreatingRoom(false);
-    closeAllModals();
+    return closeAllModals();
   });
 
   return (

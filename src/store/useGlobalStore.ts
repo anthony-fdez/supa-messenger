@@ -2,6 +2,11 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { Database } from "./../types/database.types";
 
+type IDatabaseRoom = Database["public"]["Tables"]["rooms"]["Row"];
+type IDatabaseParticipantsWithoutUsers =
+  Database["public"]["Tables"]["participants"]["Row"];
+type IDatabaseUser = Database["public"]["Tables"]["users"]["Row"];
+
 interface IUser {
   email: string | null;
   imageUrl: string | null;
@@ -14,10 +19,11 @@ interface IPreferences {
   theme: string;
 }
 
-type IDatabaseRoom = Database["public"]["Tables"]["rooms"];
-type IDatabaseParticipants = Database["public"]["Tables"]["participants"];
+interface IDatabaseParticipants extends IDatabaseParticipantsWithoutUsers {
+  userData: IDatabaseUser | IDatabaseUser[] | null;
+}
 
-interface IRoom extends IDatabaseRoom {
+export interface IRoom extends IDatabaseRoom {
   participants: IDatabaseParticipants[];
 }
 

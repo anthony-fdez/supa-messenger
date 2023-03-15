@@ -21,29 +21,6 @@ const mainLinksMockdata = [
   { icon: <Settings size={16} />, label: "Settings", path: "/settings" },
 ];
 
-const linksMockdata = [
-  {
-    name: "Hello",
-    id: 23,
-  },
-  {
-    name: "Test",
-    id: 22323,
-  },
-  {
-    name: "Pp",
-    id: 223,
-  },
-  {
-    name: "The goat",
-    id: 23111,
-  },
-  {
-    name: "The other goat",
-    id: 122,
-  },
-];
-
 const SideMenu = (): JSX.Element => {
   const { handleSignout } = useHandleSignout();
   const navigate = useNavigate();
