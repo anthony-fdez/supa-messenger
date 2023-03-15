@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import { Database } from "./../types/database.types";
 
 interface IUser {
   email: string | null;
@@ -13,6 +14,13 @@ interface IPreferences {
   theme: string;
 }
 
+type IDatabaseRoom = Database["public"]["Tables"]["rooms"];
+type IDatabaseParticipants = Database["public"]["Tables"]["participants"];
+
+interface IRoom extends IDatabaseRoom {
+  participants: IDatabaseParticipants[];
+}
+
 interface IApp {
   isLoading: boolean;
   isMobileMenuOpen: boolean;
@@ -24,6 +32,7 @@ interface IApp {
 interface IGlobalStateValues {
   app: IApp;
   preferences: IPreferences;
+  rooms: IRoom[];
   user: IUser;
 }
 
@@ -31,11 +40,13 @@ interface IGlobalState extends IGlobalStateValues {
   clearState: () => void;
   setApp: (state: Partial<IApp>) => void;
   setPreferences: (state: Partial<IPreferences>) => void;
+  setRooms: (state: Partial<IRoom>) => void;
   setState: (state: Partial<IGlobalStateValues>) => void;
   setUser: (state: Partial<IUser>) => void;
 }
 
 const initialState: IGlobalStateValues = {
+  rooms: [],
   user: {
     email: null,
     name: null,
@@ -65,6 +76,14 @@ const useGlobalStore = create<IGlobalState>()(
             preferences: {
               ...state.preferences,
               ...newPreferences,
+            },
+          }));
+        },
+        setRooms: (newRooms): void => {
+          set((state) => ({
+            rooms: {
+              ...state.rooms,
+              ...newRooms,
             },
           }));
         },

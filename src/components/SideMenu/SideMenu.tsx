@@ -14,6 +14,7 @@ import useSideMenuStyles from "./SideMenu.styles";
 import useHandleSignout from "../../Hooks/useHandleSignout";
 import useGlobalStore from "../../store/useGlobalStore";
 import ChangeThemeModal from "./ChangeThemeModal/ChangeThemeModal";
+import ChatRooms from "./ChatRooms/ChatRooms";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
@@ -142,25 +143,7 @@ const SideMenu = (): JSX.Element => {
       );
     }
 
-    return linksMockdata.map((link) => (
-      <a
-        key={link.id}
-        className={cx(classes.link, {
-          [classes.linkActive]:
-            app.secondaryActiveSideMenu === link.id.toString(),
-        })}
-        href="/"
-        onClick={(event): void => {
-          event.preventDefault();
-          setApp({
-            secondaryActiveSideMenu: link.id.toString(),
-          });
-          navigate(`/chat/${link.id}`);
-        }}
-      >
-        {link.name}
-      </a>
-    ));
+    return <ChatRooms />;
   };
 
   return (

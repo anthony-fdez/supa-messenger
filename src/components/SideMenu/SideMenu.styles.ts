@@ -90,7 +90,12 @@ const useSideMenuStyles = createStyles((theme) => ({
     }`,
     marginBottom: theme.spacing.xl,
   },
-
+  newRoomButton: {
+    width: "calc(100% - 20px)",
+    margin: 10,
+    marginTop: 0,
+    marginBottom: 20,
+  },
   link: {
     boxSizing: "border-box",
     display: "flex",
