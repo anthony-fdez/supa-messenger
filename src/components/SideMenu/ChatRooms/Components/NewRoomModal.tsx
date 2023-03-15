@@ -1,31 +1,54 @@
-import { Button, Flex, TextInput } from "@mantine/core";
+import { Button, Flex, Switch, TextInput } from "@mantine/core";
 import { closeAllModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { NavigateFunction } from "react-router";
 import useGlobalStore, { IRoom } from "../../../../store/useGlobalStore";
 import { Database } from "../../../../types/database.types";
 
 interface FormValues {
+  isPrivate: boolean;
   roomName: string;
+  roomPassword: string;
 }
 
-const NewRoomModal = (): JSX.Element => {
+interface Props {
+  navigate: NavigateFunction;
+}
+
+const NewRoomModal = ({ navigate }: Props): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const session = useSession();
+  const { setRooms, rooms, setApp } = useGlobalStore();
 
   const [isLoadingCreatingRoom, setIsLoadingCreatingRoom] = useState(false);
-
-  const { setRooms, rooms } = useGlobalStore();
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormValues>();
 
+  const isPrivate = watch("isPrivate");
+
   const onSubmit = handleSubmit(async (data): Promise<void> => {
+    const { data: roomPasswordData, error } = await supabase.functions.invoke(
+      "room-password",
+      {
+        body: {
+          name: "helasdklfajsdlfk",
+        },
+      },
+    );
+
+    console.log(roomPasswordData);
+    console.log(error);
+
+    return;
+
     setIsLoadingCreatingRoom(true);
 
     if (!session?.user.id) {
@@ -43,6 +66,7 @@ const NewRoomModal = (): JSX.Element => {
       .insert({
         created_by: session.user.id,
         name: data.roomName,
+        is_private: data.isPrivate,
       })
       .select()
       .single();
@@ -95,13 +119,22 @@ const NewRoomModal = (): JSX.Element => {
 
     setRooms([...rooms, roomFormattedData]);
 
+    setApp({
+      secondaryActiveSideMenu: roomFormattedData.id.toString(),
+    });
+    navigate(`/chat/${roomFormattedData.id}`);
+
     setIsLoadingCreatingRoom(false);
     return closeAllModals();
   });
 
   return (
     <div>
-      <form onSubmit={onSubmit}>
+      <form
+        autoComplete="off"
+        autoCorrect="off"
+        onSubmit={onSubmit}
+      >
         <TextInput
           {...register("roomName", {
             required: "A room name is required",
@@ -113,8 +146,32 @@ const NewRoomModal = (): JSX.Element => {
           error={errors.roomName?.message}
           label="Room Name"
           placeholder="The GOAT devs room"
+          type="text"
           withAsterisk
         />
+        <Switch
+          {...register("isPrivate")}
+          label="Make this room private"
+          mt={20}
+        />
+        {isPrivate && (
+          <TextInput
+            {...register("roomPassword", {
+              required: "A password is required for private rooms",
+              minLength: {
+                value: 4,
+                message: "Room name needs to be at lest 3 characters long",
+              },
+            })}
+            autoComplete="new-password"
+            error={errors.roomPassword?.message}
+            label="Room Password"
+            mt={10}
+            placeholder="******"
+            type="password"
+            withAsterisk
+          />
+        )}
         <Flex
           justify="end"
           mt={20}

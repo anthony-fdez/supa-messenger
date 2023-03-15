@@ -7,32 +7,9 @@ import useGlobalStore from "../../../store/useGlobalStore";
 import useSideMenuStyles from "../SideMenu.styles";
 import NewRoomModal from "./Components/NewRoomModal";
 
-const linksMockdata = [
-  {
-    name: "Hello",
-    id: 23,
-  },
-  {
-    name: "Test",
-    id: 22323,
-  },
-  {
-    name: "Pp",
-    id: 223,
-  },
-  {
-    name: "The goat",
-    id: 23111,
-  },
-  {
-    name: "The other goat",
-    id: 122,
-  },
-];
-
 const ChatRooms = (): JSX.Element => {
   const { classes, cx } = useSideMenuStyles();
-  const { app, setApp } = useGlobalStore();
+  const { app, setApp, rooms } = useGlobalStore();
   const navigate = useNavigate();
 
   return (
@@ -43,7 +20,7 @@ const ChatRooms = (): JSX.Element => {
         onClick={(): void => {
           openModal({
             title: "New Chat Room",
-            children: <NewRoomModal />,
+            children: <NewRoomModal navigate={navigate} />,
             withCloseButton: true,
             overlayProps: {
               blur: 5,
@@ -54,23 +31,23 @@ const ChatRooms = (): JSX.Element => {
       >
         Create New Room
       </Button>
-      {linksMockdata.map((link) => (
+      {rooms.map((room) => (
         <a
-          key={link.id}
+          key={room.id}
           className={cx(classes.link, {
             [classes.linkActive]:
-              app.secondaryActiveSideMenu === link.id.toString(),
+              app.secondaryActiveSideMenu === room.id.toString(),
           })}
           href="/"
           onClick={(event): void => {
             event.preventDefault();
             setApp({
-              secondaryActiveSideMenu: link.id.toString(),
+              secondaryActiveSideMenu: room.id.toString(),
             });
-            navigate(`/chat/${link.id}`);
+            navigate(`/chat/${room.id}`);
           }}
         >
-          {link.name}
+          {room.name}
         </a>
       ))}
     </div>
