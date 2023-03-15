@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect } from "react";
 import useGlobalStore from "../store/useGlobalStore";
@@ -61,13 +60,14 @@ const useLoadUserData = (): void => {
       setRooms(data);
     };
 
-    getUserRoomData();
+    Promise.all([getUserData(), getUserRoomData()]).finally(() => {
+      // setApp({ isLoading: false });
 
-    getUserData().finally(() => {
       setTimeout(() => {
         setApp({ isLoading: false });
       }, 2000);
     });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, supabase]);
 };
