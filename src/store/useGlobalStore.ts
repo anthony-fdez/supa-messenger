@@ -46,7 +46,7 @@ interface IGlobalState extends IGlobalStateValues {
   clearState: () => void;
   setApp: (state: Partial<IApp>) => void;
   setPreferences: (state: Partial<IPreferences>) => void;
-  setRooms: (state: Partial<IRoom>) => void;
+  setRooms: (state: IRoom[]) => void;
   setState: (state: Partial<IGlobalStateValues>) => void;
   setUser: (state: Partial<IUser>) => void;
 }
@@ -86,11 +86,8 @@ const useGlobalStore = create<IGlobalState>()(
           }));
         },
         setRooms: (newRooms): void => {
-          set((state) => ({
-            rooms: {
-              ...state.rooms,
-              ...newRooms,
-            },
+          set(() => ({
+            rooms: newRooms,
           }));
         },
         setApp: (newApp): void => {

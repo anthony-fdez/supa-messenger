@@ -17,7 +17,7 @@ const NewRoomModal = (): JSX.Element => {
 
   const [isLoadingCreatingRoom, setIsLoadingCreatingRoom] = useState(false);
 
-  const { setRooms } = useGlobalStore();
+  const { setRooms, rooms } = useGlobalStore();
 
   const {
     register,
@@ -86,7 +86,7 @@ const NewRoomModal = (): JSX.Element => {
       participants: [],
     };
 
-    participantData.forEach((participant) => {
+    participantData.forEach((participant, index) => {
       roomFormattedData.participants.push({
         ...participant,
         userData: participant.users,
@@ -94,13 +94,13 @@ const NewRoomModal = (): JSX.Element => {
 
       try {
         // @ts-ignore
-        delete roomFormattedData.users;
+        delete roomFormattedData.participants[index].users;
       } catch (e) {
         // console.log("failed lol");
       }
     });
 
-    setRooms(roomFormattedData);
+    setRooms([...rooms, roomFormattedData]);
 
     setIsLoadingCreatingRoom(false);
     return closeAllModals();
