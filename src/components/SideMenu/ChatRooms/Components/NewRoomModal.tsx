@@ -35,20 +35,6 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
   const isPrivate = watch("isPrivate");
 
   const onSubmit = handleSubmit(async (data): Promise<void> => {
-    const { data: roomPasswordData, error } = await supabase.functions.invoke(
-      "room-password",
-      {
-        body: {
-          name: "helasdklfajsdlfk",
-        },
-      },
-    );
-
-    console.log(roomPasswordData);
-    console.log(error);
-
-    return;
-
     setIsLoadingCreatingRoom(true);
 
     if (!session?.user.id) {
