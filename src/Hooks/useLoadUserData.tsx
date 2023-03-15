@@ -8,7 +8,7 @@ const useLoadUserData = (): void => {
   const session = useSession();
   const supabase = useSupabaseClient<Database>();
 
-  const { setUser, setApp } = useGlobalStore();
+  const { setUser, setApp, setRooms } = useGlobalStore();
 
   useEffect(() => {
     if (!session) return;
@@ -25,10 +25,7 @@ const useLoadUserData = (): void => {
         .single();
 
       if (error || !data) {
-        showNotification({
-          title: "Error",
-          message: "Unable to get user data.",
-        });
+        return;
       }
 
       setUser({
@@ -39,6 +36,32 @@ const useLoadUserData = (): void => {
         uid: data?.id,
       });
     };
+
+    const getUserRoomData = async (): Promise<void> => {
+      setRooms([]);
+
+      const { data, error } = await supabase
+        .from("rooms")
+        .select(
+          `*, 
+        participants(
+          *,
+          users(
+            *
+          )
+        )`,
+        )
+        .eq("participants.user_id", session.user.id);
+
+      if (error || !data) {
+        return;
+      }
+
+      // @ts-ignore
+      setRooms(data);
+    };
+
+    getUserRoomData();
 
     getUserData().finally(() => {
       setTimeout(() => {

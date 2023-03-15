@@ -86,18 +86,11 @@ const NewRoomModal = (): JSX.Element => {
       participants: [],
     };
 
-    participantData.forEach((participant, index) => {
+    participantData.forEach((participant) => {
       roomFormattedData.participants.push({
         ...participant,
-        userData: participant.users,
+        users: participant.users,
       });
-
-      try {
-        // @ts-ignore
-        delete roomFormattedData.participants[index].users;
-      } catch (e) {
-        // console.log("failed lol");
-      }
     });
 
     setRooms([...rooms, roomFormattedData]);
