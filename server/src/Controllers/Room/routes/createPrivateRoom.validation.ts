@@ -1,7 +1,8 @@
 import { check } from "express-validator";
 
 const createPrivateRoomValidator = [
-  check("jwt").exists().withMessage("jwt required"),
+  check("room_id").exists().withMessage("Room id is required"),
+  check("password").exists().withMessage("Room password is required"),
 ];
 
 export default createPrivateRoomValidator;

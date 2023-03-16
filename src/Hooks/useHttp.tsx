@@ -12,6 +12,9 @@ const useHttp = () => {
   const http = async ({ body, endpoint, method }: IHttp): Promise<any> => {
     if (!session) return;
 
+    console.log(session.access_token);
+    console.log(session.refresh_token);
+
     const res = await fetch(`http://localhost:5001${endpoint}`, {
       method,
       headers: {
@@ -20,6 +23,7 @@ const useHttp = () => {
       body: JSON.stringify({
         ...body,
         jwt: session.access_token,
+        refreshToken: session.refresh_token,
       }),
     });
 
