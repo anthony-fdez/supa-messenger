@@ -6,7 +6,7 @@ import {
   Title,
   CloseButton,
 } from "@mantine/core";
-import { MessageSquare, Settings } from "react-feather";
+import { MessageSquare, Settings, Users } from "react-feather";
 import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
 import { useNavigate } from "react-router";
 import { useMediaQuery } from "@mantine/hooks";
@@ -15,9 +15,11 @@ import useHandleSignout from "../../Hooks/useHandleSignout";
 import useGlobalStore from "../../store/useGlobalStore";
 import ChangeThemeModal from "./ChangeThemeModal/ChangeThemeModal";
 import ChatRooms from "./ChatRooms/ChatRooms";
+import PublicRooms from "./PublicRooms/PublicRooms";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
+  { icon: <Users size={16} />, label: "Public Rooms", path: "/public" },
   { icon: <Settings size={16} />, label: "Settings", path: "/settings" },
 ];
 
@@ -119,6 +121,8 @@ const SideMenu = (): JSX.Element => {
         </>
       );
     }
+
+    if (app.mainActiveSideMenu === "Public Rooms") return <PublicRooms />;
 
     return <ChatRooms />;
   };

@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Text } from "@mantine/core";
 import { openModal } from "@mantine/modals";
 import React from "react";
 import { MessageSquare } from "react-feather";
@@ -47,7 +47,7 @@ const ChatRooms = (): JSX.Element => {
             navigate(`/chat/${room.id}`);
           }}
         >
-          {room.name}
+          <Text lineClamp={1}>{room.name}</Text>
         </a>
       ))}
     </div>

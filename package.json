@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "env-cmd -f ./.env.dev vite",
+    "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "generate-types": "npx supabase gen types typescript --project-id jnpimfbtbogiuqydflkh > src/types/database.types.ts"
@@ -33,6 +33,7 @@
     "zustand": "^4.3.6"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/react-router": "^5.1.20",

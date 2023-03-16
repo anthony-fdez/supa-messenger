@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { Database } from "./../types/database.types";
 
-type IDatabaseRoom = Database["public"]["Tables"]["rooms"]["Row"];
+export type IDatabaseRoom = Database["public"]["Tables"]["rooms"]["Row"];
 type IDatabaseParticipantsWithoutUsers =
   Database["public"]["Tables"]["participants"]["Row"];
 type IDatabaseUser = Database["public"]["Tables"]["users"]["Row"];
