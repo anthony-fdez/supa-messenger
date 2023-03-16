@@ -150,8 +150,7 @@ const SideMenu = (): JSX.Element => {
               />
             )}
           </Title>
-
-          {links()}
+          <div className={classes.linkContainer}>{links()}</div>
         </div>
       </Navbar.Section>
     </Navbar>

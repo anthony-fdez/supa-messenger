@@ -29,7 +29,10 @@ const useSideMenuStyles = createStyles((theme) => ({
         ? theme.colors.dark[6]
         : theme.colors.gray[0],
   },
-
+  linkContainer: {
+    maxHeight: "calc(100vh - 100px)",
+    overflowY: "auto",
+  },
   mainLink: {
     width: 44,
     height: 44,
