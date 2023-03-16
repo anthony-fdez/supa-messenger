@@ -55,14 +55,14 @@ const useLoadUserData = (): void => {
         .from("rooms")
         .select(
           `*, 
-        participants(
-          *,
-          users(
-            *
-          )
-        )`,
+          participants!inner(
+            *,
+            userData:users(
+              *
+            )
+          )`,
         )
-        .eq("participants.user_id", session.user.id);
+        .filter("participants.user_id", "eq", session.user.id);
 
       if (error || !data) {
         return;

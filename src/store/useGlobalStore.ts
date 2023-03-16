@@ -20,7 +20,7 @@ interface IPreferences {
 }
 
 interface IDatabaseParticipants extends IDatabaseParticipantsWithoutUsers {
-  users: IDatabaseUser | IDatabaseUser[] | null;
+  userData: IDatabaseUser | IDatabaseUser[] | null;
 }
 
 export interface IRoom extends IDatabaseRoom {

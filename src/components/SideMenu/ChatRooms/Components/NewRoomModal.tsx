@@ -76,7 +76,7 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
       .select(
         `
         *,
-        users (
+        userData:users (
          *
         )`,
       );
@@ -99,7 +99,7 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
     participantData.forEach((participant) => {
       roomFormattedData.participants.push({
         ...participant,
-        users: participant.users,
+        userData: participant.userData,
       });
     });
 
