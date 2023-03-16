@@ -9,12 +9,10 @@ const auth = () => {
     next: NextFunction,
   ): Promise<unknown> => {
     const jwt = req.body.jwt;
-    const refreshToken = req.body.refreshToken;
 
     console.log(jwt);
-    console.log(refreshToken);
 
-    if (!jwt || !refreshToken)
+    if (!jwt)
       return res
         .status(400)
         .json({ message: "Access & Refresh Token token required" });
@@ -27,11 +25,6 @@ const auth = () => {
     if (!user || error) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-
-    await supabaseClient.auth.setSession({
-      access_token: jwt,
-      refresh_token: refreshToken,
-    });
 
     return next();
   };

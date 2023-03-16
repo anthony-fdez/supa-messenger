@@ -27,9 +27,12 @@ export const createPrivateRoomController = router.post(
       password: hashedPassword,
     });
 
-    console.log(data);
-    console.log(error);
+    if (!data || error) {
+      return res
+        .status(400)
+        .json({ message: "Unable to create room password", error: error });
+    }
 
-    res.status(200).send({ message: "Looking goood" });
+    res.status(200).send({ message: "Room password created" });
   }),
 );
