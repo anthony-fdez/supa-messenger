@@ -1,0 +1,45 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+
+  "settings": {},
+  "plugins": ["@typescript-eslint", "prettier"],
+  "rules": {
+    "no-console": 0,
+    "comma-dangle": 0,
+    "default-param-last": "off",
+    "no-undef": "off",
+    "max-len": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["warn"],
+    "import/extensions": "off",
+    "indent": [
+      "warn",
+      2,
+      {
+        "SwitchCase": 1,
+        "MemberExpression": 1,
+        "ImportDeclaration": "first"
+      }
+    ],
+    "linebreak-style": 0,
+    "quotes": ["warn", "double"],
+    "import/prefer-default-export": "off",
+    "no-unused-vars": "warn",
+    "object-curly-newline": "warn",
+    "semi": "warn"
+  }
+}

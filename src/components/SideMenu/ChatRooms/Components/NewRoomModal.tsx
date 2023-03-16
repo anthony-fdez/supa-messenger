@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { NavigateFunction } from "react-router";
 import useGlobalStore, { IRoom } from "../../../../store/useGlobalStore";
 import { Database } from "../../../../types/database.types";
+import useHttp from "../../../../Hooks/useHttp";
 
 interface FormValues {
   isPrivate: boolean;
@@ -22,6 +23,7 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const session = useSession();
   const { setRooms, rooms, setApp } = useGlobalStore();
+  const { http } = useHttp();
 
   const [isLoadingCreatingRoom, setIsLoadingCreatingRoom] = useState(false);
 
@@ -64,6 +66,18 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
         title: "Error, unable to create room.",
         message:
           "Please reload the page, if the error persists try logging out and back in.",
+      });
+    }
+
+    if (data.isPrivate) {
+      await http({
+        endpoint: "/room/create-private-room",
+        method: "POST",
+        body: {
+          jwt: session.access_token,
+          room_id: roomData.id,
+          password: data.roomPassword,
+        },
       });
     }
 
@@ -136,9 +150,8 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
           withAsterisk
         />
         <Switch
-          disabled
           {...register("isPrivate")}
-          label="Make this room private (coming... eventually)"
+          label="Make this room private"
           mt={20}
         />
         {isPrivate && (
