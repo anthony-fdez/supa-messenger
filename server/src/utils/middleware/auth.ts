@@ -1,3 +1,4 @@
+import { supabaseClient } from "./../../app";
 import { NextFunction, Request, Response } from "express";
 import { validationResult, ValidationChain } from "express-validator";
 
@@ -7,14 +8,25 @@ const auth = () => {
     res: Response,
     next: NextFunction,
   ): Promise<unknown> => {
-    console.log(req);
+    const jwt = req.body.jwt;
 
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-      return next();
+    console.log(jwt);
+
+    if (!jwt) return res.status(400).json({ message: "Access token requred" });
+
+    const {
+      data: { user },
+      error,
+    } = await supabaseClient.auth.getUser(jwt);
+
+    if (!user || error) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
-    return res.status(400).json({ code: 400, errors: errors.array() });
+    // @ts-ignore
+    req.user = user;
+
+    return next();
   };
 };
 

@@ -1,3 +1,4 @@
+import { createClient } from "@supabase/supabase-js";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 require("dotenv").config();
 
@@ -22,6 +23,11 @@ const limiter = rateLimit({
 });
 
 const app = express();
+
+export const supabaseClient = createClient(
+  process.env.SUPABASE_URL || "",
+  process.env.SUPABASE_ANON_KEY || "",
+);
 
 app.use(cors());
 app.use(urlencoded({ extended: true }));
