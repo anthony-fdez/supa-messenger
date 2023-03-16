@@ -49,21 +49,6 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
       });
     }
 
-    if (data.isPrivate) {
-      const res = await http({
-        endpoint: "/room/create-private-room",
-        method: "POST",
-        body: {
-          jwt: session.access_token,
-        },
-      });
-
-      console.log(res);
-
-      setIsLoadingCreatingRoom(false);
-      return;
-    }
-
     const { data: roomData, error: roomError } = await supabase
       .from("rooms")
       .insert({
@@ -81,6 +66,18 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
         title: "Error, unable to create room.",
         message:
           "Please reload the page, if the error persists try logging out and back in.",
+      });
+    }
+
+    if (data.isPrivate) {
+      await http({
+        endpoint: "/room/create-private-room",
+        method: "POST",
+        body: {
+          jwt: session.access_token,
+          room_id: roomData.id,
+          password: data.roomPassword,
+        },
       });
     }
 

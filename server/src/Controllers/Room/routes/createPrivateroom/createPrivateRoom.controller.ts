@@ -13,17 +13,14 @@ export const createPrivateRoomController = router.post(
   validate(createPrivateRoomValidator),
   auth(),
   catchAsync(async (req: Request, res: Response) => {
-    const hashedPassword = await bcrypt.hash(
-      req.body.password,
-      process.env.SALT_ROUNDS || 5,
-    );
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     const { data, error } = await supabaseClient.from("room_passwords").insert({
       room_id: req.body.room_id,
       password: hashedPassword,
     });
 
-    if (!data || error) {
+    if (error) {
       return res
         .status(400)
         .json({ message: "Unable to create room password", error: error });
