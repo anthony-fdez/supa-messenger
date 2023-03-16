@@ -27,6 +27,11 @@ const app = express();
 export const supabaseClient = createClient(
   process.env.SUPABASE_URL || "",
   process.env.SUPABASE_ANON_KEY || "",
+  {
+    db: {
+      schema: "private",
+    },
+  },
 );
 
 app.use(cors());
