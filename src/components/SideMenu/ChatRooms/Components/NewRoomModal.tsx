@@ -136,9 +136,8 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
           withAsterisk
         />
         <Switch
-          disabled
           {...register("isPrivate")}
-          label="Make this room private (coming... eventually)"
+          label="Make this room private"
           mt={20}
         />
         {isPrivate && (
