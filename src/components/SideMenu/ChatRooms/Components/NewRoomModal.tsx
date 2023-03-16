@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { NavigateFunction } from "react-router";
 import useGlobalStore, { IRoom } from "../../../../store/useGlobalStore";
 import { Database } from "../../../../types/database.types";
+import useHttp from "../../../../Hooks/useHttp";
 
 interface FormValues {
   isPrivate: boolean;
@@ -22,6 +23,7 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const session = useSession();
   const { setRooms, rooms, setApp } = useGlobalStore();
+  const { http } = useHttp();
 
   const [isLoadingCreatingRoom, setIsLoadingCreatingRoom] = useState(false);
 
@@ -45,6 +47,21 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
         message:
           "Please reload the page, if the error persists try logging out and back in.",
       });
+    }
+
+    if (data.isPrivate) {
+      const res = await http({
+        endpoint: "/room/create-private-room",
+        method: "POST",
+        body: {
+          jwt: session.access_token,
+        },
+      });
+
+      console.log(res);
+
+      setIsLoadingCreatingRoom(false);
+      return;
     }
 
     const { data: roomData, error: roomError } = await supabase
