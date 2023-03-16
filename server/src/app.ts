@@ -6,7 +6,7 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 
 // Routers
-import NotesRoutes from "./Controllers/Notes/NotesRoutes";
+import RoomRoutes from "./Controllers/Room/roomRoutes";
 import error from "./utils/middleware/errors";
 
 const limiter = rateLimit({
@@ -27,7 +27,7 @@ app.use(cors());
 app.use(urlencoded({ extended: true }));
 app.use(express.json());
 app.use(limiter);
-app.use(NotesRoutes);
+app.use(RoomRoutes);
 app.use(error);
 
 export default app;

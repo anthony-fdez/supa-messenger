@@ -4,19 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "dev": "env-cmd -f .env ts-node-dev --respawn --exit-child src/server.ts ",
+    "prod": "ts-node src/server.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
     "socket.io": "^4.6.1"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.55.0",
-    "typescript": "^5.0.2",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.12",
@@ -28,6 +29,7 @@
     "@types/sequelize": "^4.28.13",
     "@types/supertest": "^2.0.12",
     "@types/validator": "^13.7.3",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "env-cmd": "^10.1.0",
@@ -40,6 +42,7 @@
     "supertest": "^6.3.0",
     "ts-jest": "^28.0.8",
     "ts-node": "^10.9.1",
-    "ts-node-dev": "^2.0.0"
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.2"
   }
 }
