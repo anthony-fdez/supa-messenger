@@ -45,9 +45,7 @@ const useHandleSignout = (): {
   const handleSignout = async (): Promise<void> => {
     setIsLoadingSignout(true);
 
-    setTimeout(() => {
-      signOut();
-    }, 1000);
+    signOut();
   };
 
   return { handleSignout, isLoadingSignout };

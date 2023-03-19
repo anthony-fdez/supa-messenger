@@ -76,9 +76,7 @@ const useLoadUserData = (): void => {
       () => {
         // setApp({ isLoading: false });
 
-        setTimeout(() => {
-          setApp({ isLoading: false });
-        }, 2000);
+        setApp({ isLoading: false });
       },
     );
 

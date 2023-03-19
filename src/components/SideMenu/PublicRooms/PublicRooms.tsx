@@ -47,9 +47,7 @@ const PublicRooms = (): JSX.Element => {
     };
 
     getPublicRooms().finally(() => {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
+      setIsLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
