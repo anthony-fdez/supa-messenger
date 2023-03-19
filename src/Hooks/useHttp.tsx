@@ -1,4 +1,5 @@
 import { useSession } from "@supabase/auth-helpers-react";
+import constants from "../constants/constants";
 
 interface IHttp {
   body: any;
@@ -12,7 +13,7 @@ const useHttp = () => {
   const http = async ({ body, endpoint, method }: IHttp): Promise<any> => {
     if (!session) return;
 
-    const res = await fetch(`http://localhost:5001${endpoint}`, {
+    const res = await fetch(`${constants.serverURL}${endpoint}`, {
       method,
       headers: {
         "Content-Type": "application/json",

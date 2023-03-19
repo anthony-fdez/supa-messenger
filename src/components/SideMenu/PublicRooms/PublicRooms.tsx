@@ -142,25 +142,29 @@ const PublicRooms = (): JSX.Element => {
 
   return (
     <div>
-      {publicRooms.map((room) => (
-        <a
-          key={room.id}
-          className={cx(classes.link, {
-            [classes.linkActive]:
-              app.secondaryActiveSideMenu === room.id.toString(),
-          })}
-          href="/"
-          onClick={(event): void => {
-            event.preventDefault();
-            setApp({
-              secondaryActiveSideMenu: room.id.toString(),
-            });
-            navigate(`/chat/${room.id}`);
-          }}
-        >
-          <Text lineClamp={1}>{room.name}</Text>
-        </a>
-      ))}
+      {publicRooms.map((room) => {
+        if (room.is_private) return null;
+
+        return (
+          <a
+            key={room.id}
+            className={cx(classes.link, {
+              [classes.linkActive]:
+                app.secondaryActiveSideMenu === room.id.toString(),
+            })}
+            href="/"
+            onClick={(event): void => {
+              event.preventDefault();
+              setApp({
+                secondaryActiveSideMenu: room.id.toString(),
+              });
+              navigate(`/chat/${room.id}`);
+            }}
+          >
+            <Text lineClamp={1}>{room.name}</Text>
+          </a>
+        );
+      })}
     </div>
   );
 };

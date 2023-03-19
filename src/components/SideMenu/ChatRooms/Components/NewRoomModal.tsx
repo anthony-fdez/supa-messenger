@@ -70,7 +70,7 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
     }
 
     if (data.isPrivate) {
-      await http({
+      const { error } = await http({
         endpoint: "/room/create-private-room",
         method: "POST",
         body: {
@@ -79,6 +79,13 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
           password: data.roomPassword,
         },
       });
+
+      if (error) {
+        return showNotification({
+          title: "Error",
+          message: JSON.stringify(error),
+        });
+      }
     }
 
     const { data: participantData, error: participantError } = await supabase
