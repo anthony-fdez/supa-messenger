@@ -155,6 +155,7 @@ const PublicRooms = (): JSX.Element => {
               event.preventDefault();
               setApp({
                 secondaryActiveSideMenu: room.id.toString(),
+                isMobileMenuOpen: false,
               });
               navigate(`/chat/${room.id}`);
             }}

@@ -66,6 +66,7 @@ const SideMenu = (): JSX.Element => {
               event.preventDefault();
               setApp({
                 secondaryActiveSideMenu: "Settings/Account",
+                isMobileMenuOpen: false,
               });
               navigate("/account");
             }}
