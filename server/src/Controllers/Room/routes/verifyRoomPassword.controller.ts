@@ -29,7 +29,7 @@ export const verifyRoomPassword = router.post(
     if (!roomData || roomError) {
       return res
         .status(400)
-        .json({ message: "Unable to create room password", error: roomError });
+        .json({ message: "Unable verify room password", error: roomError });
     }
 
     const passwordsMatch = await bcrypt.compare(
@@ -39,6 +39,18 @@ export const verifyRoomPassword = router.post(
 
     if (!passwordsMatch) {
       return res.status(400).send({ message: "Invalid password" });
+    }
+
+    const { error } = await supabaseClient.from("participants").insert({
+      // @ts-ignore
+      user_id: req.user.id,
+      room_id: req.body.room_id,
+    });
+
+    if (error) {
+      return res
+        .status(400)
+        .send({ message: "Unable to verify room password", error });
     }
 
     res.status(200).send({ message: "You're good to go homie" });

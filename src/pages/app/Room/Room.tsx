@@ -14,6 +14,8 @@ const Chat = (): JSX.Element => {
   if (roomNotFound) return <RoomNotFound />;
   if (!isRoomMember && roomData?.is_private) return <EnterRoomPassword />;
 
+  console.log(roomParticipants);
+
   return <h1>{roomData?.name}</h1>;
 };
 
