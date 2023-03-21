@@ -4,6 +4,7 @@ const useRoomHeaderStyles = createStyles((theme) => ({
   container: {
     padding: 10,
     display: "flex",
+    alignItems: "center",
     justifyContent: "space-between",
     borderBottom: `1px solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[3]
@@ -12,11 +13,14 @@ const useRoomHeaderStyles = createStyles((theme) => ({
       padding: 5,
     },
   },
-  title: {
-    maxWidth: "50%",
+  headerLeft: {
+    display: "flex",
+    alignItems: "center",
   },
+
   participants: {
     cursor: "pointer",
+    marginRight: 20,
   },
 }));
 
