@@ -5,7 +5,7 @@ import { Alert, Button, Skeleton, Text } from "@mantine/core";
 import { openModal } from "@mantine/modals";
 import { useNavigate } from "react-router";
 import useGlobalStore, { IDatabaseRoom } from "../../../store/useGlobalStore";
-import { Database } from "../../../types/database.types";
+import { Database } from "../../../../types/database.types";
 import NewRoomModal from "../ChatRooms/Components/NewRoomModal";
 import useSideMenuStyles from "../SideMenu.styles";
 

@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { NavigateFunction } from "react-router";
 import useGlobalStore, { IRoom } from "../../../../store/useGlobalStore";
-import { Database } from "../../../../types/database.types";
+import { Database } from "../../../../../types/database.types";
 import useHttp from "../../../../Hooks/useHttp";
 
 interface FormValues {

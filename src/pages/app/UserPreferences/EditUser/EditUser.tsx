@@ -8,7 +8,7 @@ import { Save, Trash } from "react-feather";
 import { useForm } from "react-hook-form";
 import UploadProfileImage from "../../../../components/RegisterUser/helpers/UploadProfileImage.tsx/UploadProfileImage";
 import useGlobalStore from "../../../../store/useGlobalStore";
-import { Database } from "../../../../types/database.types";
+import { Database } from "../../../../../types/database.types";
 
 interface IFormValues {
   name: string;

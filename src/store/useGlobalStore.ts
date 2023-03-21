@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { Database } from "../types/database.types";
+import { Database } from "../../types/database.types";
 
 export type IDatabaseRoom = Database["public"]["Tables"]["rooms"]["Row"];
 type IDatabaseParticipantsWithoutUsers =

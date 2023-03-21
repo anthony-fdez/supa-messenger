@@ -1,7 +1,7 @@
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect } from "react";
 import useGlobalStore from "../store/useGlobalStore";
-import { Database } from "../types/database.types";
+import { Database } from "../../types/database.types";
 import useHandleSignout from "./useHandleSignout";
 
 const useLoadUserData = (): void => {

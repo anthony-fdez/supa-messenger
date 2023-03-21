@@ -10,8 +10,6 @@ const auth = () => {
   ): Promise<unknown> => {
     const jwt = req.body.jwt;
 
-    console.log(jwt);
-
     if (!jwt)
       return res
         .status(400)
@@ -21,6 +19,9 @@ const auth = () => {
       data: { user },
       error,
     } = await supabaseClient.auth.getUser(jwt);
+
+    // @ts-ignore
+    req.user = user;
 
     if (!user || error) {
       return res.status(401).json({ message: "Unauthorized" });

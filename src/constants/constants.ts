@@ -1,5 +1,5 @@
 const devConstants = {
-  serverURL: "https://supabase-chat.onrender.com",
+  serverURL: "http://localhost:5001",
 };
 
 const prodConstants = {

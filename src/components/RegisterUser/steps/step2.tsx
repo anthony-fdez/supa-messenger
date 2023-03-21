@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import { ArrowLeft, Flag } from "react-feather";
 import { closeAllModals, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
-import { Database } from "../../../types/database.types";
 import UploadProfileImage from "../helpers/UploadProfileImage.tsx/UploadProfileImage";
 import { IStepProps } from "../RegisterUser";
 import useGlobalStore from "../../../store/useGlobalStore";
+import { Database } from "../../../../types/database.types";
 
 const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
   const session = useSession();

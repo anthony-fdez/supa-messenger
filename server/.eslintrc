@@ -38,7 +38,7 @@
     "linebreak-style": 0,
     "quotes": ["warn", "double"],
     "import/prefer-default-export": "off",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "error",
     "object-curly-newline": "warn",
     "semi": "warn"
   }

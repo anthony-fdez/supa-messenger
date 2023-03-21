@@ -1,5 +1,5 @@
-import { verifyRoomPassword } from "./routes/verifyRoomPassword/verifyRoomPassword.controller";
-import { createPrivateRoomController } from "./routes/createPrivateroom/createPrivateRoom.controller";
+import { createPrivateRoomController } from "./routes/createPrivateRoom.controller";
+import { verifyRoomPassword } from "./routes/verifyRoomPassword.controller";
 import express from "express";
 
 const RoomRoutes = express.Router();
