@@ -4,6 +4,7 @@ import useChatData from "../../../Hooks/useChatData";
 import RoomNotFound from "./RoomNotFound/RoomNotFound";
 import LoadingRoomData from "./LoadingRoomData/LoadingRoomData";
 import EnterRoomPassword from "./EnterRoomPassword/EnterRoomPassword";
+import RoomHeader from "./RoomHeader/RoomHeader";
 
 const Chat = (): JSX.Element => {
   const { chatId } = useParams();
@@ -27,7 +28,14 @@ const Chat = (): JSX.Element => {
     );
   }
 
-  return <h1>{roomData?.name}</h1>;
+  return (
+    <div>
+      <RoomHeader
+        roomData={roomData}
+        roomParticipants={roomParticipants}
+      />
+    </div>
+  );
 };
 
 export default Chat;
