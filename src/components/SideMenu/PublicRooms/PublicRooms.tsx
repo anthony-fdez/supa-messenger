@@ -33,7 +33,10 @@ const PublicRooms = (): JSX.Element => {
         });
       }
 
-      const { data, error } = await supabase.from("rooms").select("*");
+      const { data, error } = await supabase
+        .from("rooms")
+        .select("*")
+        .eq("is_private", false);
 
       if (error || !data) {
         return showNotification({

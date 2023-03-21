@@ -19,7 +19,8 @@ interface IPreferences {
   theme: string;
 }
 
-interface IDatabaseParticipants extends IDatabaseParticipantsWithoutUsers {
+export interface IDatabaseParticipants
+  extends IDatabaseParticipantsWithoutUsers {
   userData: IDatabaseUser | IDatabaseUser[] | null;
 }
 
