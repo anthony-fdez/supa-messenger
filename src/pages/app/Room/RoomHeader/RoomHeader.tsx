@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Title } from "@mantine/core";
+import { Avatar, Title, Tooltip } from "@mantine/core";
 import useRoomHeaderStyles from "./useRoomHeaderStyles";
 import {
   IDatabaseParticipants,
@@ -32,12 +32,18 @@ const RoomHeader = ({ roomData, roomParticipants }: Props): JSX.Element => {
             if (!participant.userData) return null;
 
             return (
-              <Avatar
-                radius="xl"
-                size="md"
+              <Tooltip
                 // @ts-ignore
-                src={participant.userData.image_url}
-              />
+                label={participant.userData.name}
+                withArrow
+              >
+                <Avatar
+                  radius="xl"
+                  size="md"
+                  // @ts-ignore
+                  src={participant.userData.image_url}
+                />
+              </Tooltip>
             );
           })}
           {roomParticipants.length > 5 && (

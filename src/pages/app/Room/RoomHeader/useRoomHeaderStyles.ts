@@ -15,7 +15,9 @@ const useRoomHeaderStyles = createStyles((theme) => ({
   title: {
     maxWidth: "50%",
   },
-  participants: {},
+  participants: {
+    cursor: "pointer",
+  },
 }));
 
 export default useRoomHeaderStyles;
