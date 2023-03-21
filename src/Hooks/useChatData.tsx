@@ -37,10 +37,10 @@ const useChatData = ({ roomId }: Props) => {
 
       if (!roomDataReq || roomDataError) return setRoomNotFound(true);
 
+      setRoomData(roomDataReq);
       // @ts-ignore
       if (!roomDataReq.participants[0]) {
-        setIsRoomMember(false);
-        return setRoomData(roomDataReq);
+        return setIsRoomMember(false);
       }
 
       const { data: participantsData, error: participantsError } =
