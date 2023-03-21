@@ -7,14 +7,25 @@ import EnterRoomPassword from "./EnterRoomPassword/EnterRoomPassword";
 
 const Chat = (): JSX.Element => {
   const { chatId } = useParams();
-  const { isLoading, roomNotFound, isRoomMember, roomData, roomParticipants } =
-    useChatData({ roomId: chatId });
+  const {
+    isLoading,
+    roomNotFound,
+    isRoomMember,
+    roomData,
+    roomParticipants,
+    getRoomData,
+  } = useChatData({ roomId: chatId });
 
   if (isLoading) return <LoadingRoomData />;
   if (roomNotFound) return <RoomNotFound />;
-  if (!isRoomMember && roomData?.is_private) return <EnterRoomPassword />;
-
-  console.log(roomParticipants);
+  if (!isRoomMember && roomData?.is_private) {
+    return (
+      <EnterRoomPassword
+        getRoomData={getRoomData}
+        roomId={chatId}
+      />
+    );
+  }
 
   return <h1>{roomData?.name}</h1>;
 };

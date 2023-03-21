@@ -38,10 +38,12 @@ export const verifyRoomPassword = router.post(
     );
 
     if (!passwordsMatch) {
-      return res.status(400).send({ message: "Invalid password" });
+      return res
+        .status(400)
+        .send({ message: "Invalid password", error: "Invalid password" });
     }
 
-    const { error } = await supabaseClient.from("participants").insert({
+    const { error } = await supabaseClient.from("participants").upsert({
       // @ts-ignore
       user_id: req.user.id,
       room_id: req.body.room_id,
