@@ -9,7 +9,7 @@ import { useColorScheme } from "@mantine/hooks";
 import { Notifications } from "@mantine/notifications";
 import Root from "./pages/app/root";
 import Error404 from "./pages/404/Error404";
-import Chat from "./pages/app/Chat/Chat";
+import Chat from "./pages/app/Room/Room";
 import useGlobalStore from "./store/useGlobalStore";
 import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";

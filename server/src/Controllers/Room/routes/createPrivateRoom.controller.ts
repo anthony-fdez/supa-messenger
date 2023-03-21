@@ -23,7 +23,8 @@ export const createPrivateRoomController = router.post(
     const { data, error } = await supabaseClient.from("room_passwords").insert({
       room_id: req.body.room_id,
       password: hashedPassword,
-      created_by: null,
+      // @ts-ignore
+      created_by: req.user.id,
     });
 
     if (error) {
