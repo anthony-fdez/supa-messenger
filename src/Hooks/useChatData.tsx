@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Database } from "../../types/database.types";
 import { IDatabaseParticipants } from "../store/useGlobalStore";
@@ -21,47 +21,61 @@ const useChatData = ({ roomId }: Props) => {
     IDatabaseParticipants[] | null
   >(null);
 
+  const getRoomData = useCallback(async (): Promise<void> => {
+    if (!session) return;
+
+    const { error: roomDataError, data: roomDataReq } = await supabase
+      .from("rooms")
+      .select("*, participants(*)")
+      .eq("participants.user_id", session.user.id)
+      .eq("id", roomId)
+      .single();
+
+    if (!roomDataReq || roomDataError) {
+      setRoomNotFound(true);
+      return;
+    }
+
+    setRoomData(roomDataReq);
+    // @ts-ignore
+    if (!roomDataReq.participants[0]) {
+      setIsRoomMember(false);
+      return;
+    }
+
+    const { data: participantsData, error: participantsError } = await supabase
+      .from("participants")
+      .select("*, userData:users(*)")
+      .eq("room_id", roomDataReq.id);
+
+    if (!participantsData || participantsError) {
+      setIsLoading(false);
+      return;
+    }
+
+    setRoomParticipants(participantsData);
+    setIsRoomMember(true);
+  }, [roomId, supabase, session]);
+
   useEffect(() => {
     if (!session) return;
     if (!roomId) return;
 
     setIsLoading(true);
 
-    const getRoomData = async () => {
-      const { error: roomDataError, data: roomDataReq } = await supabase
-        .from("rooms")
-        .select("*, participants(*)")
-        .eq("participants.user_id", session.user.id)
-        .eq("id", roomId)
-        .single();
-
-      if (!roomDataReq || roomDataError) return setRoomNotFound(true);
-
-      setRoomData(roomDataReq);
-      // @ts-ignore
-      if (!roomDataReq.participants[0]) {
-        return setIsRoomMember(false);
-      }
-
-      const { data: participantsData, error: participantsError } =
-        await supabase
-          .from("participants")
-          .select("*, userData:users(*)")
-          .eq("room_id", roomDataReq.id);
-
-      if (!participantsData || participantsError) {
-        return setIsLoading(false);
-      }
-
-      setRoomParticipants(participantsData);
-    };
-
     getRoomData().finally(() => {
       setIsLoading(false);
     });
-  }, [roomId, supabase, session]);
+  }, [roomId, session, getRoomData]);
 
-  return { isLoading, roomNotFound, isRoomMember, roomData, roomParticipants };
+  return {
+    isLoading,
+    roomNotFound,
+    isRoomMember,
+    roomData,
+    roomParticipants,
+    getRoomData,
+  };
 };
 
 export default useChatData;
