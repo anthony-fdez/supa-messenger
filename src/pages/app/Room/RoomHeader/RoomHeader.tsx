@@ -2,19 +2,14 @@ import React, { useState } from "react";
 import { ActionIcon, Avatar, Title, Tooltip } from "@mantine/core";
 import { Settings } from "react-feather";
 import useRoomHeaderStyles from "./useRoomHeaderStyles";
-import {
-  IDatabaseParticipants,
-  IDatabaseRoom,
-} from "../../../../store/useGlobalStore";
 import RoomSettingsDrawer from "./RoomSettingsDrawer/RoomSettingsDrawer";
+import useGlobalStore from "../../../../store/useGlobalStore";
 
-interface Props {
-  roomData: IDatabaseRoom | null;
-  roomParticipants: IDatabaseParticipants[] | null;
-}
-
-const RoomHeader = ({ roomData, roomParticipants }: Props): JSX.Element => {
+const RoomHeader = (): JSX.Element => {
   const { classes } = useRoomHeaderStyles();
+  const {
+    currentRoom: { roomData, roomParticipants },
+  } = useGlobalStore();
 
   const [isRoomSettingsOpened, setIsRoomSettingsOpened] = useState(false);
 
@@ -26,8 +21,6 @@ const RoomHeader = ({ roomData, roomParticipants }: Props): JSX.Element => {
     <>
       <RoomSettingsDrawer
         isRoomSettingsOpened={isRoomSettingsOpened}
-        roomData={roomData}
-        roomParticipants={roomParticipants}
         setIsRoomSettingsOpened={setIsRoomSettingsOpened}
       />
       <div className={classes.container}>

@@ -1,18 +1,18 @@
 import { Button, Flex, TextInput } from "@mantine/core";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { IDatabaseRoom } from "../../../../../../store/useGlobalStore";
-
-interface Props {
-  roomData: IDatabaseRoom | null;
-}
+import useGlobalStore from "../../../../../../store/useGlobalStore";
 
 interface FormValues {
   roomName: string;
 }
 
-const ChangeRoomNameForm = ({ roomData }: Props): JSX.Element => {
+const ChangeRoomNameForm = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    currentRoom: { roomData },
+  } = useGlobalStore();
 
   const {
     register,

@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Database } from "../../types/database.types";
-import { IDatabaseParticipants } from "../store/useGlobalStore";
+import useGlobalStore from "../store/useGlobalStore";
 
 interface Props {
   roomId?: string;
@@ -11,15 +11,7 @@ const useChatData = ({ roomId }: Props) => {
   const session = useSession();
   const supabase = useSupabaseClient<Database>();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [roomNotFound, setRoomNotFound] = useState(false);
-  const [isRoomMember, setIsRoomMember] = useState(false);
-  const [roomData, setRoomData] = useState<
-    Database["public"]["Tables"]["rooms"]["Row"] | null
-  >(null);
-  const [roomParticipants, setRoomParticipants] = useState<
-    IDatabaseParticipants[] | null
-  >(null);
+  const { setCurrentRoom } = useGlobalStore();
 
   const getRoomData = useCallback(async (): Promise<void> => {
     if (!session) return;
@@ -32,14 +24,15 @@ const useChatData = ({ roomId }: Props) => {
       .single();
 
     if (!roomDataReq || roomDataError) {
-      setRoomNotFound(true);
+      setCurrentRoom({ roomNotFound: true });
       return;
     }
 
-    setRoomData(roomDataReq);
+    setCurrentRoom({ roomData: roomDataReq });
     // @ts-ignore
     if (!roomDataReq.participants[0]) {
-      setIsRoomMember(false);
+      setCurrentRoom({ isRoomMember: false });
+
       return;
     }
 
@@ -49,31 +42,28 @@ const useChatData = ({ roomId }: Props) => {
       .eq("room_id", roomDataReq.id);
 
     if (!participantsData || participantsError) {
-      setIsLoading(false);
+      setCurrentRoom({ isLoading: false });
+
       return;
     }
 
-    setRoomParticipants(participantsData);
-    setIsRoomMember(true);
+    setCurrentRoom({ roomParticipants: participantsData, isRoomMember: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomId, supabase, session]);
 
   useEffect(() => {
     if (!session) return;
     if (!roomId) return;
 
-    setIsLoading(true);
+    setCurrentRoom({ isLoading: true });
 
     getRoomData().finally(() => {
-      setIsLoading(false);
+      setCurrentRoom({ isLoading: false });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomId, session, getRoomData]);
 
   return {
-    isLoading,
-    roomNotFound,
-    isRoomMember,
-    roomData,
-    roomParticipants,
     getRoomData,
   };
 };

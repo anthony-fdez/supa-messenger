@@ -11,26 +11,24 @@ import {
 } from "@mantine/core";
 import React from "react";
 import { useSession } from "@supabase/auth-helpers-react";
-import {
-  IDatabaseParticipants,
-  IDatabaseRoom,
-} from "../../../../../store/useGlobalStore";
+
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
+import useGlobalStore from "../../../../../store/useGlobalStore";
 
 interface Props {
   isRoomSettingsOpened: boolean;
-  roomData: IDatabaseRoom | null;
-  roomParticipants: IDatabaseParticipants[];
   setIsRoomSettingsOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RoomSettingsDrawer = ({
   isRoomSettingsOpened,
   setIsRoomSettingsOpened,
-  roomData,
-  roomParticipants,
 }: Props): JSX.Element => {
   const session = useSession();
+
+  const {
+    currentRoom: { roomData, roomParticipants },
+  } = useGlobalStore();
 
   const roomAdminSettings = (): JSX.Element | null => {
     if (session?.user.id !== roomData?.created_by) return null;
@@ -38,7 +36,7 @@ const RoomSettingsDrawer = ({
     return (
       <Card withBorder>
         <h3>Admin Settings</h3>
-        <ChangeRoomNameForm roomData={roomData} />
+        <ChangeRoomNameForm />
         <TextInput
           label="Change Room Password"
           mt={10}

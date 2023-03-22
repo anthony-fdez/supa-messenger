@@ -5,17 +5,15 @@ import RoomNotFound from "./RoomNotFound/RoomNotFound";
 import LoadingRoomData from "./LoadingRoomData/LoadingRoomData";
 import EnterRoomPassword from "./EnterRoomPassword/EnterRoomPassword";
 import RoomHeader from "./RoomHeader/RoomHeader";
+import useGlobalStore from "../../../store/useGlobalStore";
 
 const Chat = (): JSX.Element => {
   const { chatId } = useParams();
+  const { getRoomData } = useChatData({ roomId: chatId });
+
   const {
-    isLoading,
-    roomNotFound,
-    isRoomMember,
-    roomData,
-    roomParticipants,
-    getRoomData,
-  } = useChatData({ roomId: chatId });
+    currentRoom: { roomData, isLoading, roomNotFound, isRoomMember },
+  } = useGlobalStore();
 
   if (isLoading) return <LoadingRoomData />;
   if (roomNotFound) return <RoomNotFound />;
@@ -30,10 +28,7 @@ const Chat = (): JSX.Element => {
 
   return (
     <div>
-      <RoomHeader
-        roomData={roomData}
-        roomParticipants={roomParticipants}
-      />
+      <RoomHeader />
     </div>
   );
 };
