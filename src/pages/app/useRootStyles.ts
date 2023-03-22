@@ -10,7 +10,7 @@ const useRootStyles = createStyles((theme) => ({
   content: {
     maxWidth: 1000,
     margin: "auto",
-    padding: 20,
+    padding: 10,
     "@media (max-width: 900px)": {
       marginTop: 60,
     },

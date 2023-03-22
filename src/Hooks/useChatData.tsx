@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Database } from "../../types/database.types";
-import { IDatabaseParticipants } from "../store/useGlobalStore";
+import useGlobalStore from "../store/useGlobalStore";
 
 interface Props {
   roomId?: string;
@@ -11,57 +11,61 @@ const useChatData = ({ roomId }: Props) => {
   const session = useSession();
   const supabase = useSupabaseClient<Database>();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [roomNotFound, setRoomNotFound] = useState(false);
-  const [isRoomMember, setIsRoomMember] = useState(false);
-  const [roomData, setRoomData] = useState<
-    Database["public"]["Tables"]["rooms"]["Row"] | null
-  >(null);
-  const [roomParticipants, setRoomParticipants] = useState<
-    IDatabaseParticipants[] | null
-  >(null);
+  const { setCurrentRoom } = useGlobalStore();
+
+  const getRoomData = useCallback(async (): Promise<void> => {
+    if (!session) return;
+
+    const { error: roomDataError, data: roomDataReq } = await supabase
+      .from("rooms")
+      .select("*, participants(*)")
+      .eq("participants.user_id", session.user.id)
+      .eq("id", roomId)
+      .single();
+
+    if (!roomDataReq || roomDataError) {
+      setCurrentRoom({ roomNotFound: true });
+      return;
+    }
+
+    setCurrentRoom({ roomData: roomDataReq });
+    // @ts-ignore
+    if (!roomDataReq.participants[0]) {
+      setCurrentRoom({ isRoomMember: false });
+
+      return;
+    }
+
+    const { data: participantsData, error: participantsError } = await supabase
+      .from("participants")
+      .select("*, userData:users(*)")
+      .eq("room_id", roomDataReq.id);
+
+    if (!participantsData || participantsError) {
+      setCurrentRoom({ isLoading: false });
+
+      return;
+    }
+
+    setCurrentRoom({ roomParticipants: participantsData, isRoomMember: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [roomId, supabase, session]);
 
   useEffect(() => {
     if (!session) return;
     if (!roomId) return;
 
-    setIsLoading(true);
-
-    const getRoomData = async () => {
-      const { error: roomDataError, data: roomDataReq } = await supabase
-        .from("rooms")
-        .select("*, participants(*)")
-        .eq("participants.user_id", session.user.id)
-        .eq("id", roomId)
-        .single();
-
-      if (!roomDataReq || roomDataError) return setRoomNotFound(true);
-
-      setRoomData(roomDataReq);
-      // @ts-ignore
-      if (!roomDataReq.participants[0]) {
-        return setIsRoomMember(false);
-      }
-
-      const { data: participantsData, error: participantsError } =
-        await supabase
-          .from("participants")
-          .select("*, userData:users(*)")
-          .eq("room_id", roomDataReq.id);
-
-      if (!participantsData || participantsError) {
-        return setIsLoading(false);
-      }
-
-      setRoomParticipants(participantsData);
-    };
+    setCurrentRoom({ isLoading: true });
 
     getRoomData().finally(() => {
-      setIsLoading(false);
+      setCurrentRoom({ isLoading: false });
     });
-  }, [roomId, supabase, session]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [roomId, session, getRoomData]);
 
-  return { isLoading, roomNotFound, isRoomMember, roomData, roomParticipants };
+  return {
+    getRoomData,
+  };
 };
 
 export default useChatData;

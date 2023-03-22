@@ -36,8 +36,17 @@ interface IApp {
   secondaryActiveSideMenu: string | null;
 }
 
+interface ICurrentRoom {
+  isLoading: boolean;
+  isRoomMember: boolean;
+  roomData: Database["public"]["Tables"]["rooms"]["Row"] | null;
+  roomNotFound: boolean;
+  roomParticipants: IDatabaseParticipants[] | null;
+}
+
 interface IGlobalStateValues {
   app: IApp;
+  currentRoom: ICurrentRoom;
   preferences: IPreferences;
   rooms: IRoom[];
   user: IUser;
@@ -46,6 +55,7 @@ interface IGlobalStateValues {
 interface IGlobalState extends IGlobalStateValues {
   clearState: () => void;
   setApp: (state: Partial<IApp>) => void;
+  setCurrentRoom: (state: Partial<ICurrentRoom>) => void;
   setPreferences: (state: Partial<IPreferences>) => void;
   setRooms: (state: IRoom[]) => void;
   setState: (state: Partial<IGlobalStateValues>) => void;
@@ -60,6 +70,13 @@ const initialState: IGlobalStateValues = {
     uid: null,
     imageUrl: null,
     registerComplete: false,
+  },
+  currentRoom: {
+    isLoading: false,
+    isRoomMember: false,
+    roomData: null,
+    roomNotFound: false,
+    roomParticipants: null,
   },
   app: {
     isMobileMenuOpen: false,
@@ -89,6 +106,14 @@ const useGlobalStore = create<IGlobalState>()(
         setRooms: (newRooms): void => {
           set(() => ({
             rooms: newRooms,
+          }));
+        },
+        setCurrentRoom: (newCurrentRoom): void => {
+          set((state) => ({
+            currentRoom: {
+              ...state.currentRoom,
+              ...newCurrentRoom,
+            },
           }));
         },
         setApp: (newApp): void => {

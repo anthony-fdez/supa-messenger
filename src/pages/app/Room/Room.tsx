@@ -4,17 +4,33 @@ import useChatData from "../../../Hooks/useChatData";
 import RoomNotFound from "./RoomNotFound/RoomNotFound";
 import LoadingRoomData from "./LoadingRoomData/LoadingRoomData";
 import EnterRoomPassword from "./EnterRoomPassword/EnterRoomPassword";
+import RoomHeader from "./RoomHeader/RoomHeader";
+import useGlobalStore from "../../../store/useGlobalStore";
 
 const Chat = (): JSX.Element => {
   const { chatId } = useParams();
-  const { isLoading, roomNotFound, isRoomMember, roomData, roomParticipants } =
-    useChatData({ roomId: chatId });
+  const { getRoomData } = useChatData({ roomId: chatId });
+
+  const {
+    currentRoom: { roomData, isLoading, roomNotFound, isRoomMember },
+  } = useGlobalStore();
 
   if (isLoading) return <LoadingRoomData />;
   if (roomNotFound) return <RoomNotFound />;
-  if (!isRoomMember && roomData?.is_private) return <EnterRoomPassword />;
+  if (!isRoomMember && roomData?.is_private) {
+    return (
+      <EnterRoomPassword
+        getRoomData={getRoomData}
+        roomId={chatId}
+      />
+    );
+  }
 
-  return <h1>{roomData?.name}</h1>;
+  return (
+    <div>
+      <RoomHeader />
+    </div>
+  );
 };
 
 export default Chat;
