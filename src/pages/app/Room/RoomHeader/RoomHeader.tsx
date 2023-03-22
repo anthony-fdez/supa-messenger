@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { ActionIcon, Avatar, Title, Tooltip } from "@mantine/core";
+import { Settings } from "react-feather";
 import useRoomHeaderStyles from "./useRoomHeaderStyles";
 import {
   IDatabaseParticipants,
   IDatabaseRoom,
 } from "../../../../store/useGlobalStore";
-import { Settings, Tool } from "react-feather";
+import RoomSettingsDrawer from "./RoomSettingsDrawer/RoomSettingsDrawer";
 
 interface Props {
   roomData: IDatabaseRoom | null;
@@ -15,57 +16,68 @@ interface Props {
 const RoomHeader = ({ roomData, roomParticipants }: Props): JSX.Element => {
   const { classes } = useRoomHeaderStyles();
 
+  const [isRoomSettingsOpened, setIsRoomSettingsOpened] = useState(false);
+
   if (!roomData || !roomParticipants) {
     return <p>Error</p>;
   }
 
   return (
-    <div className={classes.container}>
-      <div className={classes.headerLeft}>
-        <div className={classes.participants}>
-          <Avatar.Group spacing="sm">
-            {roomParticipants.slice(0, 5).map((participant) => {
-              if (!participant.userData) return null;
+    <>
+      <RoomSettingsDrawer
+        isRoomSettingsOpened={isRoomSettingsOpened}
+        roomData={roomData}
+        roomParticipants={roomParticipants}
+        setIsRoomSettingsOpened={setIsRoomSettingsOpened}
+      />
+      <div className={classes.container}>
+        <div className={classes.headerLeft}>
+          <div className={classes.participants}>
+            <Avatar.Group spacing="sm">
+              {roomParticipants.slice(0, 3).map((participant) => {
+                if (!participant.userData) return null;
 
-              return (
-                <Tooltip
-                  // @ts-ignore
-                  label={participant.userData.name}
-                  withArrow
-                >
-                  <Avatar
-                    radius="xl"
-                    size="md"
+                return (
+                  <Tooltip
                     // @ts-ignore
-                    src={participant.userData.image_url}
-                  />
-                </Tooltip>
-              );
-            })}
-            {roomParticipants.length > 5 && (
-              <Avatar radius="xl">{`+${roomParticipants.length - 5}`}</Avatar>
-            )}
-          </Avatar.Group>
+                    label={participant.userData.name}
+                    withArrow
+                  >
+                    <Avatar
+                      radius="xl"
+                      size="md"
+                      // @ts-ignore
+                      src={participant.userData.image_url}
+                    />
+                  </Tooltip>
+                );
+              })}
+              {roomParticipants.length > 3 && (
+                <Avatar radius="xl">{`+${roomParticipants.length - 3}`}</Avatar>
+              )}
+            </Avatar.Group>
+          </div>
+          <Title
+            lineClamp={1}
+            size={20}
+          >
+            {roomData.name}
+          </Title>
         </div>
-        <Title
-          lineClamp={1}
-          size={20}
+        <Tooltip
+          label="Room Settings"
+          withArrow
         >
-          {roomData.name}
-        </Title>
+          <ActionIcon
+            color="green"
+            onClick={(): void => setIsRoomSettingsOpened(true)}
+            size="xl"
+          >
+            <Settings size={20} />
+          </ActionIcon>
+        </Tooltip>
       </div>
-      <Tooltip
-        label="Room Settings"
-        withArrow
-      >
-        <ActionIcon
-          color="green"
-          size="xl"
-        >
-          <Settings size={20} />
-        </ActionIcon>
-      </Tooltip>
-    </div>
+    </>
   );
 };
 
