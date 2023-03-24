@@ -51,14 +51,28 @@ const Room = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const getRoomData = async () => {
+      const { data, error } = await supabase
+        .from("messages")
+        .select("*")
+        .eq("room_id", roomData?.id);
+
+      console.log(session?.user.id);
+
+      console.log(data);
+      console.log(error);
+    };
+
+    getRoomData();
+  }, []);
+
   return (
     <div className={classes.container}>
       <div className={classes.headerContainer}>
         <RoomHeader />
       </div>
-      <div className={classes.messagesContainer}>
-        <p>Test</p>
-      </div>
+      <div className={classes.messagesContainer}>{/* <Messages /> */}</div>
       <div className={classes.textInputContainer}>
         <MessagesTextInput />
       </div>
