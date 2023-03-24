@@ -32,6 +32,7 @@ const RoomHeader = (): JSX.Element => {
 
                 return (
                   <Tooltip
+                    key={participant.id}
                     // @ts-ignore
                     label={participant.userData.name}
                     withArrow
