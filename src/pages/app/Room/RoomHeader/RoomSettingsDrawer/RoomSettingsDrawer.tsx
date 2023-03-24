@@ -3,10 +3,10 @@ import {
   Avatar,
   Button,
   Card,
+  Divider,
   Drawer,
   Flex,
   Text,
-  TextInput,
   Title,
 } from "@mantine/core";
 import React from "react";
@@ -14,6 +14,7 @@ import { useSession } from "@supabase/auth-helpers-react";
 
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import useGlobalStore from "../../../../../store/useGlobalStore";
+import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
 
 interface Props {
   isRoomSettingsOpened: boolean;
@@ -37,19 +38,8 @@ const RoomSettingsDrawer = ({
       <Card withBorder>
         <h3>Admin Settings</h3>
         <ChangeRoomNameForm />
-        <TextInput
-          label="Change Room Password"
-          mt={10}
-          name="roomPassword"
-          placeholder="********"
-          type="password"
-        />
-        <Flex
-          justify="flex-end"
-          mt={10}
-        >
-          <Button>Save Password</Button>
-        </Flex>
+        <Divider mt={20} />
+        <ChangeRoomPrivacy />
         <Alert
           color="red"
           mt={20}
@@ -92,6 +82,7 @@ const RoomSettingsDrawer = ({
 
           return (
             <Flex
+              key={participant.id}
               align="center"
               mt={10}
             >

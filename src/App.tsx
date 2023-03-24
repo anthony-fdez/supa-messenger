@@ -44,7 +44,6 @@ const App = (): JSX.Element => {
 
   return (
     <SessionContextProvider supabaseClient={supabase}>
-      <Notifications />
       <MantineProvider
         theme={{
           // @ts-ignore
@@ -90,6 +89,7 @@ const App = (): JSX.Element => {
         }}
         withGlobalStyles
       >
+        <Notifications />
         <ModalsProvider>
           <RouterProvider router={router} />
           <LoadingOverlay />

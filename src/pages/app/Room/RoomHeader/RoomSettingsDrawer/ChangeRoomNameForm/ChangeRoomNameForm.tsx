@@ -1,17 +1,23 @@
 import { Button, Flex, TextInput } from "@mantine/core";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { showNotification } from "@mantine/notifications";
 import useGlobalStore from "../../../../../../store/useGlobalStore";
+import { Database } from "../../../../../../../types/database.types";
 
 interface FormValues {
   roomName: string;
 }
 
 const ChangeRoomNameForm = (): JSX.Element => {
+  const supabase = useSupabaseClient<Database>();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
     currentRoom: { roomData },
+    setCurrentRoom,
   } = useGlobalStore();
 
   const {
@@ -24,8 +30,33 @@ const ChangeRoomNameForm = (): JSX.Element => {
     },
   });
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data): Promise<void> => {
     setIsLoading(true);
+
+    const { data: newRoomData, error } = await supabase
+      .from("rooms")
+      .update({ name: data.roomName })
+      .eq("id", roomData?.id)
+      .select("*")
+      .single();
+
+    if (error || !newRoomData) {
+      return showNotification({
+        title: "Error",
+        message: "Unable to update room name",
+      });
+    }
+
+    setCurrentRoom({
+      roomData: newRoomData,
+    });
+
+    showNotification({
+      title: "Success",
+      message: `Room name updated to "${data.roomName}"`,
+    });
+
+    return setIsLoading(false);
   });
 
   return (
