@@ -59,7 +59,11 @@ const useChatData = ({ roomId }: Props) => {
       return;
     }
 
-    setCurrentRoom({ roomParticipants: participantsData, isRoomMember: true });
+    setCurrentRoom({
+      roomParticipants: participantsData,
+      isRoomMember: true,
+      isLoading: false,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomId, supabase, session]);
 

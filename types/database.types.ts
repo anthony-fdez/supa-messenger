@@ -16,7 +16,7 @@ export interface Database {
           is_edited: boolean
           message_body: string
           room_id: number
-          thread_id: number
+          thread_id: number | null
           user_id: string
         }
         Insert: {
@@ -25,7 +25,7 @@ export interface Database {
           is_edited?: boolean
           message_body: string
           room_id: number
-          thread_id: number
+          thread_id?: number | null
           user_id: string
         }
         Update: {
@@ -34,7 +34,7 @@ export interface Database {
           is_edited?: boolean
           message_body?: string
           room_id?: number
-          thread_id?: number
+          thread_id?: number | null
           user_id?: string
         }
       }
