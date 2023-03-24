@@ -80,7 +80,8 @@ const Room = (): JSX.Element => {
       const { data, error } = await supabase
         .from("messages")
         .select("*, userData:users(*)")
-        .eq("room_id", roomData?.id);
+        .eq("room_id", roomData?.id)
+        .limit(50);
 
       if (error) {
         return showNotification({
