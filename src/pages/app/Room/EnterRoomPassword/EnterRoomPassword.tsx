@@ -51,7 +51,7 @@ const EnterRoomPassword = ({ getRoomData, roomId }: Props): JSX.Element => {
 
       return showNotification({
         title: "Error",
-        message: resData?.error,
+        message: "Error",
         color: "red",
       });
     }
