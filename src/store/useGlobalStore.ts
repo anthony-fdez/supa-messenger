@@ -1,4 +1,4 @@
-import { RealtimePresenceState } from "@supabase/supabase-js";
+import { RealtimePresenceState, SupabaseClient } from "@supabase/supabase-js";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { Database } from "../../types/database.types";
@@ -6,6 +6,8 @@ import { Database } from "../../types/database.types";
 export type IDatabaseRoom = Database["public"]["Tables"]["rooms"]["Row"];
 type IDatabaseParticipantsWithoutUsers =
   Database["public"]["Tables"]["participants"]["Row"];
+type IDatabaseMessagesWithoutUsers =
+  Database["public"]["Tables"]["messages"]["Row"];
 type IDatabaseUser = Database["public"]["Tables"]["users"]["Row"];
 
 interface IUser {
@@ -25,6 +27,10 @@ export interface IDatabaseParticipants
   userData: IDatabaseUser | IDatabaseUser[] | null;
 }
 
+export interface IDatabaseMessages extends IDatabaseMessagesWithoutUsers {
+  userData: IDatabaseUser | IDatabaseUser[] | null;
+}
+
 export interface IRoom extends IDatabaseRoom {
   participants: IDatabaseParticipants[];
 }
@@ -40,6 +46,7 @@ interface IApp {
 interface ICurrentRoom {
   isLoading: boolean;
   isRoomMember: boolean;
+  messages: IDatabaseMessages[] | null;
   onlineUsers: RealtimePresenceState | null;
   roomData: Database["public"]["Tables"]["rooms"]["Row"] | null;
   roomNotFound: boolean;
@@ -55,6 +62,13 @@ interface IGlobalStateValues {
 }
 
 interface IGlobalState extends IGlobalStateValues {
+  addNewCurrentRoomMessage: ({
+    newMessage,
+    supabase,
+  }: {
+    newMessage: IDatabaseMessages;
+    supabase: SupabaseClient<Database>;
+  }) => void;
   clearState: () => void;
   setApp: (state: Partial<IApp>) => void;
   setCurrentRoom: (state: Partial<ICurrentRoom>) => void;
@@ -80,6 +94,7 @@ const initialState: IGlobalStateValues = {
     roomNotFound: false,
     roomParticipants: null,
     onlineUsers: null,
+    messages: null,
   },
   app: {
     isMobileMenuOpen: false,
@@ -96,8 +111,36 @@ const initialState: IGlobalStateValues = {
 const useGlobalStore = create<IGlobalState>()(
   devtools(
     persist(
-      (set) => ({
+      (set, get) => ({
         ...initialState,
+        addNewCurrentRoomMessage: async ({
+          newMessage,
+          supabase,
+        }): Promise<void> => {
+          const formattedMessage = newMessage;
+
+          const { data: user, error } = await supabase
+            .from("users")
+            .select("*")
+            .eq("id", newMessage.user_id)
+            .single();
+
+          if (!user || error) {
+            formattedMessage.userData = null;
+          } else {
+            formattedMessage.userData = user;
+          }
+
+          const newCurrentRoom = get().currentRoom;
+          newCurrentRoom.messages?.push(formattedMessage);
+
+          set((state) => ({
+            currentRoom: {
+              ...state.currentRoom,
+              ...newCurrentRoom,
+            },
+          }));
+        },
         setPreferences: (newPreferences): void => {
           set((state) => ({
             preferences: {

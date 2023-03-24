@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from "react";
+import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
-import { RealtimeChannel, RealtimePresenceState } from "@supabase/supabase-js";
+import React, { useEffect } from "react";
+import { Database } from "../../../../types/database.types";
+import useGlobalStore from "../../../store/useGlobalStore";
 import MessagesTextInput from "./MessagesTextInput/MessagesTextInput";
 import RoomHeader from "./RoomHeader/RoomHeader";
 import useRoomStyles from "./useRoomStyles";
-import useGlobalStore from "../../../store/useGlobalStore";
 
 const Room = (): JSX.Element => {
-  const supabase = useSupabaseClient();
+  const supabase = useSupabaseClient<Database>();
   const session = useSession();
   const { classes } = useRoomStyles();
 
   const {
     currentRoom: { roomData },
     setCurrentRoom,
+    addNewCurrentRoomMessage,
   } = useGlobalStore();
 
   // @ts-ignore
@@ -51,20 +53,49 @@ const Room = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // @ts-ignore
   useEffect(() => {
-    const getRoomData = async () => {
+    const channel = supabase
+      .channel("table-db-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+        },
+        (payload) => {
+          // @ts-ignore
+          addNewCurrentRoomMessage({ newMessage: payload.new, supabase });
+        },
+      )
+      .subscribe();
+
+    return () => channel.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const getRoomData = async (): Promise<void> => {
       const { data, error } = await supabase
         .from("messages")
-        .select("*")
+        .select("*, userData:users(*)")
         .eq("room_id", roomData?.id);
 
-      console.log(session?.user.id);
+      if (error) {
+        return showNotification({
+          title: "Error",
+          message: "Unable to get messages",
+        });
+      }
 
-      console.log(data);
-      console.log(error);
+      return setCurrentRoom({
+        messages: data,
+      });
     };
 
     getRoomData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
