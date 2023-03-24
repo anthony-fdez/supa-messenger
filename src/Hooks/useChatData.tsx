@@ -16,6 +16,13 @@ const useChatData = ({ roomId }: Props) => {
   const getRoomData = useCallback(async (): Promise<void> => {
     if (!session) return;
 
+    setCurrentRoom({
+      isLoading: true,
+      isRoomMember: false,
+      roomNotFound: false,
+      roomParticipants: null,
+    });
+
     const { error: roomDataError, data: roomDataReq } = await supabase
       .from("rooms")
       .select("*, participants(*)")
