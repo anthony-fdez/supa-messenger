@@ -1,12 +1,43 @@
 import React from "react";
-import { Database } from "../../../../../types/database.types";
+import { Avatar, Flex, Text } from "@mantine/core";
+import useGlobalStore from "../../../../store/useGlobalStore";
 
-interface Props {
-  messages: Database["public"]["Tables"]["messages"]["Row"][];
-}
+const Messages = (): JSX.Element => {
+  const {
+    currentRoom: { messages },
+  } = useGlobalStore();
 
-const Messages = ({ messages }: Props): JSX.Element => {
-  return <p>Message lol</p>;
+  if (!messages) return <p>Error loading messages</p>;
+
+  return (
+    <div>
+      {messages.map((message) => {
+        return (
+          <Flex
+            key={message.id}
+            mb={10}
+          >
+            <Avatar
+              radius="xl"
+              size={30}
+              // @ts-ignore
+              src={message.userData.image_url}
+            />
+            <div style={{ marginLeft: 10 }}>
+              <Text
+                c="dimmed"
+                size={14}
+              >
+                {/* @ts-ignore */}
+                {`${message.userData.name} - ${new Date(message.created_at)}`}
+              </Text>
+              <Text>{message.message_body}</Text>
+            </div>
+          </Flex>
+        );
+      })}
+    </div>
+  );
 };
 
 export default Messages;
