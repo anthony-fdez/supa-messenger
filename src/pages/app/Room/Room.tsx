@@ -13,7 +13,43 @@ const Room = (): JSX.Element => {
 
   const {
     currentRoom: { roomData },
+    setCurrentRoom,
   } = useGlobalStore();
+
+  // @ts-ignore
+  useEffect(() => {
+    const channel = supabase.channel(roomData?.id.toString() || "", {
+      config: {
+        presence: {
+          key: session?.user.id,
+        },
+      },
+    });
+
+    channel
+      .subscribe(async (status) => {
+        if (status === "SUBSCRIBED") {
+          const presenceTrackStatus = await channel.track({
+            user: session?.user.id,
+            online_at: new Date().toISOString(),
+          });
+
+          if (presenceTrackStatus === "ok") {
+            await channel.untrack();
+          }
+        }
+      })
+      .on("presence", { event: "sync" }, () => {
+        const state = channel.presenceState();
+
+        setCurrentRoom({
+          onlineUsers: state,
+        });
+      });
+
+    return () => channel.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={classes.container}>
@@ -21,7 +57,7 @@ const Room = (): JSX.Element => {
         <RoomHeader />
       </div>
       <div className={classes.messagesContainer}>
-        <p>Start</p>
+        <p>Test</p>
       </div>
       <div className={classes.textInputContainer}>
         <MessagesTextInput />

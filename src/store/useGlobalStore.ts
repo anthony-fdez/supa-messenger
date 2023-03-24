@@ -1,3 +1,4 @@
+import { RealtimePresenceState } from "@supabase/supabase-js";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { Database } from "../../types/database.types";
@@ -39,6 +40,7 @@ interface IApp {
 interface ICurrentRoom {
   isLoading: boolean;
   isRoomMember: boolean;
+  onlineUsers: RealtimePresenceState | null;
   roomData: Database["public"]["Tables"]["rooms"]["Row"] | null;
   roomNotFound: boolean;
   roomParticipants: IDatabaseParticipants[] | null;
@@ -77,6 +79,7 @@ const initialState: IGlobalStateValues = {
     roomData: null,
     roomNotFound: false,
     roomParticipants: null,
+    onlineUsers: null,
   },
   app: {
     isMobileMenuOpen: false,
