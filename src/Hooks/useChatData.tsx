@@ -36,12 +36,6 @@ const useChatData = ({ roomId }: Props) => {
     }
 
     setCurrentRoom({ roomData: roomDataReq });
-    // @ts-ignore
-    if (!roomDataReq.participants[0]) {
-      setCurrentRoom({ isRoomMember: false });
-
-      return;
-    }
 
     const { data: participantsData, error: participantsError } = await supabase
       .from("participants")
@@ -50,6 +44,16 @@ const useChatData = ({ roomId }: Props) => {
 
     if (!participantsData || participantsError) {
       setCurrentRoom({ isLoading: false });
+
+      return;
+    }
+
+    // @ts-ignore
+    if (!roomDataReq.participants[0]) {
+      setCurrentRoom({
+        isRoomMember: false,
+        roomParticipants: participantsData,
+      });
 
       return;
     }
