@@ -3,16 +3,18 @@ import {
   Avatar,
   Button,
   Card,
+  Collapse,
   Divider,
   Drawer,
   Flex,
   Text,
   Title,
 } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 
 import { useMediaQuery } from "@mantine/hooks";
+import { Settings } from "react-feather";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import useGlobalStore from "../../../../../store/useGlobalStore";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
@@ -35,28 +37,42 @@ const RoomSettingsDrawer = ({
   } = useGlobalStore();
   const isMobile = useMediaQuery("(max-width: 1200px)");
 
+  const [showRoomSettings, setShowRoomSettings] = useState(false);
+
   const roomAdminSettings = (): JSX.Element | null => {
     if (session?.user.id !== roomData?.created_by) return null;
 
     return (
-      <Card withBorder>
-        <h3>Admin Settings</h3>
-        <ChangeRoomNameForm />
-        <Divider mt={20} />
-        <ChangeRoomPrivacy />
-        <Alert
-          color="red"
-          mt={20}
-          title="Danger Zone"
+      <>
+        <Button
+          fullWidth
+          leftIcon={<Settings size={16} />}
+          mb={20}
+          onClick={(): void => setShowRoomSettings(!showRoomSettings)}
         >
-          <Button
-            color="red"
-            fullWidth
-          >
-            Delete Room
-          </Button>
-        </Alert>
-      </Card>
+          Room Admin Settings
+        </Button>
+        <Collapse in={showRoomSettings}>
+          <Card withBorder>
+            <h3>Admin Settings</h3>
+            <ChangeRoomNameForm />
+            <Divider mt={20} />
+            <ChangeRoomPrivacy />
+            <Alert
+              color="red"
+              mt={20}
+              title="Danger Zone"
+            >
+              <Button
+                color="red"
+                fullWidth
+              >
+                Delete Room
+              </Button>
+            </Alert>
+          </Card>
+        </Collapse>
+      </>
     );
   };
 
