@@ -16,7 +16,6 @@ const Room = (): JSX.Element => {
   const {
     currentRoom: { roomData },
     setCurrentRoom,
-    removeRoom,
     addNewCurrentRoomMessage,
   } = useGlobalStore();
 
