@@ -64,11 +64,19 @@ const RoomHeader = (): JSX.Element => {
             {roomData.name}
           </Title>
           {roomData.is_private ? (
-            <Badge ml={30}>Private Room</Badge>
+            <Badge
+              ml={30}
+              mt={3}
+              variant="outline"
+            >
+              Private Room
+            </Badge>
           ) : (
             <Badge
               color="red"
               ml={30}
+              mt={3}
+              variant="outline"
             >
               Public Room
             </Badge>
