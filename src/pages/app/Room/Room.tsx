@@ -16,6 +16,7 @@ const Room = (): JSX.Element => {
   const {
     currentRoom: { roomData },
     setCurrentRoom,
+    removeRoom,
     addNewCurrentRoomMessage,
   } = useGlobalStore();
 
@@ -33,6 +34,17 @@ const Room = (): JSX.Element => {
         (payload) => {
           // @ts-ignore
           addNewCurrentRoomMessage({ newMessage: payload.new, supabase });
+        },
+      ).on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "rooms",
+        },
+        (payload) => {
+          // @ts-ignore
+          removeRoom({ room: payload.old, supabase });
         },
       )
       .subscribe();
@@ -67,6 +79,7 @@ const Room = (): JSX.Element => {
 
   return (
     <div className={classes.container}>
+      {/** @ts-ignore */}
       <div className={classes.content}>
         <div className={classes.headerContainer}>
           <RoomHeader />
