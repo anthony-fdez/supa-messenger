@@ -1,5 +1,6 @@
 import React from "react";
 import { Avatar, Flex, Text } from "@mantine/core";
+import moment from "moment";
 import useGlobalStore from "../../../../store/useGlobalStore";
 
 const Messages = (): JSX.Element => {
@@ -29,7 +30,9 @@ const Messages = (): JSX.Element => {
                 size={14}
               >
                 {/* @ts-ignore */}
-                {`${message.userData.name} - ${new Date(message.created_at)}`}
+                {`${message.userData.name} - ${moment(
+                  message.created_at,
+                ).fromNow()}`}
               </Text>
               <Text>{message.message_body}</Text>
             </div>

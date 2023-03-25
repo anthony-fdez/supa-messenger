@@ -39,6 +39,7 @@ interface IApp {
   isLoading: boolean;
   isMobileMenuOpen: boolean;
   mainActiveSideMenu: string | null;
+  onlineUsers: RealtimePresenceState | null;
   registerUserActiveStep: number;
   secondaryActiveSideMenu: string | null;
 }
@@ -47,7 +48,6 @@ interface ICurrentRoom {
   isLoading: boolean;
   isRoomMember: boolean;
   messages: IDatabaseMessages[] | null;
-  onlineUsers: RealtimePresenceState | null;
   roomData: Database["public"]["Tables"]["rooms"]["Row"] | null;
   roomNotFound: boolean;
   roomParticipants: IDatabaseParticipants[] | null;
@@ -93,11 +93,11 @@ const initialState: IGlobalStateValues = {
     roomData: null,
     roomNotFound: false,
     roomParticipants: null,
-    onlineUsers: null,
     messages: null,
   },
   app: {
     isMobileMenuOpen: false,
+    onlineUsers: null,
     isLoading: false,
     mainActiveSideMenu: "Messages",
     secondaryActiveSideMenu: null,
