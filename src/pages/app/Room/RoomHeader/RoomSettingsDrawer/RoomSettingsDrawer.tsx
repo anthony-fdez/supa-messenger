@@ -1,6 +1,5 @@
 import {
   Alert,
-  Avatar,
   Button,
   Card,
   Collapse,
@@ -18,6 +17,7 @@ import { Settings } from "react-feather";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import useGlobalStore from "../../../../../store/useGlobalStore";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
+import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 
 interface Props {
   isDrawer?: boolean;
@@ -106,11 +106,14 @@ const RoomSettingsDrawer = ({
               align="center"
               mt={10}
             >
-              <Avatar
-                radius="xl"
+              <UserAvatarWithIndicator
                 // @ts-ignore
-                src={participant.userData.image_url}
+                image={participant.userData.image_url}
+                size={40}
+                // @ts-ignore
+                user_email={participant.userData.email}
               />
+
               <div style={{ marginLeft: 10 }}>
                 {/* @ts-ignore */}
                 <Title size={16}>{participant.userData.name}</Title>

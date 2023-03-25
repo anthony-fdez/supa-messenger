@@ -21,9 +21,8 @@ const Root = (): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const { user, app, setApp } = useGlobalStore();
 
-  // @ts-ignore
-  useEffect(() => {
-    if (!session) return null;
+  useEffect((): void | (() => void) => {
+    if (!session) return;
 
     const channel = supabase.channel("online-users", {
       config: {
@@ -54,6 +53,7 @@ const Root = (): JSX.Element => {
         });
       });
 
+    // eslint-disable-next-line consistent-return
     return () => channel.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);

@@ -8,7 +8,11 @@ interface Props {
   user_email: string;
 }
 
-const UserAvatar = ({ image, size, user_email }: Props): JSX.Element => {
+const UserAvatarWithIndicator = ({
+  image,
+  size,
+  user_email,
+}: Props): JSX.Element => {
   const {
     app,
     app: { onlineUsers },
@@ -31,7 +35,9 @@ const UserAvatar = ({ image, size, user_email }: Props): JSX.Element => {
   return (
     <Indicator
       disabled={!isOnline}
-      size={10}
+      offset={5}
+      position="bottom-end"
+      size={15}
       withBorder
     >
       <Avatar
@@ -43,4 +49,4 @@ const UserAvatar = ({ image, size, user_email }: Props): JSX.Element => {
   );
 };
 
-export default UserAvatar;
+export default UserAvatarWithIndicator;

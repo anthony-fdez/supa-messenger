@@ -5,6 +5,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import useRoomHeaderStyles from "./useRoomHeaderStyles";
 import RoomSettingsDrawer from "./RoomSettingsDrawer/RoomSettingsDrawer";
 import useGlobalStore from "../../../../store/useGlobalStore";
+import UserAvatarWithIndicator from "../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 
 const RoomHeader = (): JSX.Element => {
   const { classes } = useRoomHeaderStyles();
@@ -39,11 +40,12 @@ const RoomHeader = (): JSX.Element => {
                     label={participant.userData.name}
                     withArrow
                   >
-                    <Avatar
-                      radius="xl"
-                      size="md"
+                    <UserAvatarWithIndicator
                       // @ts-ignore
-                      src={participant.userData.image_url}
+                      image={participant.userData.image_url}
+                      size={40}
+                      // @ts-ignore
+                      user_email={participant.userData.email}
                     />
                   </Tooltip>
                 );
