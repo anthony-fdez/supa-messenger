@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ActionIcon, Avatar, Title, Tooltip } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Title, Tooltip } from "@mantine/core";
 import { Settings } from "react-feather";
 import { useMediaQuery } from "@mantine/hooks";
 import useRoomHeaderStyles from "./useRoomHeaderStyles";
@@ -63,6 +63,16 @@ const RoomHeader = (): JSX.Element => {
           >
             {roomData.name}
           </Title>
+          {roomData.is_private ? (
+            <Badge ml={30}>Private Room</Badge>
+          ) : (
+            <Badge
+              color="red"
+              ml={30}
+            >
+              Public Room
+            </Badge>
+          )}
         </div>
         {isMobile && (
           <Tooltip
