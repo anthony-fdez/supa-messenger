@@ -35,7 +35,8 @@ const Room = (): JSX.Element => {
           // @ts-ignore
           addNewCurrentRoomMessage({ newMessage: payload.new, supabase });
         },
-      ).on(
+      )
+      .on(
         "postgres_changes",
         {
           event: "DELETE",
@@ -54,11 +55,13 @@ const Room = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
+    if (!roomData?.id) return;
+
     const getRoomData = async (): Promise<void> => {
       const { data, error } = await supabase
         .from("messages")
         .select("*, userData:users(*)")
-        .eq("room_id", roomData?.id)
+        .eq("room_id", roomData.id)
         .limit(50);
 
       if (error) {
@@ -75,7 +78,7 @@ const Room = (): JSX.Element => {
 
     getRoomData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [roomData]);
 
   return (
     <div className={classes.container}>

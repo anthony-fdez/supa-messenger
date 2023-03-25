@@ -41,6 +41,8 @@ const RoomSettingsDrawer = ({
 
   const {
     setCurrentRoom,
+    rooms,
+    setRooms,
     currentRoom: { roomData, roomParticipants },
   } = useGlobalStore();
 
@@ -63,6 +65,14 @@ const RoomSettingsDrawer = ({
           message: "error",
         });
       }
+
+      const oldRooms = rooms;
+
+      const newRoomsWithRoomRemoved = oldRooms.filter((el) => {
+        return el.id !== id;
+      });
+
+      setRooms(newRoomsWithRoomRemoved);
 
       setCurrentRoom({
         isLoading: false,
