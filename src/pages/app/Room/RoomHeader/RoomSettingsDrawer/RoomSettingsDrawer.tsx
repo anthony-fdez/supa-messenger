@@ -10,14 +10,16 @@ import {
   Title,
 } from "@mantine/core";
 import React, { useState } from "react";
-import { useSession } from "@supabase/auth-helpers-react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import { useMediaQuery } from "@mantine/hooks";
 import { Settings } from "react-feather";
+import { showNotification } from "@mantine/notifications";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import useGlobalStore from "../../../../../store/useGlobalStore";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
 import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
+import { Database } from "../../../../../../types/database.types";
 
 interface Props {
   isDrawer?: boolean;
@@ -31,10 +33,37 @@ const RoomSettingsDrawer = ({
   isDrawer = true,
 }: Props): JSX.Element | null => {
   const session = useSession();
+  const [isLoading, setLoading] = useState(false);
+  const supabase = useSupabaseClient<Database>();
 
   const {
     currentRoom: { roomData, roomParticipants },
   } = useGlobalStore();
+
+  const removeRoom = async (id: any) => {
+    if (!roomData?.id || !session?.user.id) {
+      return showNotification({
+        title: "Error",
+        message: "Unauthorized",
+      });
+    }
+    setLoading(true);
+
+    const { error } = await supabase
+      .from("rooms")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      return showNotification({
+        title: "Error",
+        message: "error",
+      });
+    }
+    removeRoom(id);
+    setLoading(false);
+  };
+
   const isMobile = useMediaQuery("(max-width: 1200px)");
 
   const [showRoomSettings, setShowRoomSettings] = useState(false);
@@ -43,7 +72,7 @@ const RoomSettingsDrawer = ({
     if (session?.user.id !== roomData?.created_by) return null;
 
     return (
-      <>
+      <form onSubmit={(): Promise<void> => removeRoom(roomData?.id)}>
         <Button
           fullWidth
           leftIcon={<Settings size={16} />}
@@ -66,13 +95,15 @@ const RoomSettingsDrawer = ({
               <Button
                 color="red"
                 fullWidth
+                loading={isLoading}
+                type="submit"
               >
                 Delete Room
               </Button>
             </Alert>
           </Card>
         </Collapse>
-      </>
+      </form>
     );
   };
 
