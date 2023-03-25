@@ -1,5 +1,5 @@
 import { showNotification } from "@mantine/notifications";
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useEffect } from "react";
 import { Database } from "../../../../types/database.types";
 import useGlobalStore from "../../../store/useGlobalStore";
@@ -11,7 +11,6 @@ import RoomSettingsDrawer from "./RoomHeader/RoomSettingsDrawer/RoomSettingsDraw
 
 const Room = (): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
-  const session = useSession();
   const { classes } = useRoomStyles();
 
   const {
@@ -19,41 +18,6 @@ const Room = (): JSX.Element => {
     setCurrentRoom,
     addNewCurrentRoomMessage,
   } = useGlobalStore();
-
-  // @ts-ignore
-  useEffect(() => {
-    const channel = supabase.channel(roomData?.id.toString() || "", {
-      config: {
-        presence: {
-          key: session?.user.id,
-        },
-      },
-    });
-
-    channel
-      .subscribe(async (status) => {
-        if (status === "SUBSCRIBED") {
-          const presenceTrackStatus = await channel.track({
-            user: session?.user.id,
-            online_at: new Date().toISOString(),
-          });
-
-          if (presenceTrackStatus === "ok") {
-            await channel.untrack();
-          }
-        }
-      })
-      .on("presence", { event: "sync" }, () => {
-        const state = channel.presenceState();
-
-        setCurrentRoom({
-          onlineUsers: state,
-        });
-      });
-
-    return () => channel.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // @ts-ignore
   useEffect(() => {

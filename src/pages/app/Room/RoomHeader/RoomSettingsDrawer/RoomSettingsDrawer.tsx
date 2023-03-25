@@ -95,7 +95,7 @@ const RoomSettingsDrawer = ({
           mt={20}
           size={20}
         >
-          Room Participants
+          People
         </Title>
         {roomParticipants.map((participant) => {
           if (!participant.userData) return null;

@@ -1,7 +1,7 @@
 import { ActionIcon, Burger, Drawer } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { useSession } from "@supabase/auth-helpers-react";
-import React from "react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import AuthUser from "../../components/AuthUser/AuthUser";
 import RegisterUser from "../../components/RegisterUser/RegisterUser";
@@ -9,6 +9,7 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import useLoadUserData from "../../Hooks/useLoadUserData";
 import useGlobalStore from "../../store/useGlobalStore";
 import useRootStyles from "./useRootStyles";
+import { Database } from "../../../types/database.types";
 
 const Root = (): JSX.Element => {
   useLoadUserData();
@@ -17,7 +18,43 @@ const Root = (): JSX.Element => {
 
   const isMobile = useMediaQuery("(max-width: 900px)");
   const session = useSession();
+  const supabase = useSupabaseClient<Database>();
   const { user, app, setApp } = useGlobalStore();
+
+  // @ts-ignore
+  useEffect(() => {
+    const channel = supabase.channel("online-users", {
+      config: {
+        presence: {
+          key: session?.user.id,
+        },
+      },
+    });
+
+    channel
+      .subscribe(async (status) => {
+        if (status === "SUBSCRIBED") {
+          const presenceTrackStatus = await channel.track({
+            user: session?.user.id,
+            online_at: new Date().toISOString(),
+          });
+
+          if (presenceTrackStatus === "ok") {
+            await channel.untrack();
+          }
+        }
+      })
+      .on("presence", { event: "sync" }, () => {
+        const state = channel.presenceState();
+
+        setApp({
+          onlineUsers: state,
+        });
+      });
+
+    return () => channel.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!session) {
     return (
