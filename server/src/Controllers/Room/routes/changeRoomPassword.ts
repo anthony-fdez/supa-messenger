@@ -20,10 +20,13 @@ export const changeRoomPasswordController = router.post(
   catchAsync(async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    const { data, error } = await supabaseClient
+    const { error } = await supabaseClient
       .from("room_passwords")
-      .update({
+      .upsert({
+        room_id: req.body.room_id,
         password: hashedPassword,
+        // @ts-ignore
+        created_by: req.user.id,
       })
       .match({
         room_id: req.body.room_id,

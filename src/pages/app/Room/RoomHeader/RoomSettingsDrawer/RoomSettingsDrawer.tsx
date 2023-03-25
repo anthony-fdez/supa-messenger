@@ -16,6 +16,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { Settings } from "react-feather";
 import { showNotification } from "@mantine/notifications";
 import { useNavigate } from "react-router";
+import { closeAllModals, openModal } from "@mantine/modals";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import useGlobalStore from "../../../../../store/useGlobalStore";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
@@ -34,9 +35,7 @@ const RoomSettingsDrawer = ({
   isDrawer = true,
 }: Props): JSX.Element | null => {
   const navigate = useNavigate();
-
   const session = useSession();
-  const [isLoading, setLoading] = useState(false);
   const supabase = useSupabaseClient<Database>();
 
   const {
@@ -47,8 +46,6 @@ const RoomSettingsDrawer = ({
   } = useGlobalStore();
 
   const removeRoom = (id: any) => {
-    setLoading(true);
-
     const removeRoomAsync = async () => {
       if (!roomData?.id || !session?.user.id) {
         return showNotification({
@@ -86,7 +83,9 @@ const RoomSettingsDrawer = ({
       navigate("/");
     };
 
-    removeRoomAsync().finally(() => setLoading(false));
+    removeRoomAsync().finally(() => {
+      closeAllModals();
+    });
   };
 
   const isMobile = useMediaQuery("(max-width: 1200px)");
@@ -120,9 +119,32 @@ const RoomSettingsDrawer = ({
               <Button
                 color="red"
                 fullWidth
-                loading={isLoading}
-                onClick={() => removeRoom(roomData?.id)}
-                type="submit"
+                onClick={() => {
+                  openModal({
+                    title: "Are you sure bitch",
+                    overlayProps: {
+                      blur: 5,
+                    },
+                    children: (
+                      <Flex justify="flex-end">
+                        <Button
+                          color="gray"
+                          mr={10}
+                          onClick={() => closeAllModals()}
+                          variant="subtle"
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          color="red"
+                          onClick={() => removeRoom(roomData?.id)}
+                        >
+                          Delete that bitch
+                        </Button>
+                      </Flex>
+                    ),
+                  });
+                }}
               >
                 Delete Room
               </Button>
