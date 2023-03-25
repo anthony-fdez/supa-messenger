@@ -70,13 +70,6 @@ interface IGlobalState extends IGlobalStateValues {
     supabase: SupabaseClient<Database>;
   }) => void;
   clearState: () => void;
-  removeRoom: ({
-    id,
-    supabase,
-  }: {
-    id: IDatabaseRoom;
-    supabase: SupabaseClient<Database>;
-  }) => void;
   setApp: (state: Partial<IApp>) => void;
   setCurrentRoom: (state: Partial<ICurrentRoom>) => void;
   setPreferences: (state: Partial<IPreferences>) => void;
@@ -147,9 +140,6 @@ const useGlobalStore = create<IGlobalState>()(
               ...newCurrentRoom,
             },
           }));
-        },
-        removeRoom: async ({ id, supabase }): Promise<void> => {
-          await supabase.from("rooms").delete().eq("id", id.id);
         },
         setPreferences: (newPreferences): void => {
           set((state) => ({

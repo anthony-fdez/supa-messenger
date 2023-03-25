@@ -15,6 +15,7 @@ import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useMediaQuery } from "@mantine/hooks";
 import { Settings } from "react-feather";
 import { showNotification } from "@mantine/notifications";
+import { useNavigate } from "react-router";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import useGlobalStore from "../../../../../store/useGlobalStore";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
@@ -32,36 +33,50 @@ const RoomSettingsDrawer = ({
   setIsRoomSettingsOpened,
   isDrawer = true,
 }: Props): JSX.Element | null => {
+  const navigate = useNavigate();
+
   const session = useSession();
   const [isLoading, setLoading] = useState(false);
   const supabase = useSupabaseClient<Database>();
 
   const {
+    setCurrentRoom,
     currentRoom: { roomData, roomParticipants },
   } = useGlobalStore();
 
-  const removeRoom = async (id: any) => {
-    if (!roomData?.id || !session?.user.id) {
-      return showNotification({
-        title: "Error",
-        message: "Unauthorized",
-      });
-    }
+  const removeRoom = (id: any) => {
     setLoading(true);
 
-    const { error } = await supabase
-      .from("rooms")
-      .delete()
-      .eq("id", id);
+    const removeRoomAsync = async () => {
+      if (!roomData?.id || !session?.user.id) {
+        return showNotification({
+          title: "Error",
+          message: "Unauthorized",
+        });
+      }
 
-    if (error) {
-      return showNotification({
-        title: "Error",
-        message: "error",
+      const { error } = await supabase.from("rooms").delete().eq("id", id);
+
+      if (error) {
+        return showNotification({
+          title: "Error",
+          message: "error",
+        });
+      }
+
+      setCurrentRoom({
+        isLoading: false,
+        isRoomMember: false,
+        roomData: null,
+        roomNotFound: false,
+        roomParticipants: null,
+        messages: null,
       });
-    }
-    removeRoom(id);
-    setLoading(false);
+
+      navigate("/");
+    };
+
+    removeRoomAsync().finally(() => setLoading(false));
   };
 
   const isMobile = useMediaQuery("(max-width: 1200px)");
@@ -72,7 +87,7 @@ const RoomSettingsDrawer = ({
     if (session?.user.id !== roomData?.created_by) return null;
 
     return (
-      <form onSubmit={(): Promise<void> => removeRoom(roomData?.id)}>
+      <>
         <Button
           fullWidth
           leftIcon={<Settings size={16} />}
@@ -96,6 +111,7 @@ const RoomSettingsDrawer = ({
                 color="red"
                 fullWidth
                 loading={isLoading}
+                onClick={() => removeRoom(roomData?.id)}
                 type="submit"
               >
                 Delete Room
@@ -103,7 +119,7 @@ const RoomSettingsDrawer = ({
             </Alert>
           </Card>
         </Collapse>
-      </form>
+      </>
     );
   };
 
