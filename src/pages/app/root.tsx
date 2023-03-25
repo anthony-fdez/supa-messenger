@@ -23,10 +23,12 @@ const Root = (): JSX.Element => {
 
   // @ts-ignore
   useEffect(() => {
+    if (!session) return null;
+
     const channel = supabase.channel("online-users", {
       config: {
         presence: {
-          key: session?.user.id,
+          key: session.user.email,
         },
       },
     });
@@ -35,7 +37,7 @@ const Root = (): JSX.Element => {
       .subscribe(async (status) => {
         if (status === "SUBSCRIBED") {
           const presenceTrackStatus = await channel.track({
-            user: session?.user.id,
+            user: session.user.email,
             online_at: new Date().toISOString(),
           });
 
@@ -54,7 +56,7 @@ const Root = (): JSX.Element => {
 
     return () => channel.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session]);
 
   if (!session) {
     return (

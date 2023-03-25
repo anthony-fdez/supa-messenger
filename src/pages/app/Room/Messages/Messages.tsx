@@ -1,7 +1,8 @@
 import React from "react";
-import { Avatar, Flex, Text } from "@mantine/core";
+import { Flex, Text } from "@mantine/core";
 import moment from "moment";
 import useGlobalStore from "../../../../store/useGlobalStore";
+import UserAvatar from "../../../../components/UserAvatar/UserAvatar";
 
 const Messages = (): JSX.Element => {
   const {
@@ -18,11 +19,12 @@ const Messages = (): JSX.Element => {
             key={message.id}
             mb={10}
           >
-            <Avatar
-              radius="xl"
+            <UserAvatar
+              // @ts-ignore
+              image={message.userData.image_url}
               size={30}
               // @ts-ignore
-              src={message.userData.image_url}
+              user_email={message.userData.email}
             />
             <div style={{ marginLeft: 10 }}>
               <Text
