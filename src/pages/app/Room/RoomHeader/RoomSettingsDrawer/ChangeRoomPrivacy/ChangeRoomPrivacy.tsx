@@ -74,7 +74,7 @@ const ChangeRoomPrivacy = (): JSX.Element => {
 
       return showNotification({
         title: "Error",
-        message: resData.error,
+        message: JSON.stringify(resData.error),
       });
     }
 

@@ -35,6 +35,18 @@ const Room = (): JSX.Element => {
           addNewCurrentRoomMessage({ newMessage: payload.new, supabase });
         },
       )
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "rooms",
+        },
+        (payload) => {
+          // @ts-ignore
+          removeRoom({ room: payload.old, supabase });
+        },
+      )
       .subscribe();
 
     return () => channel.unsubscribe();
@@ -42,11 +54,13 @@ const Room = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
+    if (!roomData?.id) return;
+
     const getRoomData = async (): Promise<void> => {
       const { data, error } = await supabase
         .from("messages")
         .select("*, userData:users(*)")
-        .eq("room_id", roomData?.id)
+        .eq("room_id", roomData.id)
         .limit(50);
 
       if (error) {
@@ -63,10 +77,11 @@ const Room = (): JSX.Element => {
 
     getRoomData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [roomData]);
 
   return (
     <div className={classes.container}>
+      {/** @ts-ignore */}
       <div className={classes.content}>
         <div className={classes.headerContainer}>
           <RoomHeader />

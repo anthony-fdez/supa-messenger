@@ -10,14 +10,18 @@ import {
   Title,
 } from "@mantine/core";
 import React, { useState } from "react";
-import { useSession } from "@supabase/auth-helpers-react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import { useMediaQuery } from "@mantine/hooks";
 import { Settings } from "react-feather";
+import { showNotification } from "@mantine/notifications";
+import { useNavigate } from "react-router";
+import { closeAllModals, openModal } from "@mantine/modals";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import useGlobalStore from "../../../../../store/useGlobalStore";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
 import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
+import { Database } from "../../../../../../types/database.types";
 
 interface Props {
   isDrawer?: boolean;
@@ -30,11 +34,60 @@ const RoomSettingsDrawer = ({
   setIsRoomSettingsOpened,
   isDrawer = true,
 }: Props): JSX.Element | null => {
+  const navigate = useNavigate();
   const session = useSession();
+  const supabase = useSupabaseClient<Database>();
 
   const {
+    setCurrentRoom,
+    rooms,
+    setRooms,
     currentRoom: { roomData, roomParticipants },
   } = useGlobalStore();
+
+  const removeRoom = (id: any) => {
+    const removeRoomAsync = async () => {
+      if (!roomData?.id || !session?.user.id) {
+        return showNotification({
+          title: "Error",
+          message: "Unauthorized",
+        });
+      }
+
+      const { error } = await supabase.from("rooms").delete().eq("id", id);
+
+      if (error) {
+        return showNotification({
+          title: "Error",
+          message: "error",
+        });
+      }
+
+      const oldRooms = rooms;
+
+      const newRoomsWithRoomRemoved = oldRooms.filter((el) => {
+        return el.id !== id;
+      });
+
+      setRooms(newRoomsWithRoomRemoved);
+
+      setCurrentRoom({
+        isLoading: false,
+        isRoomMember: false,
+        roomData: null,
+        roomNotFound: false,
+        roomParticipants: null,
+        messages: null,
+      });
+
+      navigate("/");
+    };
+
+    removeRoomAsync().finally(() => {
+      closeAllModals();
+    });
+  };
+
   const isMobile = useMediaQuery("(max-width: 1200px)");
 
   const [showRoomSettings, setShowRoomSettings] = useState(false);
@@ -66,6 +119,32 @@ const RoomSettingsDrawer = ({
               <Button
                 color="red"
                 fullWidth
+                onClick={() => {
+                  openModal({
+                    title: "Are you sure bitch",
+                    overlayProps: {
+                      blur: 5,
+                    },
+                    children: (
+                      <Flex justify="flex-end">
+                        <Button
+                          color="gray"
+                          mr={10}
+                          onClick={() => closeAllModals()}
+                          variant="subtle"
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          color="red"
+                          onClick={() => removeRoom(roomData?.id)}
+                        >
+                          Delete that bitch
+                        </Button>
+                      </Flex>
+                    ),
+                  });
+                }}
               >
                 Delete Room
               </Button>
