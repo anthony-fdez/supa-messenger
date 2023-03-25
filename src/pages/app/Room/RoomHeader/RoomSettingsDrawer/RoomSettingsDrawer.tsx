@@ -12,24 +12,28 @@ import {
 import React from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 
+import { useMediaQuery } from "@mantine/hooks";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import useGlobalStore from "../../../../../store/useGlobalStore";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
 
 interface Props {
-  isRoomSettingsOpened: boolean;
-  setIsRoomSettingsOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  isDrawer?: boolean;
+  isRoomSettingsOpened?: boolean;
+  setIsRoomSettingsOpened?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RoomSettingsDrawer = ({
   isRoomSettingsOpened,
   setIsRoomSettingsOpened,
-}: Props): JSX.Element => {
+  isDrawer = true,
+}: Props): JSX.Element | null => {
   const session = useSession();
 
   const {
     currentRoom: { roomData, roomParticipants },
   } = useGlobalStore();
+  const isMobile = useMediaQuery("(max-width: 1200px)");
 
   const roomAdminSettings = (): JSX.Element | null => {
     if (session?.user.id !== roomData?.created_by) return null;
@@ -109,22 +113,34 @@ const RoomSettingsDrawer = ({
     );
   };
 
+  if (isMobile) {
+    if (!isRoomSettingsOpened || !setIsRoomSettingsOpened) return null;
+
+    return (
+      <Drawer
+        onClose={(): void => setIsRoomSettingsOpened(false)}
+        opened={isRoomSettingsOpened}
+        overlayProps={{
+          blur: 5,
+        }}
+        padding={20}
+        position="right"
+        size="md"
+        title="Room Settings"
+      >
+        {roomAdminSettings()}
+        {renderRoomParticipants()}
+      </Drawer>
+    );
+  }
+
+  if (!isMobile && isDrawer) return null;
+
   return (
-    <Drawer
-      keepMounted={false}
-      onClose={(): void => setIsRoomSettingsOpened(false)}
-      opened={isRoomSettingsOpened}
-      overlayProps={{
-        blur: 5,
-      }}
-      padding={20}
-      position="right"
-      size="md"
-      title="Room Settings"
-    >
+    <div>
       {roomAdminSettings()}
       {renderRoomParticipants()}
-    </Drawer>
+    </div>
   );
 };
 

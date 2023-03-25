@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, Flex, Text } from "@mantine/core";
-import useGlobalStore from "../../../../store/useGlobalStore";
 import moment from "moment";
+import useGlobalStore from "../../../../store/useGlobalStore";
 
 const Messages = (): JSX.Element => {
   const {

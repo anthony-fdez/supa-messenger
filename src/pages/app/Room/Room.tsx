@@ -7,6 +7,7 @@ import MessagesTextInput from "./MessagesTextInput/MessagesTextInput";
 import RoomHeader from "./RoomHeader/RoomHeader";
 import useRoomStyles from "./useRoomStyles";
 import Messages from "./Messages/Messages";
+import RoomSettingsDrawer from "./RoomHeader/RoomSettingsDrawer/RoomSettingsDrawer";
 
 const Room = (): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
@@ -102,14 +103,19 @@ const Room = (): JSX.Element => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.headerContainer}>
-        <RoomHeader />
+      <div className={classes.content}>
+        <div className={classes.headerContainer}>
+          <RoomHeader />
+        </div>
+        <div className={classes.messagesContainer}>
+          <Messages />
+        </div>
+        <div className={classes.textInputContainer}>
+          <MessagesTextInput />
+        </div>
       </div>
-      <div className={classes.messagesContainer}>
-        <Messages />
-      </div>
-      <div className={classes.textInputContainer}>
-        <MessagesTextInput />
+      <div className={classes.desktopSideMenu}>
+        <RoomSettingsDrawer isDrawer={false} />
       </div>
     </div>
   );

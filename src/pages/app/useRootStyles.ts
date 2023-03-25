@@ -8,11 +8,13 @@ const useRootStyles = createStyles((theme) => ({
     },
   },
   content: {
-    maxWidth: 1000,
-    margin: "auto",
+    maxWidth: "calc(100% - 400px)",
     padding: 10,
     "@media (max-width: 900px)": {
       marginTop: 60,
+    },
+    "@media (max-width: 1200px)": {
+      maxWidth: "calc(100%)",
     },
   },
   header: {

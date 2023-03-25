@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ActionIcon, Avatar, Title, Tooltip } from "@mantine/core";
 import { Settings } from "react-feather";
+import { useMediaQuery } from "@mantine/hooks";
 import useRoomHeaderStyles from "./useRoomHeaderStyles";
 import RoomSettingsDrawer from "./RoomSettingsDrawer/RoomSettingsDrawer";
 import useGlobalStore from "../../../../store/useGlobalStore";
@@ -10,6 +11,7 @@ const RoomHeader = (): JSX.Element => {
   const {
     currentRoom: { roomData, roomParticipants },
   } = useGlobalStore();
+  const isMobile = useMediaQuery("(max-width: 1200px)");
 
   const [isRoomSettingsOpened, setIsRoomSettingsOpened] = useState(false);
 
@@ -58,18 +60,20 @@ const RoomHeader = (): JSX.Element => {
             {roomData.name}
           </Title>
         </div>
-        <Tooltip
-          label="Room Settings"
-          withArrow
-        >
-          <ActionIcon
-            color="green"
-            onClick={(): void => setIsRoomSettingsOpened(true)}
-            size="xl"
+        {isMobile && (
+          <Tooltip
+            label="Room Settings"
+            withArrow
           >
-            <Settings size={20} />
-          </ActionIcon>
-        </Tooltip>
+            <ActionIcon
+              color="green"
+              onClick={(): void => setIsRoomSettingsOpened(true)}
+              size="xl"
+            >
+              <Settings size={20} />
+            </ActionIcon>
+          </Tooltip>
+        )}
       </div>
     </>
   );

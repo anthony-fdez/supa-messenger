@@ -21,6 +21,22 @@ const useRoomStyles = createStyles((theme) => ({
     width: "100%",
     left: 0,
   },
+  desktopSideMenu: {
+    position: "fixed",
+    right: 0,
+    top: 0,
+    width: 400,
+    borderLeft: `1px solid ${
+      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
+    }`,
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+    height: "100%",
+    padding: 20,
+    "@media (max-width: 1200px)": {
+      display: "none",
+    },
+  },
 }));
 
 export default useRoomStyles;
