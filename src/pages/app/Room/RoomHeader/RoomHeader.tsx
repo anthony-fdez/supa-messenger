@@ -40,13 +40,15 @@ const RoomHeader = (): JSX.Element => {
                     label={participant.userData.name}
                     withArrow
                   >
-                    <UserAvatarWithIndicator
-                      // @ts-ignore
-                      image={participant.userData.image_url}
-                      size={40}
-                      // @ts-ignore
-                      user_email={participant.userData.email}
-                    />
+                    <div>
+                      <UserAvatarWithIndicator
+                        // @ts-ignore
+                        image={participant.userData.image_url}
+                        size={40}
+                        // @ts-ignore
+                        user_email={participant.userData.email}
+                      />
+                    </div>
                   </Tooltip>
                 );
               })}
