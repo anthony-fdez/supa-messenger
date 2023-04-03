@@ -29,6 +29,7 @@
     "typescript-sort-keys"
   ],
   "rules": {
+    "consistent-return": "off",
     "react/no-unknown-property": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "quotes": ["error", "double", { "avoidEscape": true }],
@@ -38,7 +39,7 @@
     "@typescript-eslint/indent": "off",
     "no-restricted-syntax": ["error"],
     "@typescript-eslint/quotes": ["error", "double"],
-    "@typescript-eslint/explicit-function-return-type": "warn",
+    "@typescript-eslint/explicit-function-return-type": "off",
     "import/no-useless-path-segments": "off",
     "import/no-cycle": "off",
     "object-curly-newline": "off",
