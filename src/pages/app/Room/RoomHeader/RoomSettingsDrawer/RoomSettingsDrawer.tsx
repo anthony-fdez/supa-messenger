@@ -45,7 +45,7 @@ const RoomSettingsDrawer = ({
     currentRoom: { roomData, roomParticipants },
   } = useGlobalStore();
 
-  const removeRoom = (id: any) => {
+  const removeRoom = (id: unknown) => {
     const removeRoomAsync = async () => {
       if (!roomData?.id || !session?.user.id) {
         return showNotification({
