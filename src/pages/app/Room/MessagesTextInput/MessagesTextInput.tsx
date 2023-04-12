@@ -26,7 +26,7 @@ const MessagesTextInput = (): JSX.Element => {
         message: "Unable to send message",
       });
     }
-    console.log(e);
+
     setIsSendingMessage(true);
 
     const { data, error } = await supabase

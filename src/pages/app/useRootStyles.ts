@@ -9,7 +9,9 @@ const useRootStyles = createStyles((theme) => ({
   },
   content: {
     maxWidth: "calc(100% - 400px)",
-    padding: 10,
+    paddingTop: 20,
+    paddingRight: 20,
+    paddingLeft: 20,
     "@media (max-width: 900px)": {
       marginTop: 60,
     },
