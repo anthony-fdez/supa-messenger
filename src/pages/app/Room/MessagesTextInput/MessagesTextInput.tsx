@@ -69,7 +69,6 @@ const MessagesTextInput = (): JSX.Element => {
         placeholder="Send message"
         rightSection={sendButton()}
         value={message}
-        autoCorrect="off"
         spellCheck="false"
       />
     </form>
