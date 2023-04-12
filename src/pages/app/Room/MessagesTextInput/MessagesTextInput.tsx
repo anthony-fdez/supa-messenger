@@ -53,14 +53,7 @@ const MessagesTextInput = (): JSX.Element => {
   };
 
   const sendButton = (): JSX.Element | null => {
-    if (message.length <= 0) {
-      return (
-        <Send
-          size={16}
-          color="#a3a3a36c"
-        />
-      );
-    }
+    if (message.length <= 0) return null;
 
     return (
       <ActionIcon type="submit">
