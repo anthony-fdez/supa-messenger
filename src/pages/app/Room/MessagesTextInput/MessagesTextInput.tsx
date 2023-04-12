@@ -70,6 +70,7 @@ const MessagesTextInput = (): JSX.Element => {
         rightSection={sendButton()}
         value={message}
         spellCheck="false"
+        autoComplete="off"
       />
     </form>
   );
