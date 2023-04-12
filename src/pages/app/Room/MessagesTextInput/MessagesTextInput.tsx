@@ -1,8 +1,8 @@
 import { ActionIcon, Loader, TextInput } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
 import { Send } from "react-feather";
-import { showNotification } from "@mantine/notifications";
 import { Database } from "../../../../../types/database.types";
 import useGlobalStore from "../../../../store/useGlobalStore";
 
@@ -26,7 +26,7 @@ const MessagesTextInput = (): JSX.Element => {
         message: "Unable to send message",
       });
     }
-
+    console.log(e);
     setIsSendingMessage(true);
 
     const { data, error } = await supabase
@@ -53,7 +53,14 @@ const MessagesTextInput = (): JSX.Element => {
   };
 
   const sendButton = (): JSX.Element | null => {
-    if (message.length <= 0) return null;
+    if (message.length <= 0) {
+      return (
+        <Send
+          size={16}
+          color="#a3a3a36c"
+        />
+      );
+    }
 
     return (
       <ActionIcon type="submit">

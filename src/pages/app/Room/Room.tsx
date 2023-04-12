@@ -3,11 +3,11 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useEffect } from "react";
 import { Database } from "../../../../types/database.types";
 import useGlobalStore from "../../../store/useGlobalStore";
+import Messages from "./Messages/Messages";
 import MessagesTextInput from "./MessagesTextInput/MessagesTextInput";
 import RoomHeader from "./RoomHeader/RoomHeader";
-import useRoomStyles from "./useRoomStyles";
-import Messages from "./Messages/Messages";
 import RoomSettingsDrawer from "./RoomHeader/RoomSettingsDrawer/RoomSettingsDrawer";
+import useRoomStyles from "./useRoomStyles";
 
 const Room = (): JSX.Element => {
   const supabase = useSupabaseClient<Database>();

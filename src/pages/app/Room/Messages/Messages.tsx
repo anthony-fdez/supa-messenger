@@ -1,12 +1,22 @@
-import React from "react";
 import { Avatar, Flex, Text } from "@mantine/core";
 import moment from "moment";
+import React, { useEffect, useRef } from "react";
 import useGlobalStore from "../../../../store/useGlobalStore";
 
 const Messages = (): JSX.Element => {
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const {
     currentRoom: { messages },
   } = useGlobalStore();
+
+  useEffect(() => {
+    console.log("triggered");
+    scrollToBottom();
+  }, [messages?.length]);
 
   if (!messages) return <p>Error loading messages</p>;
 
@@ -21,6 +31,7 @@ const Messages = (): JSX.Element => {
             <Avatar
               radius="xl"
               size={30}
+              style={{ zIndex: -1 }}
               // @ts-ignore
               src={message.userData.image_url}
             />
@@ -39,6 +50,7 @@ const Messages = (): JSX.Element => {
           </Flex>
         );
       })}
+      <div ref={messagesEndRef} />
     </div>
   );
 };
