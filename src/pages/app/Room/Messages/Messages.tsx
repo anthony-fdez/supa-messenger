@@ -1,11 +1,13 @@
-import { Avatar, Flex, Text } from "@mantine/core";
+import { Flex, Text } from "@mantine/core";
 import moment from "moment";
 import React, { useEffect, useRef } from "react";
+import UserAvatarWithIndicator from "../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../../store/useGlobalStore";
 
 const Messages = (): JSX.Element => {
   const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
+    // @ts-ignore
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -28,13 +30,15 @@ const Messages = (): JSX.Element => {
             key={message.id}
             mb={10}
           >
-            <Avatar
-              radius="xl"
-              size={30}
-              style={{ zIndex: -1 }}
-              // @ts-ignore
-              src={message.userData.image_url}
-            />
+            <div style={{ zIndex: "-1" }}>
+              <UserAvatarWithIndicator
+                // @ts-ignore
+                user_email={message.userData.email}
+                size={30}
+                // @ts-ignore
+                image={message.userData.image_url}
+              />
+            </div>
             <div style={{ marginLeft: 10 }}>
               <Text
                 c="dimmed"

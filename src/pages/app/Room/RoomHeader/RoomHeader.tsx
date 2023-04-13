@@ -1,11 +1,11 @@
-import React, { useState } from "react";
 import { ActionIcon, Avatar, Badge, Title, Tooltip } from "@mantine/core";
-import { Settings } from "react-feather";
 import { useMediaQuery } from "@mantine/hooks";
-import useRoomHeaderStyles from "./useRoomHeaderStyles";
-import RoomSettingsDrawer from "./RoomSettingsDrawer/RoomSettingsDrawer";
-import useGlobalStore from "../../../../store/useGlobalStore";
+import React, { useState } from "react";
+import { Settings } from "react-feather";
 import UserAvatarWithIndicator from "../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
+import useGlobalStore from "../../../../store/useGlobalStore";
+import RoomSettingsDrawer from "./RoomSettingsDrawer/RoomSettingsDrawer";
+import useRoomHeaderStyles from "./useRoomHeaderStyles";
 
 const RoomHeader = (): JSX.Element => {
   const { classes } = useRoomHeaderStyles();

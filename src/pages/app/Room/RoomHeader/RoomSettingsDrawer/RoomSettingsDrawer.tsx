@@ -9,19 +9,19 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import React, { useState } from "react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import React, { useState } from "react";
 
 import { useMediaQuery } from "@mantine/hooks";
-import { Settings } from "react-feather";
-import { showNotification } from "@mantine/notifications";
-import { useNavigate } from "react-router";
 import { closeAllModals, openModal } from "@mantine/modals";
-import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
-import useGlobalStore from "../../../../../store/useGlobalStore";
-import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
-import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
+import { showNotification } from "@mantine/notifications";
+import { Settings } from "react-feather";
+import { useNavigate } from "react-router";
 import { Database } from "../../../../../../types/database.types";
+import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
+import useGlobalStore from "../../../../../store/useGlobalStore";
+import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
+import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
 
 interface Props {
   isDrawer?: boolean;
@@ -45,8 +45,8 @@ const RoomSettingsDrawer = ({
     currentRoom: { roomData, roomParticipants },
   } = useGlobalStore();
 
-  const removeRoom = (id: any) => {
-    const removeRoomAsync = async () => {
+  const removeRoom = (id: number) => {
+    const removeRoomAsync = async (): Promise<void> => {
       if (!roomData?.id || !session?.user.id) {
         return showNotification({
           title: "Error",
@@ -79,8 +79,7 @@ const RoomSettingsDrawer = ({
         roomParticipants: null,
         messages: null,
       });
-
-      navigate("/");
+      return navigate("/");
     };
 
     removeRoomAsync().finally(() => {
@@ -137,7 +136,11 @@ const RoomSettingsDrawer = ({
                         </Button>
                         <Button
                           color="red"
-                          onClick={() => removeRoom(roomData?.id)}
+                          onClick={() => {
+                            if (roomData?.id) {
+                              removeRoom(roomData.id);
+                            }
+                          }}
                         >
                           Delete that bitch
                         </Button>
@@ -191,6 +194,7 @@ const RoomSettingsDrawer = ({
                 size={40}
                 // @ts-ignore
                 user_email={participant.userData.email}
+                checkOnline
               />
 
               <div style={{ marginLeft: 10 }}>

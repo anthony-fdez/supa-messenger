@@ -12,7 +12,6 @@ import useRoomStyles from "./useRoomStyles";
 const Room = (): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const { classes } = useRoomStyles();
-
   const {
     currentRoom: { roomData },
     setCurrentRoom,
