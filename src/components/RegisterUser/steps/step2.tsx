@@ -1,13 +1,13 @@
 import { Button, Divider, Flex } from "@mantine/core";
+import { closeAllModals, openModal } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
 import { ArrowLeft, Flag } from "react-feather";
-import { closeAllModals, openModal } from "@mantine/modals";
-import { showNotification } from "@mantine/notifications";
-import UploadProfileImage from "../helpers/UploadProfileImage.tsx/UploadProfileImage";
-import { IStepProps } from "../RegisterUser";
-import useGlobalStore from "../../../store/useGlobalStore";
 import { Database } from "../../../../types/database.types";
+import useGlobalStore from "../../../store/useGlobalStore";
+import { IStepProps } from "../RegisterUser";
+import UploadProfileImage from "../helpers/UploadProfileImage.tsx/UploadProfileImage";
 
 const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
   const session = useSession();
@@ -39,7 +39,7 @@ const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
           cacheControl: "0",
           upsert: true,
         });
-
+      console.log(`${session.user.id}/profile.png`);
       if (error) {
         return showNotification({
           title: "Error.",

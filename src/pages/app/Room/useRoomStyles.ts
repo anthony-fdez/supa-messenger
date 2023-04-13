@@ -16,10 +16,15 @@ const useRoomStyles = createStyles((theme) => ({
     minHeight: "85vh",
   },
   textInputContainer: {
+    backgroundColor:
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[7]
+        : theme.colors.gray[1],
+
     position: "sticky",
-    bottom: 20,
     width: "100%",
-    left: 0,
+    paddingBottom: 20,
+    bottom: 0,
   },
   desktopSideMenu: {
     position: "fixed",

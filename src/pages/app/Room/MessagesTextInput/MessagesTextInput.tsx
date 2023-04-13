@@ -1,8 +1,8 @@
 import { ActionIcon, Loader, TextInput } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
 import { Send } from "react-feather";
-import { showNotification } from "@mantine/notifications";
 import { Database } from "../../../../../types/database.types";
 import useGlobalStore from "../../../../store/useGlobalStore";
 
@@ -69,6 +69,8 @@ const MessagesTextInput = (): JSX.Element => {
         placeholder="Send message"
         rightSection={sendButton()}
         value={message}
+        spellCheck="false"
+        autoComplete="off"
       />
     </form>
   );
