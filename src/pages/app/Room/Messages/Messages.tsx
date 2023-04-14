@@ -3,8 +3,11 @@ import moment from "moment";
 import React, { useEffect, useRef } from "react";
 import UserAvatarWithIndicator from "../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../../store/useGlobalStore";
+import MessageFunctions from "./components/MessageFunctions";
+import useMessageStyles from "./useMessageStyles";
 
 const Messages = (): JSX.Element => {
+  const { classes } = useMessageStyles();
   const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
     // @ts-ignore
@@ -29,8 +32,9 @@ const Messages = (): JSX.Element => {
           <Flex
             key={message.id}
             mb={10}
+            className={classes.messageDiv}
           >
-            <div style={{ zIndex: "-1" }}>
+            <div className={classes.avatarDiv}>
               <UserAvatarWithIndicator
                 // @ts-ignore
                 user_email={message.userData.email}
@@ -50,6 +54,9 @@ const Messages = (): JSX.Element => {
                 ).fromNow()}`}
               </Text>
               <Text>{message.message_body}</Text>
+            </div>
+            <div className={classes.messageFunctionsDiv}>
+              <MessageFunctions />
             </div>
           </Flex>
         );
