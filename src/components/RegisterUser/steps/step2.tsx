@@ -1,4 +1,13 @@
-import { Button, Divider, Flex } from "@mantine/core";
+import {
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Text,
+  Title,
+  useMantineTheme,
+} from "@mantine/core";
 import { closeAllModals, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -12,6 +21,7 @@ import UploadProfileImage from "../helpers/UploadProfileImage.tsx/UploadProfileI
 const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
   const session = useSession();
   const supabase = useSupabaseClient<Database>();
+  const theme = useMantineTheme();
 
   const { user, setUser } = useGlobalStore();
 
@@ -127,6 +137,29 @@ const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
         image={profileImage}
         setImage={setProfileImage}
       />
+      <Flex
+        align="center"
+        m={20}
+        mt={30}
+      >
+        <Avatar
+          mr={20}
+          radius="50%"
+          size={120}
+          bg={
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[7]
+              : theme.colors.gray[2]
+          }
+          src={`https://api.dicebear.com/6.x/micah/svg?seed=${session?.user.email}`}
+        />
+        <Box>
+          <Title size={20}>Your default profile picture</Title>
+          <Text size={14}>
+            This will be your default profile picture if no other is provided
+          </Text>
+        </Box>
+      </Flex>
 
       <Divider
         mb={20}
