@@ -1,6 +1,6 @@
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
-import useGlobalStore from "../store/useGlobalStore";
+import useGlobalStore from "../../store/useGlobalStore";
 
 interface Props {
   message: string;

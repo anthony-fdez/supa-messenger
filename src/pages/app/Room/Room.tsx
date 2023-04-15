@@ -8,6 +8,7 @@ import MessagesTextInput from "./MessagesTextInput/MessagesTextInput";
 import RoomHeader from "./RoomHeader/RoomHeader";
 import RoomSettingsDrawer from "./RoomHeader/RoomSettingsDrawer/RoomSettingsDrawer";
 import useRoomStyles from "./useRoomStyles";
+import useListenToRoomChanges from "../../../Hooks/rooms/useListenToRoomChanges";
 
 interface Props {
   roomId: string;
@@ -19,8 +20,9 @@ const Room = ({ roomId }: Props): JSX.Element => {
   const {
     currentRoom: { roomData },
     setCurrentRoom,
-    addNewCurrentRoomMessage,
   } = useGlobalStore();
+
+  useListenToRoomChanges();
 
   const roomChannel = supabase.channel(roomId);
 
@@ -31,40 +33,6 @@ const Room = ({ roomId }: Props): JSX.Element => {
       });
     }
   });
-
-  // @ts-ignore
-  useEffect(() => {
-    const channel = supabase
-      .channel("table-db-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "messages",
-        },
-        (payload) => {
-          // @ts-ignore
-          addNewCurrentRoomMessage({ newMessage: payload.new, supabase });
-        },
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "DELETE",
-          schema: "public",
-          table: "rooms",
-        },
-        (payload) => {
-          // @ts-ignore
-          removeRoom({ room: payload.old, supabase });
-        },
-      )
-      .subscribe();
-
-    return () => channel.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (!roomData?.id) return;

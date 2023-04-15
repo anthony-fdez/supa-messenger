@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import React from "react";
-import useChatData from "../../../Hooks/useChatData";
+import useChatData from "../../../Hooks/rooms/useChatData";
 import useGlobalStore from "../../../store/useGlobalStore";
 import EnterRoomPassword from "./EnterRoomPassword/EnterRoomPassword";
 import LoadingRoomData from "./LoadingRoomData/LoadingRoomData";

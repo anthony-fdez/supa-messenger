@@ -6,7 +6,7 @@ import { Send } from "react-feather";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { Database } from "../../../../../types/database.types";
 import useGlobalStore from "../../../../store/useGlobalStore";
-import useTypingBroadCastStatus from "../../../../Hooks/useTypingBroadcastStatus";
+import useTypingBroadCastStatus from "../../../../Hooks/rooms/useTypingBroadcastStatus";
 
 interface Props {
   roomChannel: RealtimeChannel;
