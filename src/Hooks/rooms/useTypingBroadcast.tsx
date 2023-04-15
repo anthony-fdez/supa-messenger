@@ -34,8 +34,6 @@ const useTypingBroadCast = ({ roomChannel, message }: Props) => {
         uid: user.uid,
       },
     });
-
-    console.log(isTyping);
   }, [isTyping, roomChannel, user]);
 };
 
