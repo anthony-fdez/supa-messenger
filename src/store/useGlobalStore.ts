@@ -44,6 +44,13 @@ interface IApp {
   secondaryActiveSideMenu: string | null;
 }
 
+export interface IUsersTyping {
+  email: string;
+  isTyping: boolean;
+  name: string;
+  uid: string;
+}
+
 interface ICurrentRoom {
   isLoading: boolean;
   isRoomMember: boolean;
@@ -51,14 +58,7 @@ interface ICurrentRoom {
   roomData: Database["public"]["Tables"]["rooms"]["Row"] | null;
   roomNotFound: boolean;
   roomParticipants: IDatabaseParticipants[] | null;
-  usersTyping:
-    | {
-        email: string;
-        isTyping: boolean;
-        name: string;
-        uid: string;
-      }[]
-    | null;
+  usersTyping: IUsersTyping[];
 }
 
 interface IGlobalStateValues {
@@ -102,7 +102,7 @@ const initialState: IGlobalStateValues = {
     roomNotFound: false,
     roomParticipants: null,
     messages: null,
-    usersTyping: null,
+    usersTyping: [],
   },
   app: {
     isMobileMenuOpen: false,

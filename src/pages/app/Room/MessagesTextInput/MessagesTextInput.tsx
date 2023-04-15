@@ -6,7 +6,7 @@ import { Send } from "react-feather";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { Database } from "../../../../../types/database.types";
 import useGlobalStore from "../../../../store/useGlobalStore";
-import useTypingBroadCastStatus from "../../../../Hooks/rooms/useTypingBroadcastStatus";
+import useTypingBroadCast from "../../../../Hooks/rooms/useTypingBroadcast";
 
 interface Props {
   roomChannel: RealtimeChannel;
@@ -23,7 +23,7 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
   const [message, setMessage] = useState("");
   const [isSendingMessage, setIsSendingMessage] = useState(false);
 
-  useTypingBroadCastStatus({ roomChannel, message });
+  useTypingBroadCast({ roomChannel, message });
 
   const onMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

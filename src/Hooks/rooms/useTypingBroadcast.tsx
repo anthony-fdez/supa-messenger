@@ -7,7 +7,7 @@ interface Props {
   roomChannel: RealtimeChannel;
 }
 
-const useTypingBroadCastStatus = ({ roomChannel, message }: Props) => {
+const useTypingBroadCast = ({ roomChannel, message }: Props) => {
   const { user } = useGlobalStore();
 
   const [isTyping, setIsTyping] = useState(false);
@@ -39,4 +39,4 @@ const useTypingBroadCastStatus = ({ roomChannel, message }: Props) => {
   }, [isTyping, roomChannel, user]);
 };
 
-export default useTypingBroadCastStatus;
+export default useTypingBroadCast;

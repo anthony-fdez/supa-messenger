@@ -9,6 +9,7 @@ import RoomHeader from "./RoomHeader/RoomHeader";
 import RoomSettingsDrawer from "./RoomHeader/RoomSettingsDrawer/RoomSettingsDrawer";
 import useRoomStyles from "./useRoomStyles";
 import useListenToRoomChanges from "../../../Hooks/rooms/useListenToRoomChanges";
+import useTypingStatus from "../../../Hooks/rooms/useTypingStatus";
 
 interface Props {
   roomId: string;
@@ -22,17 +23,10 @@ const Room = ({ roomId }: Props): JSX.Element => {
     setCurrentRoom,
   } = useGlobalStore();
 
-  useListenToRoomChanges();
-
   const roomChannel = supabase.channel(roomId);
 
-  roomChannel.subscribe((status) => {
-    if (status === "SUBSCRIBED") {
-      roomChannel.on("broadcast", { event: "typing" }, (payload) => {
-        console.log(payload);
-      });
-    }
-  });
+  useListenToRoomChanges();
+  useTypingStatus({ roomChannel });
 
   useEffect(() => {
     if (!roomData?.id) return;
