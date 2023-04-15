@@ -8,49 +8,25 @@ import MessagesTextInput from "./MessagesTextInput/MessagesTextInput";
 import RoomHeader from "./RoomHeader/RoomHeader";
 import RoomSettingsDrawer from "./RoomHeader/RoomSettingsDrawer/RoomSettingsDrawer";
 import useRoomStyles from "./useRoomStyles";
+import useListenToRoomChanges from "../../../Hooks/rooms/useListenToRoomChanges";
+import useTypingStatus from "../../../Hooks/rooms/useTypingStatus";
 
-const Room = (): JSX.Element => {
+interface Props {
+  roomId: string;
+}
+
+const Room = ({ roomId }: Props): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const { classes } = useRoomStyles();
   const {
     currentRoom: { roomData },
     setCurrentRoom,
-    addNewCurrentRoomMessage,
   } = useGlobalStore();
 
-  // @ts-ignore
-  useEffect(() => {
-    const channel = supabase
-      .channel("table-db-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "messages",
-        },
-        (payload) => {
-          // @ts-ignore
-          addNewCurrentRoomMessage({ newMessage: payload.new, supabase });
-        },
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "DELETE",
-          schema: "public",
-          table: "rooms",
-        },
-        (payload) => {
-          // @ts-ignore
-          removeRoom({ room: payload.old, supabase });
-        },
-      )
-      .subscribe();
+  const roomChannel = supabase.channel(roomId);
 
-    return () => channel.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useListenToRoomChanges();
+  useTypingStatus({ roomChannel });
 
   useEffect(() => {
     if (!roomData?.id) return;
@@ -89,7 +65,7 @@ const Room = (): JSX.Element => {
           <Messages />
         </div>
         <div className={classes.textInputContainer}>
-          <MessagesTextInput />
+          <MessagesTextInput roomChannel={roomChannel} />
         </div>
       </div>
       <div className={classes.desktopSideMenu}>

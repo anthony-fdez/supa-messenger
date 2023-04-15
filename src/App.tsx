@@ -26,7 +26,7 @@ const router = createBrowserRouter([
     errorElement: <Error404 />,
     children: [
       {
-        path: "/chat/:chatId",
+        path: "/chat/:roomId",
         element: <RoomLayout />,
       },
       {

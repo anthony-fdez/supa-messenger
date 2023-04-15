@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import React from "react";
-import useChatData from "../../../Hooks/useChatData";
+import useChatData from "../../../Hooks/rooms/useChatData";
 import useGlobalStore from "../../../store/useGlobalStore";
 import EnterRoomPassword from "./EnterRoomPassword/EnterRoomPassword";
 import LoadingRoomData from "./LoadingRoomData/LoadingRoomData";
@@ -8,8 +8,8 @@ import Room from "./Room";
 import RoomNotFound from "./RoomNotFound/RoomNotFound";
 
 const RoomIndex = (): JSX.Element => {
-  const { chatId } = useParams();
-  const { getRoomData } = useChatData({ roomId: chatId });
+  const { roomId } = useParams();
+  const { getRoomData } = useChatData({ roomId });
 
   const {
     currentRoom: { roomData, isLoading, roomNotFound, isRoomMember },
@@ -21,12 +21,14 @@ const RoomIndex = (): JSX.Element => {
     return (
       <EnterRoomPassword
         getRoomData={getRoomData}
-        roomId={chatId}
+        roomId={roomId}
       />
     );
   }
 
-  return <Room />;
+  if (!roomId) return <p>Error: roomId not found</p>;
+
+  return <Room roomId={roomId} />;
 };
 
 export default RoomIndex;

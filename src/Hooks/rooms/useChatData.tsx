@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
-import { Database } from "../../types/database.types";
-import useGlobalStore from "../store/useGlobalStore";
+import { Database } from "../../../types/database.types";
+import useGlobalStore from "../../store/useGlobalStore";
 
 interface Props {
   roomId?: string;

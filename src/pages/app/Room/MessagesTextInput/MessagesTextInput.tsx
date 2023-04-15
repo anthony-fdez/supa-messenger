@@ -3,19 +3,45 @@ import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
 import { Send } from "react-feather";
+import { RealtimeChannel } from "@supabase/supabase-js";
 import { Database } from "../../../../../types/database.types";
 import useGlobalStore from "../../../../store/useGlobalStore";
+import useTypingBroadCast from "../../../../Hooks/rooms/useTypingBroadcast";
 
-const MessagesTextInput = (): JSX.Element => {
+interface Props {
+  roomChannel: RealtimeChannel;
+}
+
+const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const session = useSession();
 
   const {
-    currentRoom: { roomData },
+    currentRoom: { roomData, usersTyping },
   } = useGlobalStore();
 
   const [message, setMessage] = useState("");
   const [isSendingMessage, setIsSendingMessage] = useState(false);
+
+  useTypingBroadCast({ roomChannel, message });
+
+  const getUsersTypingMessage = () => {
+    if (!usersTyping) return false;
+
+    if (usersTyping.length === 1) {
+      return `${usersTyping[0].name} is typing...`;
+    }
+
+    if (usersTyping.length === 2) {
+      return `${usersTyping[0].name} and ${usersTyping[1].name} are typing...`;
+    }
+
+    if (usersTyping.length >= 3) {
+      return "Multiple people typing...";
+    }
+
+    return true;
+  };
 
   const onMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,7 +75,7 @@ const MessagesTextInput = (): JSX.Element => {
     }
 
     setIsSendingMessage(false);
-    setMessage("");
+    return setMessage("");
   };
 
   const sendButton = (): JSX.Element | null => {
@@ -71,6 +97,7 @@ const MessagesTextInput = (): JSX.Element => {
         value={message}
         spellCheck="false"
         autoComplete="off"
+        label={getUsersTypingMessage()}
       />
     </form>
   );
