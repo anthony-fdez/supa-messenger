@@ -34,8 +34,6 @@ const useTypingStatus = ({ roomChannel }: Props) => {
             usersTyping: removed,
           });
         }
-
-        console.log(newUsersTyping);
       });
     }
   });

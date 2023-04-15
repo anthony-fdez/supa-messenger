@@ -40,6 +40,19 @@ const useListenToRoomChanges = ({ getRoomData }: Props) => {
           getRoomData();
         },
       )
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "participants",
+        },
+        () => {
+          if (!getRoomData) return;
+
+          getRoomData();
+        },
+      )
       .subscribe();
 
     return () => {

@@ -16,7 +16,6 @@ const Messages = (): JSX.Element => {
   } = useGlobalStore();
 
   useEffect(() => {
-    console.log("triggered");
     scrollToBottom();
   }, [messages?.length]);
 

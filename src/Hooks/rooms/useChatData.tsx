@@ -33,7 +33,7 @@ const useChatData = ({ roomId }: Props) => {
         .single();
 
       if (!roomDataReq || roomDataError) {
-        setCurrentRoom({ roomNotFound: true });
+        setCurrentRoom({ roomNotFound: true, isLoading: false });
         return;
       }
 
@@ -56,6 +56,7 @@ const useChatData = ({ roomId }: Props) => {
         setCurrentRoom({
           isRoomMember: false,
           roomParticipants: participantsData,
+          isLoading: false,
         });
 
         return;
