@@ -28,7 +28,12 @@ const RoomIndex = (): JSX.Element => {
 
   if (!roomId) return <p>Error: roomId not found</p>;
 
-  return <Room roomId={roomId} />;
+  return (
+    <Room
+      roomId={roomId}
+      getRoomData={getRoomData}
+    />
+  );
 };
 
 export default RoomIndex;

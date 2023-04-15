@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { showNotification } from "@mantine/notifications";
 import useHttp from "../../../../Hooks/useHttp";
+import { IGetRoomData } from "../../../../Hooks/rooms/useChatData";
 
 interface Props {
-  getRoomData: () => Promise<void>;
+  getRoomData: ({ silent }: IGetRoomData) => Promise<void>;
   roomId?: string;
 }
 
@@ -56,7 +57,7 @@ const EnterRoomPassword = ({ getRoomData, roomId }: Props): JSX.Element => {
       });
     }
 
-    getRoomData();
+    getRoomData({});
 
     return setIsLoading(false);
   });
