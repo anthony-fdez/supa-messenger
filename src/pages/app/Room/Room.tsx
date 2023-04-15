@@ -10,6 +10,7 @@ import RoomSettingsDrawer from "./RoomHeader/RoomSettingsDrawer/RoomSettingsDraw
 import useRoomStyles from "./useRoomStyles";
 import useListenToRoomChanges from "../../../Hooks/rooms/useListenToRoomChanges";
 import useTypingStatus from "../../../Hooks/rooms/useTypingStatus";
+import JoinPublicRoom from "./JoinPublicRoom/JoinPublicRoom";
 
 interface Props {
   roomId: string;
@@ -19,7 +20,7 @@ const Room = ({ roomId }: Props): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const { classes } = useRoomStyles();
   const {
-    currentRoom: { roomData },
+    currentRoom: { roomData, isRoomMember },
     setCurrentRoom,
   } = useGlobalStore();
 
@@ -60,13 +61,16 @@ const Room = ({ roomId }: Props): JSX.Element => {
       <div className={classes.content}>
         <div className={classes.headerContainer}>
           <RoomHeader />
+          {!isRoomMember && <JoinPublicRoom />}
         </div>
         <div className={classes.messagesContainer}>
           <Messages />
         </div>
-        <div className={classes.textInputContainer}>
-          <MessagesTextInput roomChannel={roomChannel} />
-        </div>
+        {isRoomMember && (
+          <div className={classes.textInputContainer}>
+            <MessagesTextInput roomChannel={roomChannel} />
+          </div>
+        )}
       </div>
       <div className={classes.desktopSideMenu}>
         <RoomSettingsDrawer isDrawer={false} />
