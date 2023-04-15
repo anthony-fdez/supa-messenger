@@ -26,6 +26,19 @@ const MessagesTextInput = (): JSX.Element => {
         message: "Unable to send message",
       });
     }
+    const noMessageNotification = [
+      "At least type something",
+      "Message is empty!",
+      "I think you forgot to type something",
+      "Wow, sending a message with no message",
+    ];
+    const ranInt = Math.floor(Math.random() * 4);
+    if (message.length <= 0) {
+      return showNotification({
+        title: "Error",
+        message: `${noMessageNotification[ranInt]}`,
+      });
+    }
 
     setIsSendingMessage(true);
 
