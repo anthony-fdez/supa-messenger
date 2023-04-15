@@ -2,6 +2,7 @@ import { createStyles } from "@mantine/core";
 
 const useRoomHeaderStyles = createStyles((theme) => ({
   container: {
+    zIndex: 999,
     padding: 10,
     display: "flex",
     alignItems: "center",
@@ -16,6 +17,7 @@ const useRoomHeaderStyles = createStyles((theme) => ({
       padding: 5,
     },
   },
+
   headerLeft: {
     display: "flex",
     alignItems: "center",
