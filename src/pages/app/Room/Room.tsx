@@ -8,12 +8,13 @@ import MessagesTextInput from "./MessagesTextInput/MessagesTextInput";
 import RoomHeader from "./RoomHeader/RoomHeader";
 import RoomSettingsDrawer from "./RoomHeader/RoomSettingsDrawer/RoomSettingsDrawer";
 import useRoomStyles from "./useRoomStyles";
+import JoinPublicRoom from "./JoinPublicRoom/JoinPublicRoom";
 
 const Room = (): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const { classes } = useRoomStyles();
   const {
-    currentRoom: { roomData },
+    currentRoom: { roomData, isRoomMember },
     setCurrentRoom,
     addNewCurrentRoomMessage,
   } = useGlobalStore();
@@ -84,13 +85,16 @@ const Room = (): JSX.Element => {
       <div className={classes.content}>
         <div className={classes.headerContainer}>
           <RoomHeader />
+          {!isRoomMember && <JoinPublicRoom />}
         </div>
         <div className={classes.messagesContainer}>
           <Messages />
         </div>
-        <div className={classes.textInputContainer}>
-          <MessagesTextInput />
-        </div>
+        {isRoomMember && (
+          <div className={classes.textInputContainer}>
+            <MessagesTextInput />
+          </div>
+        )}
       </div>
       <div className={classes.desktopSideMenu}>
         <RoomSettingsDrawer isDrawer={false} />
