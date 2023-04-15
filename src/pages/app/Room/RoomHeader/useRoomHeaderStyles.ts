@@ -7,7 +7,7 @@ const useRoomHeaderStyles = createStyles((theme) => ({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: `${
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[3]
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.white
     }`,
     borderBottom: `1px solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[3]
