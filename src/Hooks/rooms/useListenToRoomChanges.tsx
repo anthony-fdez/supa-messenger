@@ -3,7 +3,11 @@ import { useEffect } from "react";
 import { Database } from "../../../types/database.types";
 import useGlobalStore from "../../store/useGlobalStore";
 
-const useListenToRoomChanges = () => {
+interface Props {
+  getRoomData?: () => Promise<void>;
+}
+
+const useListenToRoomChanges = ({ getRoomData }: Props) => {
   const supabase = useSupabaseClient<Database>();
 
   const { addNewCurrentRoomMessage } = useGlobalStore();
@@ -21,6 +25,32 @@ const useListenToRoomChanges = () => {
         (payload) => {
           // @ts-ignore
           addNewCurrentRoomMessage({ newMessage: payload.new, supabase });
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "participants",
+        },
+        () => {
+          if (!getRoomData) return;
+
+          getRoomData();
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "participants",
+        },
+        () => {
+          if (!getRoomData) return;
+
+          getRoomData();
         },
       )
       .subscribe();

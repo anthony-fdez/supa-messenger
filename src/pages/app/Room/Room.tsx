@@ -13,10 +13,11 @@ import useTypingStatus from "../../../Hooks/rooms/useTypingStatus";
 import JoinPublicRoom from "./JoinPublicRoom/JoinPublicRoom";
 
 interface Props {
+  getRoomData: () => Promise<void>;
   roomId: string;
 }
 
-const Room = ({ roomId }: Props): JSX.Element => {
+const Room = ({ roomId, getRoomData }: Props): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const { classes } = useRoomStyles();
   const {
@@ -26,13 +27,13 @@ const Room = ({ roomId }: Props): JSX.Element => {
 
   const roomChannel = supabase.channel(roomId);
 
-  useListenToRoomChanges();
+  useListenToRoomChanges({ getRoomData });
   useTypingStatus({ roomChannel });
 
   useEffect(() => {
     if (!roomData?.id) return;
 
-    const getRoomData = async (): Promise<void> => {
+    const getRoomMessages = async (): Promise<void> => {
       const { data, error } = await supabase
         .from("messages")
         .select("*, userData:users(*)")
@@ -51,7 +52,7 @@ const Room = ({ roomId }: Props): JSX.Element => {
       });
     };
 
-    getRoomData();
+    getRoomMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomData]);
 
