@@ -11,10 +11,9 @@ import useRoomStyles from "./useRoomStyles";
 import useListenToRoomChanges from "../../../Hooks/rooms/useListenToRoomChanges";
 import useTypingStatus from "../../../Hooks/rooms/useTypingStatus";
 import JoinPublicRoom from "./JoinPublicRoom/JoinPublicRoom";
-import { IGetRoomData } from "../../../Hooks/rooms/useChatData";
 
 interface Props {
-  getRoomData: ({ silent }: IGetRoomData) => Promise<void>;
+  getRoomData: () => Promise<void>;
   roomId: string;
 }
 

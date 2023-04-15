@@ -7,10 +7,6 @@ interface Props {
   roomId?: string;
 }
 
-export interface IGetRoomData {
-  silent?: boolean;
-}
-
 const useChatData = ({ roomId }: Props) => {
   const session = useSession();
   const supabase = useSupabaseClient<Database>();
@@ -18,11 +14,11 @@ const useChatData = ({ roomId }: Props) => {
   const { setCurrentRoom } = useGlobalStore();
 
   const getRoomData = useCallback(
-    async ({ silent = false }: IGetRoomData): Promise<void> => {
+    async (): Promise<void> => {
       if (!session) return;
 
       setCurrentRoom({
-        isLoading: !silent && true,
+        isLoading: true,
         isRoomMember: false,
         roomNotFound: false,
         roomParticipants: null,
@@ -81,7 +77,7 @@ const useChatData = ({ roomId }: Props) => {
 
     setCurrentRoom({ isLoading: true });
 
-    getRoomData({}).finally(() => {
+    getRoomData().finally(() => {
       setCurrentRoom({ isLoading: false });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

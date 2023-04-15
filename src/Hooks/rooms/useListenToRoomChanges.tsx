@@ -2,10 +2,9 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect } from "react";
 import { Database } from "../../../types/database.types";
 import useGlobalStore from "../../store/useGlobalStore";
-import { IGetRoomData } from "./useChatData";
 
 interface Props {
-  getRoomData?: ({ silent }: IGetRoomData) => Promise<void>;
+  getRoomData?: () => Promise<void>;
 }
 
 const useListenToRoomChanges = ({ getRoomData }: Props) => {
@@ -38,7 +37,7 @@ const useListenToRoomChanges = ({ getRoomData }: Props) => {
         () => {
           if (!getRoomData) return;
 
-          getRoomData({ silent: true });
+          getRoomData();
         },
       )
       .subscribe();
