@@ -1,8 +1,9 @@
 import { Flex, Text } from "@mantine/core";
 import moment from "moment";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UserAvatarWithIndicator from "../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../../store/useGlobalStore";
+import MessagesTextInput from "../MessagesTextInput/MessagesTextInput";
 import MessageFunctions from "./components/MessageFunctions";
 import useMessageStyles from "./useMessageStyles";
 
@@ -19,15 +20,20 @@ const Messages = (): JSX.Element => {
   } = useGlobalStore();
 
   useEffect(() => {
-    console.log("triggered");
     scrollToBottom();
   }, [messages?.length]);
+  const [indexOfEdit, setIndexOfEdit] = useState(-1);
+
+  const handleEdit = (message: object, index: number) => {
+    setIndexOfEdit(index);
+    console.log(message);
+  };
 
   if (!messages) return <p>Error loading messages</p>;
 
   return (
     <div>
-      {messages.map((message) => {
+      {messages.map((message, index) => {
         return (
           <Flex
             key={message.id}
@@ -53,10 +59,14 @@ const Messages = (): JSX.Element => {
                   message.created_at,
                 ).fromNow()}`}
               </Text>
-              <Text>{message.message_body}</Text>
+              {indexOfEdit === index ? (
+                <MessagesTextInput />
+              ) : (
+                <Text>{message.message_body}</Text>
+              )}
             </div>
             <div className={classes.messageFunctionsDiv}>
-              <MessageFunctions />
+              <MessageFunctions handleEdit={() => handleEdit(message, index)} />
             </div>
           </Flex>
         );
