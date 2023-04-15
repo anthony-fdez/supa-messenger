@@ -2,10 +2,11 @@ import { createStyles } from "@mantine/core";
 
 const useMessageStyles = createStyles((theme) => ({
   messageDiv: {
+    borderRadius: "0.5rem",
     position: "relative",
     width: "100%",
     paddingLeft: 10,
-    paddingRight: 20,
+
     "&:hover": {
       backgroundColor:
         theme.colorScheme === "dark"
@@ -23,12 +24,18 @@ const useMessageStyles = createStyles((theme) => ({
     height: "100%",
     right: 0,
   },
-  replyIcon: {
+  icons: {
     cursor: "pointer",
     color:
       theme.colorScheme === "dark"
         ? theme.colors.dark[4]
         : theme.colors.gray[6],
+    "&:hover": {
+      color:
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[1]
+          : theme.colors.gray[9],
+    },
   },
 }));
 
