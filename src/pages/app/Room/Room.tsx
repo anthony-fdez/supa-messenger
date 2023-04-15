@@ -9,7 +9,11 @@ import RoomHeader from "./RoomHeader/RoomHeader";
 import RoomSettingsDrawer from "./RoomHeader/RoomSettingsDrawer/RoomSettingsDrawer";
 import useRoomStyles from "./useRoomStyles";
 
-const Room = (): JSX.Element => {
+interface Props {
+  roomId: string;
+}
+
+const Room = ({ roomId }: Props): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const { classes } = useRoomStyles();
   const {
@@ -17,6 +21,16 @@ const Room = (): JSX.Element => {
     setCurrentRoom,
     addNewCurrentRoomMessage,
   } = useGlobalStore();
+
+  const roomChannel = supabase.channel(roomId);
+
+  roomChannel.subscribe((status) => {
+    if (status === "SUBSCRIBED") {
+      roomChannel.on("broadcast", { event: "typing" }, (payload) => {
+        console.log(payload);
+      });
+    }
+  });
 
   // @ts-ignore
   useEffect(() => {
@@ -89,7 +103,7 @@ const Room = (): JSX.Element => {
           <Messages />
         </div>
         <div className={classes.textInputContainer}>
-          <MessagesTextInput />
+          <MessagesTextInput roomChannel={roomChannel} />
         </div>
       </div>
       <div className={classes.desktopSideMenu}>

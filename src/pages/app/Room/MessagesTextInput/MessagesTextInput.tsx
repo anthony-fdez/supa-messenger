@@ -3,10 +3,16 @@ import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
 import { Send } from "react-feather";
+import { RealtimeChannel } from "@supabase/supabase-js";
 import { Database } from "../../../../../types/database.types";
 import useGlobalStore from "../../../../store/useGlobalStore";
+import useTypingBroadCastStatus from "../../../../Hooks/useTypingBroadcastStatus";
 
-const MessagesTextInput = (): JSX.Element => {
+interface Props {
+  roomChannel: RealtimeChannel;
+}
+
+const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const session = useSession();
 
@@ -16,6 +22,8 @@ const MessagesTextInput = (): JSX.Element => {
 
   const [message, setMessage] = useState("");
   const [isSendingMessage, setIsSendingMessage] = useState(false);
+
+  useTypingBroadCastStatus({ roomChannel, message });
 
   const onMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,7 +57,7 @@ const MessagesTextInput = (): JSX.Element => {
     }
 
     setIsSendingMessage(false);
-    setMessage("");
+    return setMessage("");
   };
 
   const sendButton = (): JSX.Element | null => {

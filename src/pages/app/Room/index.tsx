@@ -8,8 +8,8 @@ import Room from "./Room";
 import RoomNotFound from "./RoomNotFound/RoomNotFound";
 
 const RoomIndex = (): JSX.Element => {
-  const { chatId } = useParams();
-  const { getRoomData } = useChatData({ roomId: chatId });
+  const { roomId } = useParams();
+  const { getRoomData } = useChatData({ roomId });
 
   const {
     currentRoom: { roomData, isLoading, roomNotFound, isRoomMember },
@@ -21,12 +21,14 @@ const RoomIndex = (): JSX.Element => {
     return (
       <EnterRoomPassword
         getRoomData={getRoomData}
-        roomId={chatId}
+        roomId={roomId}
       />
     );
   }
 
-  return <Room />;
+  if (!roomId) return <p>Error: roomId not found</p>;
+
+  return <Room roomId={roomId} />;
 };
 
 export default RoomIndex;
