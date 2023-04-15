@@ -36,10 +36,16 @@ const useLoadUserData = (): void => {
         .single();
 
       if (error || !data) {
-        return;
+        return setUser({
+          name: null,
+          email: null,
+          imageUrl: null,
+          registerComplete: false,
+          uid: null,
+        });
       }
 
-      setUser({
+      return setUser({
         name: data?.name,
         email: data?.email,
         imageUrl: data?.image_url,
