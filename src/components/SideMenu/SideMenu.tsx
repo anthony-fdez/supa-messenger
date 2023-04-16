@@ -5,6 +5,7 @@ import {
   Tooltip,
   Title,
   CloseButton,
+  Accordion,
 } from "@mantine/core";
 import { MessageSquare, Settings, Users } from "react-feather";
 import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
@@ -16,6 +17,7 @@ import useGlobalStore from "../../store/useGlobalStore";
 import ChangeThemeModal from "./ChangeThemeModal/ChangeThemeModal";
 import ChatRooms from "./ChatRooms/ChatRooms";
 import PublicRooms from "./PublicRooms/PublicRooms";
+import DMs from "./DMs/DMs";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
@@ -125,7 +127,30 @@ const SideMenu = (): JSX.Element => {
 
     if (app.mainActiveSideMenu === "Public Rooms") return <PublicRooms />;
 
-    return <ChatRooms />;
+    return (
+      <Accordion
+        sx={{
+          ".mantine-Accordion-content": {
+            padding: 0,
+            paddingTop: 20,
+            paddingBottom: 20,
+          },
+        }}
+      >
+        <Accordion.Item value="dms">
+          <Accordion.Control>DMs</Accordion.Control>
+          <Accordion.Panel>
+            <DMs />
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item value="chat-room">
+          <Accordion.Control>Chat Room</Accordion.Control>
+          <Accordion.Panel>
+            <ChatRooms />
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
+    );
   };
 
   return (
