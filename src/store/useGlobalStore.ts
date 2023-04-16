@@ -69,7 +69,7 @@ interface IGlobalStateValues {
   user: IUser;
 }
 
-interface IGlobalState extends IGlobalStateValues {
+export interface IGlobalState extends IGlobalStateValues {
   addNewCurrentRoomMessage: ({
     newMessage,
     supabase,

@@ -6,8 +6,11 @@ import {
   Divider,
   Drawer,
   Flex,
+  Loader,
+  Menu,
   Text,
   Title,
+  useMantineTheme,
 } from "@mantine/core";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
@@ -15,13 +18,14 @@ import React, { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { closeAllModals, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
-import { Settings } from "react-feather";
+import { Coffee, Settings, UserPlus } from "react-feather";
 import { useNavigate } from "react-router";
 import { Database } from "../../../../../../types/database.types";
 import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../../../store/useGlobalStore";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
+import useSendFriendRequest from "../../../../../Hooks/friendships/useSendFriendRequest";
 
 interface Props {
   isDrawer?: boolean;
@@ -37,6 +41,7 @@ const RoomSettingsDrawer = ({
   const navigate = useNavigate();
   const session = useSession();
   const supabase = useSupabaseClient<Database>();
+  const theme = useMantineTheme();
 
   const {
     setCurrentRoom,
@@ -44,6 +49,9 @@ const RoomSettingsDrawer = ({
     setRooms,
     currentRoom: { roomData, roomParticipants },
   } = useGlobalStore();
+
+  const { isLoading: isLoadingSendFriendRequest, sendFriendRequest } =
+    useSendFriendRequest();
 
   const removeRoom = (id: number) => {
     const removeRoomAsync = async (): Promise<void> => {
@@ -183,32 +191,78 @@ const RoomSettingsDrawer = ({
           if (!participant.userData) return null;
 
           return (
-            <Flex
-              key={participant.id}
-              align="center"
-              mt={10}
+            <Menu
+              width="xl"
+              withArrow
+              position="bottom-start"
             >
-              <UserAvatarWithIndicator
-                // @ts-ignore
-                image={participant.userData.image_url}
-                size={40}
-                // @ts-ignore
-                user_email={participant.userData.email}
-                checkOnline
-              />
-
-              <div style={{ marginLeft: 10 }}>
-                {/* @ts-ignore */}
-                <Title size={16}>{participant.userData.name}</Title>
-                <Text
-                  c="dimmed"
-                  size={14}
+              <Menu.Target>
+                <Flex
+                  sx={{
+                    padding: 5,
+                    borderRadius: 5,
+                    cursor: "pointer",
+                    ":hover": {
+                      backgroundColor:
+                        theme.colorScheme === "dark"
+                          ? theme.colors.dark[6]
+                          : theme.colors.gray[1],
+                    },
+                  }}
+                  key={participant.id}
+                  align="center"
+                  mt={10}
                 >
-                  {/* @ts-ignore */}
-                  {participant.userData.email}
-                </Text>
-              </div>
-            </Flex>
+                  <UserAvatarWithIndicator
+                    // @ts-ignore
+                    image={participant.userData.image_url}
+                    size={40}
+                    // @ts-ignore
+                    user_email={participant.userData.email}
+                    checkOnline
+                  />
+
+                  <div style={{ marginLeft: 10 }}>
+                    {/* @ts-ignore */}
+                    <Title size={16}>{participant.userData.name}</Title>
+                    <Text
+                      c="dimmed"
+                      size={14}
+                    >
+                      {/* @ts-ignore */}
+                      {participant.userData.email}
+                    </Text>
+                  </div>
+                </Flex>
+              </Menu.Target>
+              <Menu.Dropdown ml={10}>
+                {/* @ts-ignore */}
+                <Menu.Label>{participant.userData.name}</Menu.Label>
+                <Menu.Item icon={<Coffee size={16} />}>
+                  View Profile (coming eventually)
+                </Menu.Item>
+                <Menu.Item
+                  closeMenuOnClick={false}
+                  onClick={() => {
+                    sendFriendRequest({
+                      // @ts-ignore
+                      friendEmail: participant.userData.email,
+                      // @ts-ignore
+                      friendId: participant.userData.id,
+                    });
+                  }}
+                  icon={
+                    isLoadingSendFriendRequest ? (
+                      <Loader size={16} />
+                    ) : (
+                      <UserPlus size={16} />
+                    )
+                  }
+                >
+                  Send friend request
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           );
         })}
       </>
