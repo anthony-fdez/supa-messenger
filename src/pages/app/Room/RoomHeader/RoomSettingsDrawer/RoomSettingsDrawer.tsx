@@ -1,5 +1,6 @@
 import {
   Alert,
+  Badge,
   Button,
   Card,
   Collapse,
@@ -21,11 +22,12 @@ import { showNotification } from "@mantine/notifications";
 import { Coffee, Settings, UserPlus } from "react-feather";
 import { useNavigate } from "react-router";
 import { Database } from "../../../../../../types/database.types";
+import useSendFriendRequest from "../../../../../Hooks/friendships/useSendFriendRequest";
+import FriendsConditionalRendering from "../../../../../components/Friends/FriendsConditionalRendering/FriendsConditionalrendering";
 import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../../../store/useGlobalStore";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
-import useSendFriendRequest from "../../../../../Hooks/friendships/useSendFriendRequest";
 
 interface Props {
   isDrawer?: boolean;
@@ -223,8 +225,17 @@ const RoomSettingsDrawer = ({
                   />
 
                   <div style={{ marginLeft: 10 }}>
-                    {/* @ts-ignore */}
-                    <Title size={16}>{participant.userData.name}</Title>
+                    <Flex>
+                      {/* @ts-ignore */}
+                      <Title size={16}>{participant.userData.name}</Title>
+                      <FriendsConditionalRendering
+                        // @ts-ignore
+                        userId={participant.userData.id}
+                      >
+                        <Badge ml={10}>Friends</Badge>
+                      </FriendsConditionalRendering>
+                    </Flex>
+
                     <Text
                       c="dimmed"
                       size={14}
@@ -235,32 +246,39 @@ const RoomSettingsDrawer = ({
                   </div>
                 </Flex>
               </Menu.Target>
+
               <Menu.Dropdown ml={10}>
                 {/* @ts-ignore */}
                 <Menu.Label>{participant.userData.name}</Menu.Label>
                 <Menu.Item icon={<Coffee size={16} />}>
                   View Profile (coming eventually)
                 </Menu.Item>
-                <Menu.Item
-                  closeMenuOnClick={false}
-                  onClick={() => {
-                    sendFriendRequest({
-                      // @ts-ignore
-                      friendEmail: participant.userData.email,
-                      // @ts-ignore
-                      friendId: participant.userData.id,
-                    });
-                  }}
-                  icon={
-                    isLoadingSendFriendRequest ? (
-                      <Loader size={16} />
-                    ) : (
-                      <UserPlus size={16} />
-                    )
-                  }
+                <FriendsConditionalRendering
+                  hideIfFriends
+                  // @ts-ignore
+                  userId={participant.userData.id}
                 >
-                  Send friend request
-                </Menu.Item>
+                  <Menu.Item
+                    closeMenuOnClick={false}
+                    onClick={() => {
+                      sendFriendRequest({
+                        // @ts-ignore
+                        friendEmail: participant.userData.email,
+                        // @ts-ignore
+                        friendId: participant.userData.id,
+                      });
+                    }}
+                    icon={
+                      isLoadingSendFriendRequest ? (
+                        <Loader size={16} />
+                      ) : (
+                        <UserPlus size={16} />
+                      )
+                    }
+                  >
+                    Send friend request
+                  </Menu.Item>
+                </FriendsConditionalRendering>
               </Menu.Dropdown>
             </Menu>
           );
