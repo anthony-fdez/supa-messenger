@@ -7,14 +7,14 @@ interface Props {
 
 const getFriend = ({ friendship, userId }: Props) => {
   if (friendship.user_id_1 === userId) {
-    return { friendData: friendship.userData2 };
+    return { friendData: friendship.userData2, status: friendship.status };
   }
 
   if (friendship.user_email_2 === userId) {
-    return { friendData: friendship.userData1 };
+    return { friendData: friendship.userData1, status: friendship.status };
   }
 
-  return { friendData: null };
+  return { friendData: null, status: null };
 };
 
 export default getFriend;

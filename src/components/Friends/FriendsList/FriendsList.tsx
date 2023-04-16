@@ -1,4 +1,11 @@
-import { Alert, Flex, Text, Title, useMantineTheme } from "@mantine/core";
+import {
+  Alert,
+  Badge,
+  Flex,
+  Text,
+  Title,
+  useMantineTheme,
+} from "@mantine/core";
 import React from "react";
 import useGlobalStore from "../../../store/useGlobalStore";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
@@ -19,7 +26,7 @@ const FriendsList = (): JSX.Element => {
   return (
     <div>
       {friends.map((friendship) => {
-        const { friendData } = getFriend({
+        const { friendData, status } = getFriend({
           friendship,
           userId: user.uid || "",
         });
@@ -53,8 +60,16 @@ const FriendsList = (): JSX.Element => {
             />
 
             <div style={{ marginLeft: 10 }}>
-              {/* @ts-ignore */}
-              <Title size={16}>{friendData.name}</Title>
+              <Flex>
+                <Title
+                  mr={10}
+                  size={16}
+                >
+                  {/* @ts-ignore */}
+                  {friendData.name}
+                </Title>
+                <Badge>{status}</Badge>
+              </Flex>
               <Text
                 c="dimmed"
                 size={14}
