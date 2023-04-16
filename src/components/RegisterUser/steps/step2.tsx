@@ -17,6 +17,7 @@ import { Database } from "../../../../types/database.types";
 import useGlobalStore from "../../../store/useGlobalStore";
 import { IStepProps } from "../RegisterUser";
 import UploadProfileImage from "../helpers/UploadProfileImage.tsx/UploadProfileImage";
+import constants from "../../../constants/constants";
 
 const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
   const session = useSession();
@@ -151,7 +152,7 @@ const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
               ? theme.colors.dark[7]
               : theme.colors.gray[2]
           }
-          src={`https://api.dicebear.com/6.x/micah/svg?seed=${session?.user.email}`}
+          src={constants.avatarPlaceholder(session?.user.email || "")}
         />
         <Box>
           <Title size={20}>Your default profile picture</Title>
