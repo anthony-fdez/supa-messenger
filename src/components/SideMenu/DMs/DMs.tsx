@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "@mantine/core";
+import { Button, Text } from "@mantine/core";
 import { useNavigate } from "react-router";
 import useGlobalStore from "../../../store/useGlobalStore";
 import useSideMenuStyles from "../SideMenu.styles";
@@ -11,6 +11,14 @@ const DMs = (): JSX.Element => {
 
   return (
     <div>
+      <Button
+        onClick={() => {
+          setApp({ isFriendsMenuOpen: true });
+        }}
+        className={classes.newRoomButton}
+      >
+        Friends
+      </Button>
       {rooms.map((room) => (
         <a
           key={room.id}

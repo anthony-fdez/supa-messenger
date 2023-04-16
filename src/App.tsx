@@ -13,6 +13,7 @@ import RoomLayout from "./pages/app/Room/index";
 import useGlobalStore from "./store/useGlobalStore";
 import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
+import FriendsMenu from "./components/Friends/FriendsMenu/FriendsMenu";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL || "",
@@ -93,6 +94,7 @@ const App = (): JSX.Element => {
         <ModalsProvider>
           <RouterProvider router={router} />
           <LoadingOverlay />
+          <FriendsMenu />
         </ModalsProvider>
       </MantineProvider>
     </SessionContextProvider>
