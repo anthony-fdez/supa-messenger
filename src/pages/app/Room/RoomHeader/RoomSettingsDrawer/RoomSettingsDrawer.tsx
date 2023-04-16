@@ -78,6 +78,7 @@ const RoomSettingsDrawer = ({
         roomNotFound: false,
         roomParticipants: null,
         messages: null,
+        usersTyping: [],
       });
       return navigate("/");
     };

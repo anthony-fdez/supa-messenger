@@ -23,6 +23,7 @@ const useChatData = ({ roomId }: Props) => {
         roomNotFound: false,
         roomParticipants: null,
         messages: null,
+        usersTyping: [],
       });
 
       const { error: roomDataError, data: roomDataReq } = await supabase

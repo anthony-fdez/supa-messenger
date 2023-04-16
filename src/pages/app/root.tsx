@@ -10,6 +10,7 @@ import useLoadUserData from "../../Hooks/useLoadUserData";
 import useGlobalStore from "../../store/useGlobalStore";
 import useRootStyles from "./useRootStyles";
 import { Database } from "../../../types/database.types";
+import removeTypingIndicatorFromOfflineUsers from "../../helpers/removeTypingIndicatorFromOfflineUsers";
 
 const Root = (): JSX.Element => {
   useLoadUserData();
@@ -19,7 +20,13 @@ const Root = (): JSX.Element => {
   const isMobile = useMediaQuery("(max-width: 900px)");
   const session = useSession();
   const supabase = useSupabaseClient<Database>();
-  const { user, app, setApp } = useGlobalStore();
+  const {
+    user,
+    app,
+    setApp,
+    currentRoom: { usersTyping },
+    setCurrentRoom,
+  } = useGlobalStore();
 
   useEffect((): void | (() => void) => {
     if (!session) return;
@@ -47,6 +54,12 @@ const Root = (): JSX.Element => {
       })
       .on("presence", { event: "sync" }, () => {
         const state = channel.presenceState();
+
+        removeTypingIndicatorFromOfflineUsers({
+          usersTyping,
+          setCurrentRoom,
+          onlineUsers: state,
+        });
 
         setApp({
           onlineUsers: state,

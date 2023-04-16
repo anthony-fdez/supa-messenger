@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { User } from "react-feather";
 import useGlobalStore from "../../../store/useGlobalStore";
 import EditUser from "./EditUser/EditUser";
+import constants from "../../../constants/constants";
 
 const UserPreferences = (): JSX.Element => {
   const { user } = useGlobalStore();
@@ -33,7 +34,7 @@ const UserPreferences = (): JSX.Element => {
         <Avatar
           mr={20}
           size={150}
-          src={user.imageUrl}
+          src={user.imageUrl || constants.avatarPlaceholder(user.email || "")}
         />
         <div>
           <h1>{user.name}</h1>

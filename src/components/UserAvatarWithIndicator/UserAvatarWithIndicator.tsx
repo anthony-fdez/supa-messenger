@@ -1,6 +1,7 @@
 import { Avatar, Indicator } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import useGlobalStore from "../../store/useGlobalStore";
+import constants from "../../constants/constants";
 
 interface Props {
   checkOnline?: boolean;
@@ -46,9 +47,7 @@ const UserAvatarWithIndicator = ({
       <Avatar
         radius="xl"
         size={size}
-        src={
-          image || `https://api.dicebear.com/6.x/micah/svg?seed=${user_email}`
-        }
+        src={image || constants.avatarPlaceholder(user_email)}
       />
     </Indicator>
   );
