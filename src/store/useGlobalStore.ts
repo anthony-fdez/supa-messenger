@@ -51,7 +51,7 @@ export interface IUsersTyping {
   uid: string;
 }
 
-interface ICurrentRoom {
+export interface ICurrentRoom {
   isLoading: boolean;
   isRoomMember: boolean;
   messages: IDatabaseMessages[] | null;
