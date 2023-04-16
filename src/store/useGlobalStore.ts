@@ -9,6 +9,7 @@ type IDatabaseParticipantsWithoutUsers =
 type IDatabaseMessagesWithoutUsers =
   Database["public"]["Tables"]["messages"]["Row"];
 type IDatabaseUser = Database["public"]["Tables"]["users"]["Row"];
+type IDatabaseFriends = Database["public"]["Tables"]["friendships"]["Row"];
 
 interface IUser {
   email: string | null;
@@ -51,6 +52,12 @@ export interface IUsersTyping {
   uid: string;
 }
 
+export interface IFriend extends IDatabaseFriends {
+  actionUserData: IDatabaseUser | IDatabaseUser[] | null;
+  userData1: IDatabaseUser | IDatabaseUser[] | null;
+  userData2: IDatabaseUser | IDatabaseUser[] | null;
+}
+
 interface ICurrentRoom {
   isLoading: boolean;
   isRoomMember: boolean;
@@ -64,6 +71,7 @@ interface ICurrentRoom {
 interface IGlobalStateValues {
   app: IApp;
   currentRoom: ICurrentRoom;
+  friends: IFriend[];
   preferences: IPreferences;
   rooms: IRoom[];
   user: IUser;
@@ -80,6 +88,7 @@ export interface IGlobalState extends IGlobalStateValues {
   clearState: () => void;
   setApp: (state: Partial<IApp>) => void;
   setCurrentRoom: (state: Partial<ICurrentRoom>) => void;
+  setFriends: (state: IFriend[]) => void;
   setPreferences: (state: Partial<IPreferences>) => void;
   setRooms: (state: IRoom[]) => void;
   setState: (state: Partial<IGlobalStateValues>) => void;
@@ -88,6 +97,7 @@ export interface IGlobalState extends IGlobalStateValues {
 
 const initialState: IGlobalStateValues = {
   rooms: [],
+  friends: [],
   user: {
     email: null,
     name: null,
@@ -156,6 +166,11 @@ const useGlobalStore = create<IGlobalState>()(
               ...state.preferences,
               ...newPreferences,
             },
+          }));
+        },
+        setFriends: (newFriends): void => {
+          set(() => ({
+            friends: newFriends,
           }));
         },
         setRooms: (newRooms): void => {

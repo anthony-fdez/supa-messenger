@@ -9,7 +9,7 @@ const useLoadUserData = (): void => {
   const supabase = useSupabaseClient<Database>();
   const { handleSignout } = useHandleSignout();
 
-  const { setUser, setApp, setRooms } = useGlobalStore();
+  const { setUser, setApp, setRooms, setFriends } = useGlobalStore();
 
   useEffect(() => {
     if (!session) return;
@@ -78,13 +78,40 @@ const useLoadUserData = (): void => {
       setRooms(data);
     };
 
-    Promise.all([getUserData(), getUserRoomData(), getUserSession()]).finally(
-      () => {
-        // setApp({ isLoading: false });
+    const getUserFriends = async (): Promise<void> => {
+      setFriends([]);
 
-        setApp({ isLoading: false });
-      },
-    );
+      const { data, error } = await supabase.from("friendships").select(
+        `*, 
+          userData1:users!friendships_user_id_1_fkey(
+            *
+          ),
+          userData2:users!friendships_user_id_2_fkey(
+            *
+          ),
+          actionUserData:users!friendships_action_user_id_fkey(
+            *
+          )
+        `,
+      );
+
+      if (error || !data) {
+        return;
+      }
+
+      setFriends(data);
+    };
+
+    Promise.all([
+      getUserData(),
+      getUserRoomData(),
+      getUserSession(),
+      getUserFriends(),
+    ]).finally(() => {
+      // setApp({ isLoading: false });
+
+      setApp({ isLoading: false });
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, supabase]);
