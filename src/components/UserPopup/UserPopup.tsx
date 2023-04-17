@@ -1,8 +1,9 @@
 import React from "react";
-import { Loader, Menu } from "@mantine/core";
+import { Flex, Loader, Menu, Text, Title } from "@mantine/core";
 import { Coffee, UserPlus } from "react-feather";
 import useSendFriendRequest from "../../Hooks/friendships/useSendFriendRequest";
 import FriendsConditionalRendering from "../Friends/FriendsConditionalRendering/FriendsConditionalrendering";
+import UserAvatarWithIndicator from "../UserAvatarWithIndicator/UserAvatarWithIndicator";
 
 interface Props {
   children: JSX.Element;
@@ -21,13 +22,39 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
   return (
     <Menu
       width="xl"
-      withArrow
       position="bottom-start"
+      withArrow
     >
       <Menu.Target>{children}</Menu.Target>
 
       <Menu.Dropdown ml={10}>
-        <Menu.Label>{user.name}</Menu.Label>
+        <Flex
+          p={20}
+          justify="center"
+          direction="column"
+          align="center"
+        >
+          <UserAvatarWithIndicator
+            image={user.imageUrl}
+            size={100}
+            user_email={user.email}
+            checkOnline
+          />
+          <Title
+            mt={15}
+            size={20}
+            lineClamp={1}
+          >
+            {user.name}
+          </Title>
+          <Text
+            size={12}
+            lineClamp={1}
+          >
+            {user.email}
+          </Text>
+        </Flex>
+        <Menu.Divider />
         <Menu.Item icon={<Coffee size={16} />}>
           View Profile (coming eventually)
         </Menu.Item>
