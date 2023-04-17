@@ -11,14 +11,14 @@ import useGlobalStore from "../../../store/useGlobalStore";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
 import getFriend from "../../../utils/friendships/getFriend";
 
-const FriendsList = (): JSX.Element => {
+const FriendsPendingList = (): JSX.Element => {
   const {
-    friendships: { friends, requests, pending },
+    friendships: { pending },
     user,
   } = useGlobalStore();
   const theme = useMantineTheme();
 
-  if (friends.length === 0) {
+  if (pending.length === 0) {
     return (
       <Alert title="No friends">
         <p>You must be feeling lonely</p>
@@ -28,7 +28,10 @@ const FriendsList = (): JSX.Element => {
 
   return (
     <div>
-      {friends.map((friendship) => {
+      <Alert title="This are the requests that you have sent">
+        And are still pending...
+      </Alert>
+      {pending.map((friendship) => {
         const { friendData, status } = getFriend({
           friendship,
           userId: user.uid || "",
@@ -88,4 +91,4 @@ const FriendsList = (): JSX.Element => {
   );
 };
 
-export default FriendsList;
+export default FriendsPendingList;

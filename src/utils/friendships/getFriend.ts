@@ -6,11 +6,13 @@ interface Props {
 }
 
 const getFriend = ({ friendship, userId }: Props) => {
+  console.log(friendship);
+
   if (friendship.user_id_1 === userId) {
     return { friendData: friendship.userData2, status: friendship.status };
   }
 
-  if (friendship.user_email_2 === userId) {
+  if (friendship.user_id_2 === userId) {
     return { friendData: friendship.userData1, status: friendship.status };
   }
 

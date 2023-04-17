@@ -1,37 +1,30 @@
-import {
-  Alert,
-  Badge,
-  Flex,
-  Text,
-  Title,
-  useMantineTheme,
-} from "@mantine/core";
+import { Alert, Flex, Text, Title, useMantineTheme } from "@mantine/core";
 import React from "react";
 import useGlobalStore from "../../../store/useGlobalStore";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
 import getFriend from "../../../utils/friendships/getFriend";
 
-const FriendsList = (): JSX.Element => {
+const FriendsRequestsList = (): JSX.Element => {
   const {
-    friendships: { friends, requests, pending },
-    user,
+    friendships: { requests },
+    user: { uid },
   } = useGlobalStore();
   const theme = useMantineTheme();
 
-  if (friends.length === 0) {
+  if (requests.length === 0) {
     return (
-      <Alert title="No friends">
-        <p>You must be feeling lonely</p>
+      <Alert title="No friend requests at the moment">
+        <p>Go outside and make some friends or touch grass or something</p>
       </Alert>
     );
   }
 
   return (
     <div>
-      {friends.map((friendship) => {
-        const { friendData, status } = getFriend({
+      {requests.map((friendship) => {
+        const { friendData } = getFriend({
           friendship,
-          userId: user.uid || "",
+          userId: uid || "",
         });
 
         if (!friendData) return null;
@@ -71,7 +64,6 @@ const FriendsList = (): JSX.Element => {
                   {/* @ts-ignore */}
                   {friendData.name}
                 </Title>
-                <Badge>{status}</Badge>
               </Flex>
               <Text
                 c="dimmed"
@@ -88,4 +80,4 @@ const FriendsList = (): JSX.Element => {
   );
 };
 
-export default FriendsList;
+export default FriendsRequestsList;
