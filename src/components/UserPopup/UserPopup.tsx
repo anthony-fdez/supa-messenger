@@ -24,6 +24,7 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
       width="xl"
       position="bottom-start"
       withArrow
+      withinPortal
     >
       <Menu.Target>
         <div style={{ cursor: "pointer" }}>{children}</div>

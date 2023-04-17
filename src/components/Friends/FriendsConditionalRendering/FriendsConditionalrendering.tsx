@@ -39,6 +39,8 @@ const FriendsConditionalRendering = ({
     return false;
   };
 
+  if (userId === user.uid) return null; // Don't do anything if its you
+
   if (renderIf === "FRIENDS") {
     const isFriends = friendships.friends.some(checkIfFriend);
 

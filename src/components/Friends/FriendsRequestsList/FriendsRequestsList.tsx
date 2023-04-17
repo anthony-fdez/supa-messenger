@@ -1,15 +1,16 @@
-import { Alert, Flex, Text, Title, useMantineTheme } from "@mantine/core";
+import { Alert, Button, Flex, Text, Title } from "@mantine/core";
 import React from "react";
+import { UserPlus, X } from "react-feather";
 import useGlobalStore from "../../../store/useGlobalStore";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
 import getFriend from "../../../utils/friendships/getFriend";
+import UserPopup from "../../UserPopup/UserPopup";
 
 const FriendsRequestsList = (): JSX.Element => {
   const {
     friendships: { requests },
     user: { uid },
   } = useGlobalStore();
-  const theme = useMantineTheme();
 
   if (requests.length === 0) {
     return (
@@ -35,44 +36,64 @@ const FriendsRequestsList = (): JSX.Element => {
               padding: 5,
               borderRadius: 5,
               cursor: "pointer",
-              ":hover": {
-                backgroundColor:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.dark[6]
-                    : theme.colors.gray[1],
-              },
             }}
             key={friendship.id}
             align="center"
+            justify="space-between"
             mt={10}
           >
-            <UserAvatarWithIndicator
-              // @ts-ignore
-              image={friendData.image_url}
-              size={40}
-              // @ts-ignore
-              user_email={friendData.email}
-              checkOnline
-            />
+            <Flex>
+              <UserPopup
+                user={{
+                  // @ts-ignore
+                  email: friendData.email,
+                  // @ts-ignore
+                  id: friendData.id,
+                  // @ts-ignore
+                  imageUrl: friendData.image_url,
+                  // @ts-ignore
+                  name: friendData.name,
+                }}
+              >
+                <UserAvatarWithIndicator
+                  // @ts-ignore
+                  image={friendData.image_url}
+                  size={40}
+                  // @ts-ignore
+                  user_email={friendData.email}
+                  checkOnline
+                />
+              </UserPopup>
 
-            <div style={{ marginLeft: 10 }}>
-              <Flex>
-                <Title
-                  mr={10}
-                  size={16}
+              <div style={{ marginLeft: 10 }}>
+                <Flex>
+                  <Title
+                    mr={10}
+                    size={16}
+                  >
+                    {/* @ts-ignore */}
+                    {friendData.name}
+                  </Title>
+                </Flex>
+                <Text
+                  c="dimmed"
+                  size={14}
                 >
                   {/* @ts-ignore */}
-                  {friendData.name}
-                </Title>
-              </Flex>
-              <Text
-                c="dimmed"
-                size={14}
+                  {friendData.email}
+                </Text>
+              </div>
+            </Flex>
+            <Button.Group>
+              <Button
+                leftIcon={<X size={14} />}
+                color="red"
+                variant="light"
               >
-                {/* @ts-ignore */}
-                {friendData.email}
-              </Text>
-            </div>
+                Decline
+              </Button>
+              <Button leftIcon={<UserPlus size={14} />}>Accept</Button>
+            </Button.Group>
           </Flex>
         );
       })}
