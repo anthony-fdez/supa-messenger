@@ -10,9 +10,11 @@ import useLoadUserData from "../../Hooks/useLoadUserData";
 import useGlobalStore from "../../store/useGlobalStore";
 import useRootStyles from "./useRootStyles";
 import { Database } from "../../../types/database.types";
+import useListenToFriendshipChanges from "../../Hooks/friendships/useListenToFrienshipChanges";
 
 const Root = (): JSX.Element => {
-  useLoadUserData();
+  const { getUserFriends } = useLoadUserData();
+  useListenToFriendshipChanges({ getUserFriends });
 
   const { classes } = useRootStyles();
 

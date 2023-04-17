@@ -56,7 +56,6 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
             {user.email}
           </Text>
         </Flex>
-        <Menu.Divider />
         <FriendsConditionalRendering
           renderIf="NOT_FRIENDS"
           userId={user.id}
