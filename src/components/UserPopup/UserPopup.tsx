@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Loader, Menu, Text, Title } from "@mantine/core";
-import { Coffee, UserPlus } from "react-feather";
+import { UserPlus } from "react-feather";
 import useSendFriendRequest from "../../Hooks/friendships/useSendFriendRequest";
 import FriendsConditionalRendering from "../Friends/FriendsConditionalRendering/FriendsConditionalrendering";
 import UserAvatarWithIndicator from "../UserAvatarWithIndicator/UserAvatarWithIndicator";
@@ -25,7 +25,9 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
       position="bottom-start"
       withArrow
     >
-      <Menu.Target>{children}</Menu.Target>
+      <Menu.Target>
+        <div style={{ cursor: "pointer" }}>{children}</div>
+      </Menu.Target>
 
       <Menu.Dropdown ml={10}>
         <Flex
@@ -55,9 +57,6 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
           </Text>
         </Flex>
         <Menu.Divider />
-        <Menu.Item icon={<Coffee size={16} />}>
-          View Profile (coming eventually)
-        </Menu.Item>
         <FriendsConditionalRendering
           renderIf="NOT_FRIENDS"
           userId={user.id}

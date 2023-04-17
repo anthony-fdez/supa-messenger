@@ -3,6 +3,7 @@ import moment from "moment";
 import React, { useEffect, useRef } from "react";
 import UserAvatarWithIndicator from "../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../../store/useGlobalStore";
+import UserPopup from "../../../../components/UserPopup/UserPopup";
 
 const Messages = (): JSX.Element => {
   const messagesEndRef = useRef(null);
@@ -29,15 +30,29 @@ const Messages = (): JSX.Element => {
             key={message.id}
             mb={10}
           >
-            <div style={{ zIndex: "-1" }}>
-              <UserAvatarWithIndicator
+            <UserPopup
+              user={{
                 // @ts-ignore
-                user_email={message.userData.email}
-                size={30}
+                email: message.userData.email,
                 // @ts-ignore
-                image={message.userData.image_url}
-              />
-            </div>
+                id: message.userData.id,
+                // @ts-ignore
+                imageUrl: message.userData.image_url,
+                // @ts-ignore
+                name: message.userData.name,
+              }}
+            >
+              <div style={{ marginTop: 5, zIndex: -1 }}>
+                <UserAvatarWithIndicator
+                  // @ts-ignore
+                  user_email={message.userData.email}
+                  size={30}
+                  // @ts-ignore
+                  image={message.userData.image_url}
+                />
+              </div>
+            </UserPopup>
+
             <div style={{ marginLeft: 10 }}>
               <Text
                 c="dimmed"
