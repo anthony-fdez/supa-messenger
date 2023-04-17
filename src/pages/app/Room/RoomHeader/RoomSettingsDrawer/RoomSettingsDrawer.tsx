@@ -7,8 +7,6 @@ import {
   Divider,
   Drawer,
   Flex,
-  Loader,
-  Menu,
   Text,
   Title,
   useMantineTheme,
@@ -19,15 +17,15 @@ import React, { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { closeAllModals, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
-import { Coffee, Settings, UserPlus } from "react-feather";
+import { Settings } from "react-feather";
 import { useNavigate } from "react-router";
 import { Database } from "../../../../../../types/database.types";
-import useSendFriendRequest from "../../../../../Hooks/friendships/useSendFriendRequest";
 import FriendsConditionalRendering from "../../../../../components/Friends/FriendsConditionalRendering/FriendsConditionalrendering";
 import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../../../store/useGlobalStore";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
+import UserPopup from "../../../../../components/UserPopup/UserPopup";
 
 interface Props {
   isDrawer?: boolean;
@@ -51,9 +49,6 @@ const RoomSettingsDrawer = ({
     setRooms,
     currentRoom: { roomData, roomParticipants },
   } = useGlobalStore();
-
-  const { isLoading: isLoadingSendFriendRequest, sendFriendRequest } =
-    useSendFriendRequest();
 
   const removeRoom = (id: number) => {
     const removeRoomAsync = async (): Promise<void> => {
@@ -193,94 +188,65 @@ const RoomSettingsDrawer = ({
           if (!participant.userData) return null;
 
           return (
-            <Menu
-              width="xl"
-              withArrow
-              position="bottom-start"
+            <UserPopup
+              user={{
+                // @ts-ignore
+                email: participant.userData.email,
+                // @ts-ignore
+                id: participant.userData.id,
+                // @ts-ignore
+                imageUrl: participant.userData.image_url,
+                // @ts-ignore
+                name: participant.userData.name,
+              }}
             >
-              <Menu.Target>
-                <Flex
-                  sx={{
-                    padding: 5,
-                    borderRadius: 5,
-                    cursor: "pointer",
-                    ":hover": {
-                      backgroundColor:
-                        theme.colorScheme === "dark"
-                          ? theme.colors.dark[6]
-                          : theme.colors.gray[1],
-                    },
-                  }}
-                  key={participant.id}
-                  align="center"
-                  mt={10}
-                >
-                  <UserAvatarWithIndicator
-                    // @ts-ignore
-                    image={participant.userData.image_url}
-                    size={40}
-                    // @ts-ignore
-                    user_email={participant.userData.email}
-                    checkOnline
-                  />
-
-                  <div style={{ marginLeft: 10 }}>
-                    <Flex>
-                      {/* @ts-ignore */}
-                      <Title size={16}>{participant.userData.name}</Title>
-                      <FriendsConditionalRendering
-                        // @ts-ignore
-                        userId={participant.userData.id}
-                      >
-                        <Badge ml={10}>Friends</Badge>
-                      </FriendsConditionalRendering>
-                    </Flex>
-
-                    <Text
-                      c="dimmed"
-                      size={14}
-                    >
-                      {/* @ts-ignore */}
-                      {participant.userData.email}
-                    </Text>
-                  </div>
-                </Flex>
-              </Menu.Target>
-
-              <Menu.Dropdown ml={10}>
-                {/* @ts-ignore */}
-                <Menu.Label>{participant.userData.name}</Menu.Label>
-                <Menu.Item icon={<Coffee size={16} />}>
-                  View Profile (coming eventually)
-                </Menu.Item>
-                <FriendsConditionalRendering
-                  hideIfFriends
+              <Flex
+                sx={{
+                  padding: 5,
+                  borderRadius: 5,
+                  cursor: "pointer",
+                  ":hover": {
+                    backgroundColor:
+                      theme.colorScheme === "dark"
+                        ? theme.colors.dark[6]
+                        : theme.colors.gray[1],
+                  },
+                }}
+                key={participant.id}
+                align="center"
+                mt={10}
+              >
+                <UserAvatarWithIndicator
                   // @ts-ignore
-                  userId={participant.userData.id}
-                >
-                  <Menu.Item
-                    closeMenuOnClick={false}
-                    onClick={() => {
-                      sendFriendRequest({
-                        // @ts-ignore
-                        friendEmail: participant.userData.email,
-                        // @ts-ignore
-                        friendId: participant.userData.id,
-                      });
-                    }}
-                    icon={
-                      isLoadingSendFriendRequest ? (
-                        <Loader size={16} />
-                      ) : (
-                        <UserPlus size={16} />
-                      )
-                    }
+                  image={participant.userData.image_url}
+                  size={40}
+                  // @ts-ignore
+                  user_email={participant.userData.email}
+                  checkOnline
+                />
+
+                <div style={{ marginLeft: 10 }}>
+                  <Flex>
+                    {/* @ts-ignore */}
+                    <Title size={16}>{participant.userData.name}</Title>
+                    <FriendsConditionalRendering
+                      // @ts-ignore
+                      userId={participant.userData.id}
+                    >
+                      <Badge ml={10}>Friends</Badge>
+                    </FriendsConditionalRendering>
+                  </Flex>
+
+                  <Text
+                    c="dimmed"
+                    size={14}
                   >
-                    Send friend request
-                  </Menu.Item>
-                </FriendsConditionalRendering>
-              </Menu.Dropdown>
-            </Menu>
+                    {/* @ts-ignore */}
+                    {participant.userData.email}
+                  </Text>
+                </div>
+              </Flex>
+            </UserPopup>
           );
         })}
       </>

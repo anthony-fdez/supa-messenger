@@ -11,7 +11,7 @@ type IDatabaseMessagesWithoutUsers =
 type IDatabaseUser = Database["public"]["Tables"]["users"]["Row"];
 type IDatabaseFriends = Database["public"]["Tables"]["friendships"]["Row"];
 
-interface IUser {
+export interface IUser {
   email: string | null;
   imageUrl: string | null;
   name: string | null;
@@ -69,10 +69,16 @@ interface ICurrentRoom {
   usersTyping: IUsersTyping[];
 }
 
+interface IFriendships {
+  friends: IFriend[];
+  pending: IFriend[];
+  requests: IFriend[];
+}
+
 interface IGlobalStateValues {
   app: IApp;
   currentRoom: ICurrentRoom;
-  friends: IFriend[];
+  friendships: IFriendships;
   preferences: IPreferences;
   rooms: IRoom[];
   user: IUser;
@@ -89,7 +95,7 @@ export interface IGlobalState extends IGlobalStateValues {
   clearState: () => void;
   setApp: (state: Partial<IApp>) => void;
   setCurrentRoom: (state: Partial<ICurrentRoom>) => void;
-  setFriends: (state: IFriend[]) => void;
+  setFriendships: (state: Partial<IFriendships>) => void;
   setPreferences: (state: Partial<IPreferences>) => void;
   setRooms: (state: IRoom[]) => void;
   setState: (state: Partial<IGlobalStateValues>) => void;
@@ -98,7 +104,11 @@ export interface IGlobalState extends IGlobalStateValues {
 
 const initialState: IGlobalStateValues = {
   rooms: [],
-  friends: [],
+  friendships: {
+    friends: [],
+    requests: [],
+    pending: [],
+  },
   user: {
     email: null,
     name: null,
@@ -170,9 +180,12 @@ const useGlobalStore = create<IGlobalState>()(
             },
           }));
         },
-        setFriends: (newFriends): void => {
-          set(() => ({
-            friends: newFriends,
+        setFriendships: (newFriendships): void => {
+          set((state) => ({
+            friendships: {
+              ...state.friendships,
+              ...newFriendships,
+            },
           }));
         },
         setRooms: (newRooms): void => {
