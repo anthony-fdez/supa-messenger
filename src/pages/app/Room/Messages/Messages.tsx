@@ -15,6 +15,7 @@ const Messages = (): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const { classes } = useMessageStyles();
   const messagesEndRef = useRef();
+  const [fixedMessages, setFixedMessages] = useState([]);
   const scrollToBottom = () => {
     // @ts-ignore
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -23,10 +24,6 @@ const Messages = (): JSX.Element => {
   const {
     currentRoom: { messages },
   } = useGlobalStore();
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages?.length]);
   interface IMessage {
     created_at: string | null;
     id: number;
@@ -36,6 +33,14 @@ const Messages = (): JSX.Element => {
     thread_id: number | null;
     user_id: string;
   }
+
+  useEffect(() => {
+    scrollToBottom();
+    console.log("before", messages);
+    messages?.sort((a, b) => a.id - b.id);
+    console.log("after", messages);
+  }, [messages, messages?.length]);
+
   const [indexOfEdit, setIndexOfEdit] = useState(-1);
   const [editMessage, setEditMessage] = useState("");
   const [isSendingMessage, setIsSendingMessage] = useState(false);
@@ -49,7 +54,10 @@ const Messages = (): JSX.Element => {
     console.log(messages);
     console.log(message);
   };
-  const onEdit = async (e: React.FormEvent<HTMLFormElement>, message: IMessage) => {
+  const onEdit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    message: IMessage,
+  ) => {
     e.preventDefault();
 
     setIsSendingMessage(true);
@@ -88,7 +96,11 @@ const Messages = (): JSX.Element => {
     <div>
       {messages.map((message, index) => {
         return (
-          <Flex key={message.id} mb={10} className={classes.messageDiv}>
+          <Flex
+            key={message.id}
+            mb={10}
+            className={classes.messageDiv}
+          >
             <div className={classes.avatarDiv}>
               <UserAvatarWithIndicator
                 // @ts-ignore
@@ -99,9 +111,14 @@ const Messages = (): JSX.Element => {
               />
             </div>
             <div style={{ marginLeft: 10 }}>
-              <Text c="dimmed" size={14}>
+              <Text
+                c="dimmed"
+                size={14}
+              >
                 {/* @ts-ignore */}
-                {`${message.userData.name} - ${moment(message.created_at).fromNow()}`}
+                {`${message.userData.name} - ${moment(
+                  message.created_at,
+                ).fromNow()}`}
               </Text>
               {indexOfEdit === index ? (
                 <form onSubmit={(e): Promise<void> => onEdit(e, message)}>
