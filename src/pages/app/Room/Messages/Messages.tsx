@@ -6,7 +6,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Send } from "react-feather";
 import UserAvatarWithIndicator from "../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../../store/useGlobalStore";
-import MessagesTextInput from "../MessagesTextInput/MessagesTextInput";
 import MessageFunctions from "./components/MessageFunctions";
 import useMessageStyles from "./useMessageStyles";
 
@@ -50,10 +49,7 @@ const Messages = (): JSX.Element => {
     console.log(messages);
     console.log(message);
   };
-  const onEdit = async (
-    e: React.FormEvent<HTMLFormElement>,
-    message: IMessage,
-  ) => {
+  const onEdit = async (e: React.FormEvent<HTMLFormElement>, message: IMessage) => {
     e.preventDefault();
 
     setIsSendingMessage(true);
@@ -92,11 +88,7 @@ const Messages = (): JSX.Element => {
     <div>
       {messages.map((message, index) => {
         return (
-          <Flex
-            key={message.id}
-            mb={10}
-            className={classes.messageDiv}
-          >
+          <Flex key={message.id} mb={10} className={classes.messageDiv}>
             <div className={classes.avatarDiv}>
               <UserAvatarWithIndicator
                 // @ts-ignore
@@ -107,14 +99,9 @@ const Messages = (): JSX.Element => {
               />
             </div>
             <div style={{ marginLeft: 10 }}>
-              <Text
-                c="dimmed"
-                size={14}
-              >
+              <Text c="dimmed" size={14}>
                 {/* @ts-ignore */}
-                {`${message.userData.name} - ${moment(
-                  message.created_at,
-                ).fromNow()}`}
+                {`${message.userData.name} - ${moment(message.created_at).fromNow()}`}
               </Text>
               {indexOfEdit === index ? (
                 <form onSubmit={(e): Promise<void> => onEdit(e, message)}>
