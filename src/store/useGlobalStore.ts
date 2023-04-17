@@ -65,6 +65,7 @@ interface IGlobalStateValues {
   app: IApp;
   currentRoom: ICurrentRoom;
   preferences: IPreferences;
+  replyMessage: string;
   rooms: IRoom[];
   user: IUser;
 }
@@ -81,6 +82,7 @@ interface IGlobalState extends IGlobalStateValues {
   setApp: (state: Partial<IApp>) => void;
   setCurrentRoom: (state: Partial<ICurrentRoom>) => void;
   setPreferences: (state: Partial<IPreferences>) => void;
+  setReplyMessage: (state: string) => void;
   setRooms: (state: IRoom[]) => void;
   setState: (state: Partial<IGlobalStateValues>) => void;
   setUser: (state: Partial<IUser>) => void;
@@ -141,14 +143,16 @@ const useGlobalStore = create<IGlobalState>()(
           }
 
           const newCurrentRoom = get().currentRoom;
-          newCurrentRoom.messages?.push(formattedMessage);
+          if (newCurrentRoom.roomData?.id === newMessage.room_id) {
+            newCurrentRoom.messages?.push(formattedMessage);
 
-          set((state) => ({
-            currentRoom: {
-              ...state.currentRoom,
-              ...newCurrentRoom,
-            },
-          }));
+            set((state) => ({
+              currentRoom: {
+                ...state.currentRoom,
+                ...newCurrentRoom,
+              },
+            }));
+          }
         },
         setPreferences: (newPreferences): void => {
           set((state) => ({
@@ -161,6 +165,11 @@ const useGlobalStore = create<IGlobalState>()(
         setRooms: (newRooms): void => {
           set(() => ({
             rooms: newRooms,
+          }));
+        },
+        setReplyMessage: (newMessage): void => {
+          set(() => ({
+            replyMessage: newMessage,
           }));
         },
         setCurrentRoom: (newCurrentRoom): void => {

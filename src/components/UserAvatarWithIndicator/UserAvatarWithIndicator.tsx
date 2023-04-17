@@ -43,6 +43,11 @@ const UserAvatarWithIndicator = ({
       position="bottom-end"
       size={15}
       withBorder
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <Avatar
         radius="xl"

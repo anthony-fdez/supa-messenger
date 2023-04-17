@@ -17,10 +17,7 @@ const useRoomStyles = createStyles((theme) => ({
   },
   textInputContainer: {
     backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[7]
-        : theme.colors.gray[1],
-
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : "white",
     position: "sticky",
     width: "100%",
     paddingBottom: 20,

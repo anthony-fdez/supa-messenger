@@ -21,7 +21,7 @@ const RoomHeader = (): JSX.Element => {
   }
 
   return (
-    <>
+    <div style={{ zIndex: "9999" }}>
       <RoomSettingsDrawer
         isRoomSettingsOpened={isRoomSettingsOpened}
         setIsRoomSettingsOpened={setIsRoomSettingsOpened}
@@ -97,7 +97,7 @@ const RoomHeader = (): JSX.Element => {
           </Tooltip>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
