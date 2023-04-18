@@ -163,14 +163,17 @@ const useGlobalStore = create<IGlobalState>()(
           }
 
           const newCurrentRoom = get().currentRoom;
-          newCurrentRoom.messages?.push(formattedMessage);
 
-          set((state) => ({
-            currentRoom: {
-              ...state.currentRoom,
-              ...newCurrentRoom,
-            },
-          }));
+          if (newCurrentRoom.roomData?.id === newMessage.room_id) {
+            newCurrentRoom.messages?.push(formattedMessage);
+
+            set((state) => ({
+              currentRoom: {
+                ...state.currentRoom,
+                ...newCurrentRoom,
+              },
+            }));
+          }
         },
         setPreferences: (newPreferences): void => {
           set((state) => ({
