@@ -117,7 +117,7 @@ const useLoadUserData = () => {
         return requests.push(friendship);
       }
 
-      if (friendship.status === "FRIEND") {
+      if (friendship.status === "FRIENDS") {
         return friends.push(friendship);
       }
 

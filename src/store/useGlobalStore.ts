@@ -8,7 +8,7 @@ type IDatabaseParticipantsWithoutUsers =
   Database["public"]["Tables"]["participants"]["Row"];
 type IDatabaseMessagesWithoutUsers =
   Database["public"]["Tables"]["messages"]["Row"];
-type IDatabaseUser = Database["public"]["Tables"]["users"]["Row"];
+export type IDatabaseUser = Database["public"]["Tables"]["users"]["Row"];
 type IDatabaseFriends = Database["public"]["Tables"]["friendships"]["Row"];
 
 export interface IUser {

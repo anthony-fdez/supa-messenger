@@ -5,12 +5,15 @@ import useGlobalStore from "../../../store/useGlobalStore";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
 import getFriend from "../../../utils/friendships/getFriend";
 import UserPopup from "../../UserPopup/UserPopup";
+import useHandleFriendsRequests from "../../../Hooks/friendships/useHandleFriendRequests";
 
 const FriendsRequestsList = (): JSX.Element => {
   const {
     friendships: { requests },
     user: { uid },
   } = useGlobalStore();
+
+  const { isLoading, handleAcceptFriendRequest } = useHandleFriendsRequests();
 
   if (requests.length === 0) {
     return (
@@ -45,22 +48,16 @@ const FriendsRequestsList = (): JSX.Element => {
             <Flex>
               <UserPopup
                 user={{
-                  // @ts-ignore
-                  email: friendData.email,
-                  // @ts-ignore
+                  email: friendData.email || "",
                   id: friendData.id,
-                  // @ts-ignore
-                  imageUrl: friendData.image_url,
-                  // @ts-ignore
-                  name: friendData.name,
+                  imageUrl: friendData.image_url || "",
+                  name: friendData.name || "",
                 }}
               >
                 <UserAvatarWithIndicator
-                  // @ts-ignore
-                  image={friendData.image_url}
+                  image={friendData.image_url || ""}
                   size={40}
-                  // @ts-ignore
-                  user_email={friendData.email}
+                  user_email={friendData.email || ""}
                   checkOnline
                 />
               </UserPopup>
@@ -71,7 +68,6 @@ const FriendsRequestsList = (): JSX.Element => {
                     mr={10}
                     size={16}
                   >
-                    {/* @ts-ignore */}
                     {friendData.name}
                   </Title>
                 </Flex>
@@ -79,12 +75,11 @@ const FriendsRequestsList = (): JSX.Element => {
                   c="dimmed"
                   size={14}
                 >
-                  {/* @ts-ignore */}
                   {friendData.email}
                 </Text>
               </div>
             </Flex>
-            <Button.Group>
+            <Flex>
               <Button
                 leftIcon={<X size={14} />}
                 color="red"
@@ -92,8 +87,21 @@ const FriendsRequestsList = (): JSX.Element => {
               >
                 Decline
               </Button>
-              <Button leftIcon={<UserPlus size={14} />}>Accept</Button>
-            </Button.Group>
+
+              <Button
+                ml={10}
+                onClick={() => {
+                  handleAcceptFriendRequest({
+                    friendData,
+                    friendship,
+                  });
+                }}
+                leftIcon={<UserPlus size={14} />}
+                loading={isLoading}
+              >
+                Accept
+              </Button>
+            </Flex>
           </Flex>
         );
       })}

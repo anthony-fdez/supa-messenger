@@ -50,6 +50,28 @@ const useListenToFriendshipChanges = ({ getUserFriends }: Props) => {
           if (getUserFriends) getUserFriends();
         },
       )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "friendships",
+        },
+        (payload) => {
+          if (
+            payload.new.status === "FRIENDS" &&
+            payload.new.action_user_id !== uid
+          ) {
+            showNotification({
+              title: "You got a new friend!",
+              message:
+                "Someone just accepted your friend request, go check out who it is",
+            });
+          }
+
+          if (getUserFriends) getUserFriends();
+        },
+      )
       .subscribe();
 
     return () => {

@@ -13,7 +13,7 @@ import getFriend from "../../../utils/friendships/getFriend";
 
 const FriendsList = (): JSX.Element => {
   const {
-    friendships: { friends, requests, pending },
+    friendships: { friends },
     user,
   } = useGlobalStore();
   const theme = useMantineTheme();
