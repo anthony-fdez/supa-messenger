@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Loader, Menu, Text, Title } from "@mantine/core";
+import { Badge, Flex, Loader, Menu, Text, Title } from "@mantine/core";
 import { UserPlus } from "react-feather";
 import useSendFriendRequest from "../../Hooks/friendships/useSendFriendRequest";
 import FriendsConditionalRendering from "../Friends/FriendsConditionalRendering/FriendsConditionalrendering";
@@ -57,6 +57,37 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
             {user.email}
           </Text>
         </Flex>
+
+        <Flex
+          direction="column"
+          justify="center"
+          align="center"
+        >
+          <FriendsConditionalRendering
+            userId={user.id}
+            renderIf="FRIENDS"
+          >
+            <Badge mb={20}>You are friends</Badge>
+          </FriendsConditionalRendering>
+          <FriendsConditionalRendering
+            renderIf="PENDING"
+            userId={user.id}
+          >
+            <Badge mb={20}>Request pending</Badge>
+          </FriendsConditionalRendering>
+          <FriendsConditionalRendering
+            renderIf="REQUEST"
+            userId={user.id}
+          >
+            <Badge
+              color="red"
+              mb={20}
+            >
+              Sent you a request
+            </Badge>
+          </FriendsConditionalRendering>
+        </Flex>
+
         <FriendsConditionalRendering
           renderIf="NOT_FRIENDS"
           userId={user.id}

@@ -30,7 +30,7 @@ const FriendsConditionalRendering = ({
 
   const checkIfRequest = (friendship: IFriend) => {
     if (
-      friendship.status === "REQUEST" &&
+      friendship.status === "PENDING" &&
       friendship.action_user_id !== user.uid
     ) {
       return friendship.user_id_1 === userId || friendship.user_id_2 === userId;
@@ -68,7 +68,7 @@ const FriendsConditionalRendering = ({
   }
 
   if (renderIf === "REQUEST") {
-    const isRequest = friendships.pending.some(checkIfRequest);
+    const isRequest = friendships.requests.some(checkIfRequest);
 
     if (!isRequest) return null;
 
