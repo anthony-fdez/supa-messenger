@@ -7,6 +7,7 @@ import {
   Divider,
   Drawer,
   Flex,
+  Loader,
   Text,
   Title,
   useMantineTheme,
@@ -47,7 +48,7 @@ const RoomSettingsDrawer = ({
     setCurrentRoom,
     rooms,
     setRooms,
-    currentRoom: { roomData, roomParticipants },
+    currentRoom: { roomData, roomParticipants, usersTyping },
   } = useGlobalStore();
 
   const removeRoom = (id: number) => {
@@ -230,20 +231,27 @@ const RoomSettingsDrawer = ({
                     {/* @ts-ignore */}
                     <Title size={16}>{participant.userData.name}</Title>
                     <FriendsConditionalRendering
+                      renderIf="FRIENDS"
                       // @ts-ignore
                       userId={participant.userData.id}
                     >
                       <Badge ml={10}>Friends</Badge>
                     </FriendsConditionalRendering>
                   </Flex>
-
-                  <Text
-                    c="dimmed"
-                    size={14}
-                  >
-                    {/* @ts-ignore */}
-                    {participant.userData.email}
-                  </Text>
+                  {usersTyping.find(
+                    // @ts-ignore
+                    (user) => user.uid === participant.userData.id,
+                  ) ? (
+                    <Loader variant="dots" />
+                  ) : (
+                    <Text
+                      c="dimmed"
+                      size={14}
+                    >
+                      {/* @ts-ignore */}
+                      {participant.userData.email}
+                    </Text>
+                  )}
                 </div>
               </Flex>
             </UserPopup>
