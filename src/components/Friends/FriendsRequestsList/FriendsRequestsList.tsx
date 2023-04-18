@@ -13,7 +13,8 @@ const FriendsRequestsList = (): JSX.Element => {
     user: { uid },
   } = useGlobalStore();
 
-  const { isLoading, handleAcceptFriendRequest } = useHandleFriendsRequests();
+  const { isLoading, handleAcceptFriendRequest, handleRejectFriendRequest } =
+    useHandleFriendsRequests();
 
   if (requests.length === 0) {
     return (
@@ -84,6 +85,12 @@ const FriendsRequestsList = (): JSX.Element => {
                 leftIcon={<X size={14} />}
                 color="red"
                 variant="light"
+                loading={isLoading}
+                onClick={() => {
+                  handleRejectFriendRequest({
+                    friendship,
+                  });
+                }}
               >
                 Decline
               </Button>

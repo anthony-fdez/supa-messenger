@@ -12,6 +12,10 @@ interface IAcceptFriendRequest {
   friendship: IFriend;
 }
 
+interface IRejectFriendRequest {
+  friendship: IFriend;
+}
+
 const useHandleFriendsRequests = () => {
   const supabase = useSupabaseClient<Database>();
   const { user } = useGlobalStore();
@@ -55,7 +59,34 @@ const useHandleFriendsRequests = () => {
     setIsLoading(false);
   };
 
-  return { isLoading, handleAcceptFriendRequest };
+  const handleRejectFriendRequest = async ({
+    friendship,
+  }: IRejectFriendRequest): Promise<void> => {
+    setIsLoading(true);
+
+    if (!user) return;
+    if (!user.uid) return;
+
+    const { error } = await supabase
+      .from("friendships")
+      .delete()
+      .eq("id", friendship.id);
+
+    if (error) {
+      setIsLoading(false);
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+
+      return;
+    }
+
+    setIsLoading(false);
+  };
+
+  return { isLoading, handleAcceptFriendRequest, handleRejectFriendRequest };
 };
 
 export default useHandleFriendsRequests;
