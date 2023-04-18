@@ -1,20 +1,19 @@
 import { Alert, Badge, Button, Flex, Text, Title } from "@mantine/core";
 import React from "react";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { showNotification } from "@mantine/notifications";
 import { X } from "react-feather";
 import useGlobalStore from "../../../store/useGlobalStore";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
 import getFriend from "../../../utils/friendships/getFriend";
-import { Database } from "../../../../types/database.types";
 import UserPopup from "../../UserPopup/UserPopup";
+import useHandleFriendsRequests from "../../../Hooks/friendships/useHandleFriendRequests";
 
 const FriendsPendingList = (): JSX.Element => {
   const {
     friendships: { pending },
     user,
   } = useGlobalStore();
-  const supabase = useSupabaseClient<Database>();
+
+  const { isLoading, handleDeleteFriendship } = useHandleFriendsRequests();
 
   if (pending.length === 0) {
     return (
@@ -23,24 +22,6 @@ const FriendsPendingList = (): JSX.Element => {
       </Alert>
     );
   }
-
-  const handleCancelFriendRequest = async (
-    friendshipId: number,
-  ): Promise<void | null> => {
-    const { error } = await supabase
-      .from("friendships")
-      .delete()
-      .eq("id", friendshipId);
-
-    if (error) {
-      return showNotification({
-        title: "Error",
-        message: "Unable to cancel your friend request at the moment",
-      });
-    }
-
-    return null;
-  };
 
   return (
     <div>
@@ -114,8 +95,9 @@ const FriendsPendingList = (): JSX.Element => {
               color="red"
               variant="light"
               leftIcon={<X size={14} />}
+              loading={isLoading}
               onClick={() => {
-                handleCancelFriendRequest(friendship.id);
+                handleDeleteFriendship({ friendship });
               }}
             >
               Cancel Request

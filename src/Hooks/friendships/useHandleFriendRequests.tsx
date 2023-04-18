@@ -59,7 +59,7 @@ const useHandleFriendsRequests = () => {
     setIsLoading(false);
   };
 
-  const handleRejectFriendRequest = async ({
+  const handleDeleteFriendship = async ({
     friendship,
   }: IRejectFriendRequest): Promise<void> => {
     setIsLoading(true);
@@ -86,7 +86,7 @@ const useHandleFriendsRequests = () => {
     setIsLoading(false);
   };
 
-  return { isLoading, handleAcceptFriendRequest, handleRejectFriendRequest };
+  return { isLoading, handleAcceptFriendRequest, handleDeleteFriendship };
 };
 
 export default useHandleFriendsRequests;

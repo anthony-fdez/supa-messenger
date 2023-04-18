@@ -13,7 +13,7 @@ const FriendsRequestsList = (): JSX.Element => {
     user: { uid },
   } = useGlobalStore();
 
-  const { isLoading, handleAcceptFriendRequest, handleRejectFriendRequest } =
+  const { isLoading, handleAcceptFriendRequest, handleDeleteFriendship } =
     useHandleFriendsRequests();
 
   if (requests.length === 0) {
@@ -87,7 +87,7 @@ const FriendsRequestsList = (): JSX.Element => {
                 variant="light"
                 loading={isLoading}
                 onClick={() => {
-                  handleRejectFriendRequest({
+                  handleDeleteFriendship({
                     friendship,
                   });
                 }}
