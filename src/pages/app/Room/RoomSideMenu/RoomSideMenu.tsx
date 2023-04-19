@@ -17,7 +17,7 @@ import React from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { closeAllModals, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
-import { Settings } from "react-feather";
+import { LogOut, Settings, Smile, ThumbsDown } from "react-feather";
 import { useNavigate } from "react-router";
 import { Database } from "../../../../../types/database.types";
 import FriendsConditionalRendering from "../../../../components/Friends/FriendsConditionalRendering/FriendsConditionalrendering";
@@ -50,7 +50,7 @@ const RoomSideMenu = ({
     setCurrentRoom,
     rooms,
     setRooms,
-    currentRoom: { roomData, roomParticipants, usersTyping },
+    currentRoom: { roomData, roomParticipants, usersTyping, isRoomMember },
   } = useGlobalStore();
 
   const removeRoom = (id: number) => {
@@ -93,6 +93,65 @@ const RoomSideMenu = ({
 
     removeRoomAsync().finally(() => {
       closeAllModals();
+    });
+  };
+
+  const handleLeaveRoom = (): void => {
+    const leaveRoomAsync = async (): Promise<void> => {
+      if (!roomData?.id || !session?.user.id) {
+        return showNotification({
+          title: "Error",
+          message: "Unauthorized",
+        });
+      }
+
+      const { error } = await supabase
+        .from("participants")
+        .delete()
+        .eq("room_id", roomData.id)
+        .eq("user_id", session.user.id);
+
+      if (error) {
+        return showNotification({
+          title: "Error",
+          message: "error",
+        });
+      }
+
+      return navigate("/");
+    };
+
+    openModal({
+      overlayProps: {
+        blur: 5,
+      },
+      title: "Are you sure you want to leave this room?",
+      children: (
+        <Flex justify="flex-end">
+          <Button
+            onClick={() => {
+              closeAllModals();
+            }}
+            variant="light"
+            color="gray"
+            leftIcon={<Smile size={14} />}
+          >
+            No, I like it here
+          </Button>
+          <Button
+            color="red"
+            onClick={() => {
+              leaveRoomAsync().finally(() => {
+                closeAllModals();
+              });
+            }}
+            ml={10}
+            leftIcon={<ThumbsDown size={14} />}
+          >
+            Yes, this room sucks
+          </Button>
+        </Flex>
+      ),
     });
   };
 
@@ -265,9 +324,17 @@ const RoomSideMenu = ({
             );
           })}
         </ScrollArea>
-        {roomData?.created_by !== session?.user.id && (
+        {isRoomMember && roomData?.created_by !== session?.user.id && (
           <div>
-            <Button fullWidth>Leave Room</Button>
+            <Button
+              onClick={handleLeaveRoom}
+              fullWidth
+              variant="light"
+              color="red"
+              leftIcon={<LogOut size={14} />}
+            >
+              Leave Room
+            </Button>
           </div>
         )}
       </div>
