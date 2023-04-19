@@ -5,6 +5,9 @@ import {
   Tooltip,
   Title,
   CloseButton,
+  Accordion,
+  Button,
+  Badge,
 } from "@mantine/core";
 import { MessageSquare, Settings, Users } from "react-feather";
 import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
@@ -16,6 +19,7 @@ import useGlobalStore from "../../store/useGlobalStore";
 import ChangeThemeModal from "./ChangeThemeModal/ChangeThemeModal";
 import ChatRooms from "./ChatRooms/ChatRooms";
 import PublicRooms from "./PublicRooms/PublicRooms";
+import DMs from "./DMs/DMs";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
@@ -26,7 +30,12 @@ const mainLinksMockdata = [
 const SideMenu = (): JSX.Element => {
   const { handleSignout } = useHandleSignout();
   const navigate = useNavigate();
-  const { preferences, app, setApp } = useGlobalStore();
+  const {
+    preferences,
+    app,
+    setApp,
+    friendships: { requests },
+  } = useGlobalStore();
 
   const { classes, cx } = useSideMenuStyles();
   const isMobile = useMediaQuery("(max-width: 900px)");
@@ -125,7 +134,51 @@ const SideMenu = (): JSX.Element => {
 
     if (app.mainActiveSideMenu === "Public Rooms") return <PublicRooms />;
 
-    return <ChatRooms />;
+    return (
+      <>
+        <Button
+          onClick={() => {
+            setApp({ isFriendsMenuOpen: true });
+          }}
+          variant="light"
+          className={classes.newRoomButton}
+          rightIcon={
+            requests.length !== 0 && (
+              <Badge
+                color="red"
+                variant="filled"
+              >
+                {requests.length}
+              </Badge>
+            )
+          }
+        >
+          Friends
+        </Button>
+        <Accordion
+          sx={{
+            ".mantine-Accordion-content": {
+              padding: 0,
+              paddingTop: 20,
+              paddingBottom: 20,
+            },
+          }}
+        >
+          <Accordion.Item value="dms">
+            <Accordion.Control>DMs</Accordion.Control>
+            <Accordion.Panel>
+              <DMs />
+            </Accordion.Panel>
+          </Accordion.Item>
+          <Accordion.Item value="chat-room">
+            <Accordion.Control>Chat Room</Accordion.Control>
+            <Accordion.Panel>
+              <ChatRooms />
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
+      </>
+    );
   };
 
   return (

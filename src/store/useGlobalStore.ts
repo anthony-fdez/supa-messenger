@@ -8,9 +8,10 @@ type IDatabaseParticipantsWithoutUsers =
   Database["public"]["Tables"]["participants"]["Row"];
 type IDatabaseMessagesWithoutUsers =
   Database["public"]["Tables"]["messages"]["Row"];
-type IDatabaseUser = Database["public"]["Tables"]["users"]["Row"];
+export type IDatabaseUser = Database["public"]["Tables"]["users"]["Row"];
+type IDatabaseFriends = Database["public"]["Tables"]["friendships"]["Row"];
 
-interface IUser {
+export interface IUser {
   email: string | null;
   imageUrl: string | null;
   name: string | null;
@@ -36,6 +37,7 @@ export interface IRoom extends IDatabaseRoom {
 }
 
 interface IApp {
+  isFriendsMenuOpen: boolean;
   isLoading: boolean;
   isMobileMenuOpen: boolean;
   mainActiveSideMenu: string | null;
@@ -51,6 +53,12 @@ export interface IUsersTyping {
   uid: string;
 }
 
+export interface IFriend extends IDatabaseFriends {
+  actionUserData: IDatabaseUser | IDatabaseUser[] | null;
+  userData1: IDatabaseUser | IDatabaseUser[] | null;
+  userData2: IDatabaseUser | IDatabaseUser[] | null;
+}
+
 export interface ICurrentRoom {
   isLoading: boolean;
   isRoomMember: boolean;
@@ -61,16 +69,22 @@ export interface ICurrentRoom {
   usersTyping: IUsersTyping[];
 }
 
+interface IFriendships {
+  friends: IFriend[];
+  pending: IFriend[];
+  requests: IFriend[];
+}
+
 interface IGlobalStateValues {
   app: IApp;
   currentRoom: ICurrentRoom;
+  friendships: IFriendships;
   preferences: IPreferences;
-  replyMessage: string;
   rooms: IRoom[];
   user: IUser;
 }
 
-interface IGlobalState extends IGlobalStateValues {
+export interface IGlobalState extends IGlobalStateValues {
   addNewCurrentRoomMessage: ({
     newMessage,
     supabase,
@@ -81,8 +95,8 @@ interface IGlobalState extends IGlobalStateValues {
   clearState: () => void;
   setApp: (state: Partial<IApp>) => void;
   setCurrentRoom: (state: Partial<ICurrentRoom>) => void;
+  setFriendships: (state: Partial<IFriendships>) => void;
   setPreferences: (state: Partial<IPreferences>) => void;
-  setReplyMessage: (state: string) => void;
   setRooms: (state: IRoom[]) => void;
   setState: (state: Partial<IGlobalStateValues>) => void;
   setUser: (state: Partial<IUser>) => void;
@@ -90,6 +104,11 @@ interface IGlobalState extends IGlobalStateValues {
 
 const initialState: IGlobalStateValues = {
   rooms: [],
+  friendships: {
+    friends: [],
+    requests: [],
+    pending: [],
+  },
   user: {
     email: null,
     name: null,
@@ -107,6 +126,7 @@ const initialState: IGlobalStateValues = {
     usersTyping: [],
   },
   app: {
+    isFriendsMenuOpen: false,
     isMobileMenuOpen: false,
     onlineUsers: null,
     isLoading: false,
@@ -143,6 +163,7 @@ const useGlobalStore = create<IGlobalState>()(
           }
 
           const newCurrentRoom = get().currentRoom;
+
           if (newCurrentRoom.roomData?.id === newMessage.room_id) {
             newCurrentRoom.messages?.push(formattedMessage);
 
@@ -162,14 +183,17 @@ const useGlobalStore = create<IGlobalState>()(
             },
           }));
         },
+        setFriendships: (newFriendships): void => {
+          set((state) => ({
+            friendships: {
+              ...state.friendships,
+              ...newFriendships,
+            },
+          }));
+        },
         setRooms: (newRooms): void => {
           set(() => ({
             rooms: newRooms,
-          }));
-        },
-        setReplyMessage: (newMessage): void => {
-          set(() => ({
-            replyMessage: newMessage,
           }));
         },
         setCurrentRoom: (newCurrentRoom): void => {

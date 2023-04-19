@@ -1,4 +1,12 @@
-import { ActionIcon, Flex, Loader, Text, TextInput } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Flex,
+  Loader,
+  ScrollArea,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import moment from "moment";
@@ -49,7 +57,10 @@ const Messages = (): JSX.Element => {
     console.log(messages);
     console.log(message);
   };
-  const onEdit = async (e: React.FormEvent<HTMLFormElement>, message: IMessage) => {
+  const onEdit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    message: IMessage,
+  ) => {
     e.preventDefault();
 
     setIsSendingMessage(true);
@@ -70,7 +81,7 @@ const Messages = (): JSX.Element => {
     }
     setIsSendingMessage(false);
     setIndexOfEdit(-1);
-    setEditMessage("");
+    return setEditMessage("");
   };
   const sendButton = (): JSX.Element | null => {
     if (editMessage.length <= 0) return null;
@@ -85,53 +96,69 @@ const Messages = (): JSX.Element => {
   if (!messages) return <p>Error loading messages</p>;
 
   return (
-    <div>
-      {messages.map((message, index) => {
-        return (
-          <Flex key={message.id} mb={10} className={classes.messageDiv}>
-            <div className={classes.avatarDiv}>
-              <UserAvatarWithIndicator
-                // @ts-ignore
-                user_email={message.userData.email}
-                size={30}
-                // @ts-ignore
-                image={message.userData.image_url}
-              />
-            </div>
-            <div style={{ marginLeft: 10 }}>
-              <Text c="dimmed" size={14}>
-                {/* @ts-ignore */}
-                {`${message.userData.name} - ${moment(message.created_at).fromNow()}`}
-              </Text>
-              {indexOfEdit === index ? (
-                <form onSubmit={(e): Promise<void> => onEdit(e, message)}>
-                  <TextInput
-                    onChange={
-                      (event): void =>
-                        // eslint-disable-next-line max-len
-                        // eslint-disable-next-line react/jsx-curly-newline, implicit-arrow-linebreak
-                        setEditMessage(event.target.value)
-                      // eslint-disable-next-line react/jsx-curly-newline
-                    }
-                    placeholder="Send message"
-                    rightSection={sendButton()}
-                    value={editMessage}
-                    spellCheck="false"
-                    autoComplete="off"
-                  />
-                </form>
-              ) : (
-                <Text>{message.message_body}</Text>
-              )}
-            </div>
-            <div className={classes.messageFunctionsDiv}>
-              <MessageFunctions handleEdit={() => handleEdit(message, index)} />
-            </div>
-          </Flex>
-        );
-      })}
-      <div ref={messagesEndRef} />
-    </div>
+    <ScrollArea
+      w="100%"
+      h="calc(100%)"
+    >
+      <Box>
+        {messages.map((message, index) => {
+          return (
+            <Flex
+              key={message.id}
+              mb={10}
+              className={classes.messageDiv}
+            >
+              <div className={classes.avatarDiv}>
+                <UserAvatarWithIndicator
+                  // @ts-ignore
+                  user_email={message.userData.email}
+                  size={30}
+                  // @ts-ignore
+                  image={message.userData.image_url}
+                />
+              </div>
+              <div style={{ marginLeft: 10 }}>
+                <Text
+                  c="dimmed"
+                  size={14}
+                >
+                  {/* @ts-ignore */}
+                  {`${message.userData.name} - ${moment(
+                    message.created_at,
+                  ).fromNow()}`}
+                </Text>
+                {indexOfEdit === index ? (
+                  <form onSubmit={(e): Promise<void> => onEdit(e, message)}>
+                    <TextInput
+                      onChange={
+                        (event): void =>
+                          // eslint-disable-next-line max-len
+                          // eslint-disable-next-line react/jsx-curly-newline, implicit-arrow-linebreak
+                          setEditMessage(event.target.value)
+                        // eslint-disable-next-line react/jsx-curly-newline
+                      }
+                      placeholder="Send message"
+                      rightSection={sendButton()}
+                      value={editMessage}
+                      spellCheck="false"
+                      autoComplete="off"
+                    />
+                  </form>
+                ) : (
+                  <Text>{message.message_body}</Text>
+                )}
+              </div>
+              <div className={classes.messageFunctionsDiv}>
+                <MessageFunctions
+                  handleEdit={() => handleEdit(message, index)}
+                />
+              </div>
+            </Flex>
+          );
+        })}
+        <div ref={messagesEndRef} />
+      </Box>
+    </ScrollArea>
   );
 };
 

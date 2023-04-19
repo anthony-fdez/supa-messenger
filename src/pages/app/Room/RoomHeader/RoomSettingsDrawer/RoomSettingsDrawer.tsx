@@ -1,13 +1,16 @@
 import {
   Alert,
+  Badge,
   Button,
   Card,
   Collapse,
   Divider,
   Drawer,
   Flex,
+  Loader,
   Text,
   Title,
+  useMantineTheme,
 } from "@mantine/core";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
@@ -18,10 +21,12 @@ import { showNotification } from "@mantine/notifications";
 import { Settings } from "react-feather";
 import { useNavigate } from "react-router";
 import { Database } from "../../../../../../types/database.types";
+import FriendsConditionalRendering from "../../../../../components/Friends/FriendsConditionalRendering/FriendsConditionalrendering";
 import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../../../store/useGlobalStore";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
+import UserPopup from "../../../../../components/UserPopup/UserPopup";
 
 interface Props {
   isDrawer?: boolean;
@@ -37,12 +42,13 @@ const RoomSettingsDrawer = ({
   const navigate = useNavigate();
   const session = useSession();
   const supabase = useSupabaseClient<Database>();
+  const theme = useMantineTheme();
 
   const {
     setCurrentRoom,
     rooms,
     setRooms,
-    currentRoom: { roomData, roomParticipants },
+    currentRoom: { roomData, roomParticipants, usersTyping },
   } = useGlobalStore();
 
   const removeRoom = (id: number) => {
@@ -184,32 +190,72 @@ const RoomSettingsDrawer = ({
           if (!participant.userData) return null;
 
           return (
-            <Flex
+            <UserPopup
               key={participant.id}
-              align="center"
-              mt={10}
+              user={{
+                // @ts-ignore
+                email: participant.userData.email,
+                // @ts-ignore
+                id: participant.userData.id,
+                // @ts-ignore
+                imageUrl: participant.userData.image_url,
+                // @ts-ignore
+                name: participant.userData.name,
+              }}
             >
-              <UserAvatarWithIndicator
-                // @ts-ignore
-                image={participant.userData.image_url}
-                size={40}
-                // @ts-ignore
-                user_email={participant.userData.email}
-                checkOnline
-              />
+              <Flex
+                sx={{
+                  padding: 5,
+                  borderRadius: 5,
+                  cursor: "pointer",
+                  ":hover": {
+                    backgroundColor:
+                      theme.colorScheme === "dark"
+                        ? theme.colors.dark[6]
+                        : theme.colors.gray[1],
+                  },
+                }}
+                align="center"
+                mt={10}
+              >
+                <UserAvatarWithIndicator
+                  // @ts-ignore
+                  image={participant.userData.image_url}
+                  size={40}
+                  // @ts-ignore
+                  user_email={participant.userData.email}
+                  checkOnline
+                />
 
-              <div style={{ marginLeft: 10 }}>
-                {/* @ts-ignore */}
-                <Title size={16}>{participant.userData.name}</Title>
-                <Text
-                  c="dimmed"
-                  size={14}
-                >
-                  {/* @ts-ignore */}
-                  {participant.userData.email}
-                </Text>
-              </div>
-            </Flex>
+                <div style={{ marginLeft: 10 }}>
+                  <Flex>
+                    {/* @ts-ignore */}
+                    <Title size={16}>{participant.userData.name}</Title>
+                    <FriendsConditionalRendering
+                      renderIf="FRIENDS"
+                      // @ts-ignore
+                      userId={participant.userData.id}
+                    >
+                      <Badge ml={10}>Friends</Badge>
+                    </FriendsConditionalRendering>
+                  </Flex>
+                  {usersTyping.find(
+                    // @ts-ignore
+                    (user) => user.uid === participant.userData.id,
+                  ) ? (
+                    <Loader variant="dots" />
+                  ) : (
+                    <Text
+                      c="dimmed"
+                      size={14}
+                    >
+                      {/* @ts-ignore */}
+                      {participant.userData.email}
+                    </Text>
+                  )}
+                </div>
+              </Flex>
+            </UserPopup>
           );
         })}
       </>

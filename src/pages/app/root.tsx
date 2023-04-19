@@ -7,13 +7,15 @@ import AuthUser from "../../components/AuthUser/AuthUser";
 import RegisterUser from "../../components/RegisterUser/RegisterUser";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import useLoadUserData from "../../Hooks/useLoadUserData";
-import useGlobalStore from "../../store/useGlobalStore";
 import useRootStyles from "./useRootStyles";
 import { Database } from "../../../types/database.types";
 import removeTypingIndicatorFromOfflineUsers from "../../helpers/removeTypingIndicatorFromOfflineUsers";
+import useListenToFriendshipChanges from "../../Hooks/friendships/useListenToFrienshipChanges";
+import useGlobalStore from "../../store/useGlobalStore";
 
 const Root = (): JSX.Element => {
-  useLoadUserData();
+  const { getUserFriends } = useLoadUserData();
+  useListenToFriendshipChanges({ getUserFriends });
 
   const { classes } = useRootStyles();
 

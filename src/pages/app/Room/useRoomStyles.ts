@@ -1,27 +1,31 @@
 import { createStyles } from "@mantine/core";
 
 const useRoomStyles = createStyles((theme) => ({
-  container: {
-    position: "relative",
-  },
   headerContainer: {
-    position: "sticky",
     top: 0,
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
   },
   messagesContainer: {
-    paddingBottom: 20,
     paddingTop: 20,
-    minHeight: "85vh",
+
+    "@media (min-width: 901px)": {
+      minHeight: "85vh",
+      position: "relative",
+      height: "calc(100vh - 200px)",
+    },
+    "@media (max-width: 900px)": {
+      height: "calc(100vh - 200px)",
+      position: "relative",
+    },
   },
   textInputContainer: {
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : "white",
-    position: "sticky",
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[7]
+        : theme.colors.gray[1],
+
     width: "100%",
-    paddingBottom: 20,
-    bottom: 0,
   },
   desktopSideMenu: {
     position: "fixed",

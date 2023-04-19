@@ -46,11 +46,24 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
   const onMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (message.length === 0) {
+      showNotification({
+        message: "Bruh you gotta type something",
+        title: "Error",
+        color: "red",
+        variant: "filled",
+      });
+
+      return;
+    }
+
     if (!roomData?.id || !session?.user.id) {
-      return showNotification({
+      showNotification({
         title: "Error",
         message: "Unable to send message",
       });
+
+      return;
     }
     const noMessageNotification = [
       "At least type something",
@@ -81,14 +94,16 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
 
     if (!data || error) {
       setIsSendingMessage(false);
-      return showNotification({
+      showNotification({
         title: "Error",
         message: "Unable to send message.",
       });
+
+      return;
     }
 
     setIsSendingMessage(false);
-    return setMessage("");
+    setMessage("");
   };
 
   const sendButton = (): JSX.Element | null => {

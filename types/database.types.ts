@@ -9,6 +9,38 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      friendships: {
+        Row: {
+          action_user_id: string
+          created_at: string | null
+          id: number
+          status: string
+          user_email_1: string | null
+          user_email_2: string | null
+          user_id_1: string | null
+          user_id_2: string | null
+        }
+        Insert: {
+          action_user_id: string
+          created_at?: string | null
+          id?: number
+          status?: string
+          user_email_1?: string | null
+          user_email_2?: string | null
+          user_id_1?: string | null
+          user_id_2?: string | null
+        }
+        Update: {
+          action_user_id?: string
+          created_at?: string | null
+          id?: number
+          status?: string
+          user_email_1?: string | null
+          user_email_2?: string | null
+          user_id_1?: string | null
+          user_id_2?: string | null
+        }
+      }
       messages: {
         Row: {
           created_at: string | null
@@ -85,6 +117,7 @@ export interface Database {
         Row: {
           created_at: string | null
           created_by: string
+          has_voice_channel: boolean
           id: number
           is_private: boolean
           name: string
@@ -92,6 +125,7 @@ export interface Database {
         Insert: {
           created_at?: string | null
           created_by: string
+          has_voice_channel?: boolean
           id?: number
           is_private?: boolean
           name: string
@@ -99,6 +133,7 @@ export interface Database {
         Update: {
           created_at?: string | null
           created_by?: string
+          has_voice_channel?: boolean
           id?: number
           is_private?: boolean
           name?: string
@@ -145,6 +180,23 @@ export interface Database {
           image_url?: string | null
           name?: string | null
           register_complete?: boolean | null
+        }
+      }
+      voice_channel: {
+        Row: {
+          created_at: string | null
+          id: number
+          room_id: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          room_id?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          room_id?: number | null
         }
       }
     }
