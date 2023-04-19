@@ -1,4 +1,4 @@
-import { Flex, Text } from "@mantine/core";
+import { Box, Flex, ScrollArea, Text } from "@mantine/core";
 import moment from "moment";
 import React, { useEffect, useRef } from "react";
 import UserAvatarWithIndicator from "../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
@@ -23,53 +23,58 @@ const Messages = (): JSX.Element => {
   if (!messages) return <p>Error loading messages</p>;
 
   return (
-    <div>
-      {messages.map((message) => {
-        return (
-          <Flex
-            key={message.id}
-            mb={10}
-          >
-            <UserPopup
-              user={{
-                // @ts-ignore
-                email: message.userData.email,
-                // @ts-ignore
-                id: message.userData.id,
-                // @ts-ignore
-                imageUrl: message.userData.image_url,
-                // @ts-ignore
-                name: message.userData.name,
-              }}
+    <ScrollArea
+      w="100%"
+      h="calc(100vh - 150px)"
+    >
+      <Box>
+        {messages.map((message) => {
+          return (
+            <Flex
+              key={message.id}
+              mb={10}
             >
-              <div style={{ marginTop: 5, zIndex: -1 }}>
-                <UserAvatarWithIndicator
+              <UserPopup
+                user={{
                   // @ts-ignore
-                  user_email={message.userData.email}
-                  size={30}
+                  email: message.userData.email,
                   // @ts-ignore
-                  image={message.userData.image_url}
-                />
-              </div>
-            </UserPopup>
-
-            <div style={{ marginLeft: 10 }}>
-              <Text
-                c="dimmed"
-                size={14}
+                  id: message.userData.id,
+                  // @ts-ignore
+                  imageUrl: message.userData.image_url,
+                  // @ts-ignore
+                  name: message.userData.name,
+                }}
               >
-                {/* @ts-ignore */}
-                {`${message.userData.name} - ${moment(
-                  message.created_at,
-                ).fromNow()}`}
-              </Text>
-              <Text>{message.message_body}</Text>
-            </div>
-          </Flex>
-        );
-      })}
-      <div ref={messagesEndRef} />
-    </div>
+                <div style={{ marginTop: 5, zIndex: -1 }}>
+                  <UserAvatarWithIndicator
+                    // @ts-ignore
+                    user_email={message.userData.email}
+                    size={30}
+                    // @ts-ignore
+                    image={message.userData.image_url}
+                  />
+                </div>
+              </UserPopup>
+
+              <div style={{ marginLeft: 10 }}>
+                <Text
+                  c="dimmed"
+                  size={14}
+                >
+                  {/* @ts-ignore */}
+                  {`${message.userData.name} - ${moment(
+                    message.created_at,
+                  ).fromNow()}`}
+                </Text>
+                <Text>{message.message_body}</Text>
+              </div>
+            </Flex>
+          );
+        })}
+        <div ref={messagesEndRef} />
+      </Box>
+    </ScrollArea>
   );
 };
 

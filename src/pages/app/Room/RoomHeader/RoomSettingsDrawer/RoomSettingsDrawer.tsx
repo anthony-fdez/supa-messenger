@@ -190,6 +190,7 @@ const RoomSettingsDrawer = ({
 
           return (
             <UserPopup
+              key={participant.id}
               user={{
                 // @ts-ignore
                 email: participant.userData.email,
@@ -213,7 +214,6 @@ const RoomSettingsDrawer = ({
                         : theme.colors.gray[1],
                   },
                 }}
-                key={participant.id}
                 align="center"
                 mt={10}
               >

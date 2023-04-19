@@ -1,18 +1,12 @@
 import { createStyles } from "@mantine/core";
 
 const useRoomStyles = createStyles((theme) => ({
-  container: {
-    position: "relative",
-  },
   headerContainer: {
-    position: "sticky",
     top: 0,
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
   },
   messagesContainer: {
-    paddingBottom: 20,
-    paddingTop: 20,
     minHeight: "85vh",
   },
   textInputContainer: {
@@ -21,10 +15,7 @@ const useRoomStyles = createStyles((theme) => ({
         ? theme.colors.dark[7]
         : theme.colors.gray[1],
 
-    position: "sticky",
     width: "100%",
-    paddingBottom: 20,
-    bottom: 0,
   },
   desktopSideMenu: {
     position: "fixed",

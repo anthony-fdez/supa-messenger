@@ -38,7 +38,8 @@ const Room = ({ roomId, getRoomData }: Props): JSX.Element => {
         .from("messages")
         .select("*, userData:users(*)")
         .eq("room_id", roomData.id)
-        .limit(50);
+        .limit(50)
+        .order("created_at", { ascending: false });
 
       if (error) {
         return showNotification({
@@ -57,9 +58,8 @@ const Room = ({ roomId, getRoomData }: Props): JSX.Element => {
   }, [roomData]);
 
   return (
-    <div className={classes.container}>
-      {/** @ts-ignore */}
-      <div className={classes.content}>
+    <div>
+      <div>
         <div className={classes.headerContainer}>
           <RoomHeader />
           {!isRoomMember && <JoinPublicRoom />}
