@@ -1,40 +1,16 @@
 import React from "react";
-import { Badge, Button, Text } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { useNavigate } from "react-router";
 import useGlobalStore from "../../../store/useGlobalStore";
 import useSideMenuStyles from "../SideMenu.styles";
 
 const DMs = (): JSX.Element => {
   const { classes, cx } = useSideMenuStyles();
-  const {
-    app,
-    setApp,
-    rooms,
-    friendships: { requests },
-  } = useGlobalStore();
+  const { app, setApp, rooms } = useGlobalStore();
   const navigate = useNavigate();
 
   return (
     <div>
-      <Button
-        onClick={() => {
-          setApp({ isFriendsMenuOpen: true });
-        }}
-        variant="light"
-        className={classes.newRoomButton}
-        rightIcon={
-          requests.length !== 0 && (
-            <Badge
-              color="red"
-              variant="filled"
-            >
-              {requests.length}
-            </Badge>
-          )
-        }
-      >
-        Friends
-      </Button>
       {rooms.map((room) => (
         <a
           key={room.id}
