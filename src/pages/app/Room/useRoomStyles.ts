@@ -23,10 +23,7 @@ const useRoomStyles = createStyles((theme) => ({
   },
   textInputContainer: {
     backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[7]
-        : theme.colors.gray[1],
-
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
     width: "100%",
   },
   desktopSideMenu: {
