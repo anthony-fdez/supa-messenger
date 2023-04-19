@@ -51,22 +51,16 @@ const FriendsPendingList = (): JSX.Element => {
             <Flex>
               <UserPopup
                 user={{
-                  // @ts-ignore
-                  email: friendData.email,
-                  // @ts-ignore
-                  id: friendData.id,
-                  // @ts-ignore
-                  imageUrl: friendData.image_url,
-                  // @ts-ignore
-                  name: friendData.name,
+                  email: friendData.email || "",
+                  id: friendData.id || "",
+                  imageUrl: friendData.image_url || "",
+                  name: friendData.name || "",
                 }}
               >
                 <UserAvatarWithIndicator
-                  // @ts-ignore
-                  image={friendData.image_url}
+                  image={friendData.image_url || ""}
                   size={40}
-                  // @ts-ignore
-                  user_email={friendData.email}
+                  user_email={friendData.email || ""}
                   checkOnline
                 />
               </UserPopup>
@@ -77,7 +71,6 @@ const FriendsPendingList = (): JSX.Element => {
                     mr={10}
                     size={16}
                   >
-                    {/* @ts-ignore */}
                     {friendData.name}
                   </Title>
                   <Badge>{status}</Badge>
@@ -86,7 +79,6 @@ const FriendsPendingList = (): JSX.Element => {
                   c="dimmed"
                   size={14}
                 >
-                  {/* @ts-ignore */}
                   {friendData.email}
                 </Text>
               </div>

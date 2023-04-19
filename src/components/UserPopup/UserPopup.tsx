@@ -1,9 +1,10 @@
 import React from "react";
-import { Badge, Flex, Loader, Menu, Text, Title } from "@mantine/core";
+import { Badge, Button, Flex, Loader, Menu, Text, Title } from "@mantine/core";
 import { UserPlus } from "react-feather";
-import useSendFriendRequest from "../../Hooks/friendships/useSendFriendRequest";
 import FriendsConditionalRendering from "../Friends/FriendsConditionalRendering/FriendsConditionalrendering";
 import UserAvatarWithIndicator from "../UserAvatarWithIndicator/UserAvatarWithIndicator";
+import useHandleFriendsRequests from "../../Hooks/friendships/useHandleFriendRequests";
+import useGlobalStore, { IFriend } from "../../store/useGlobalStore";
 
 interface Props {
   children: JSX.Element;
@@ -16,8 +17,13 @@ interface Props {
 }
 
 const UserPopup = ({ user, children }: Props): JSX.Element => {
-  const { isLoading: isLoadingSendFriendRequest, sendFriendRequest } =
-    useSendFriendRequest();
+  const {
+    friendships: { friends },
+    user: { uid },
+  } = useGlobalStore();
+
+  const { isLoading, handleSendFriendRequest, handleDeleteFriendship } =
+    useHandleFriendsRequests();
 
   return (
     <Menu
@@ -30,7 +36,10 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
         <div style={{ cursor: "pointer" }}>{children}</div>
       </Menu.Target>
 
-      <Menu.Dropdown ml={10}>
+      <Menu.Dropdown
+        p={20}
+        ml={10}
+      >
         <Flex
           p={20}
           justify="center"
@@ -67,24 +76,38 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
             userId={user.id}
             renderIf="FRIENDS"
           >
-            <Badge mb={20}>You are friends</Badge>
+            <>
+              <Badge mb={20}>You are friends</Badge>
+              <Button
+                loading={isLoading}
+                fullWidth
+                onClick={() => {
+                  const friendship = friends.find((friend) => {
+                    return friend.user_id_1 === uid || friend.user_id_2 === uid;
+                  });
+
+                  if (friendship) {
+                    handleDeleteFriendship({
+                      friendship,
+                    });
+                  }
+                }}
+              >
+                Remove from friends
+              </Button>
+            </>
           </FriendsConditionalRendering>
           <FriendsConditionalRendering
             renderIf="PENDING"
             userId={user.id}
           >
-            <Badge mb={20}>Request pending</Badge>
+            <Badge>Request pending</Badge>
           </FriendsConditionalRendering>
           <FriendsConditionalRendering
             renderIf="REQUEST"
             userId={user.id}
           >
-            <Badge
-              color="red"
-              mb={20}
-            >
-              Sent you a request
-            </Badge>
+            <Badge color="red">Sent you a request</Badge>
           </FriendsConditionalRendering>
         </Flex>
 
@@ -95,18 +118,12 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
           <Menu.Item
             closeMenuOnClick={false}
             onClick={() => {
-              sendFriendRequest({
+              handleSendFriendRequest({
                 friendEmail: user.email,
                 friendId: user.id,
               });
             }}
-            icon={
-              isLoadingSendFriendRequest ? (
-                <Loader size={16} />
-              ) : (
-                <UserPlus size={16} />
-              )
-            }
+            icon={isLoading ? <Loader size={16} /> : <UserPlus size={16} />}
           >
             Send friend request
           </Menu.Item>

@@ -10,6 +10,7 @@ import React from "react";
 import useGlobalStore from "../../../store/useGlobalStore";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
 import getFriend from "../../../utils/friendships/getFriend";
+import UserPopup from "../../UserPopup/UserPopup";
 
 const FriendsList = (): JSX.Element => {
   const {
@@ -37,51 +38,60 @@ const FriendsList = (): JSX.Element => {
         if (!friendData) return null;
 
         return (
-          <Flex
-            sx={{
-              padding: 5,
-              borderRadius: 5,
-              cursor: "pointer",
-              ":hover": {
-                backgroundColor:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.dark[6]
-                    : theme.colors.gray[1],
-              },
+          <UserPopup
+            user={{
+              email: friendData.email || "",
+              imageUrl: friendData.image_url || "",
+              name: friendData.name || "",
+              id: friendData.id || "",
             }}
-            key={friendship.id}
-            align="center"
-            mt={10}
           >
-            <UserAvatarWithIndicator
-              // @ts-ignore
-              image={friendData.image_url}
-              size={40}
-              // @ts-ignore
-              user_email={friendData.email}
-              checkOnline
-            />
+            <Flex
+              sx={{
+                padding: 5,
+                borderRadius: 5,
+                cursor: "pointer",
+                ":hover": {
+                  backgroundColor:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.dark[6]
+                      : theme.colors.gray[1],
+                },
+              }}
+              key={friendship.id}
+              align="center"
+              mt={10}
+            >
+              <UserAvatarWithIndicator
+                // @ts-ignore
+                image={friendData.image_url}
+                size={40}
+                // @ts-ignore
+                user_email={friendData.email}
+                checkOnline
+              />
 
-            <div style={{ marginLeft: 10 }}>
-              <Flex>
-                <Title
-                  mr={10}
-                  size={16}
+              <div style={{ marginLeft: 10 }}>
+                <Flex>
+                  <Title
+                    mr={10}
+                    size={16}
+                  >
+                    {/* @ts-ignore */}
+                    {friendData.name}
+                  </Title>
+                  <Badge>{status}</Badge>
+                </Flex>
+                <Text
+                  c="dimmed"
+                  size={14}
                 >
                   {/* @ts-ignore */}
-                  {friendData.name}
-                </Title>
-                <Badge>{status}</Badge>
-              </Flex>
-              <Text
-                c="dimmed"
-                size={14}
-              >
-                {/* @ts-ignore */}
-                {friendData.email}
-              </Text>
-            </div>
-          </Flex>
+                  {friendData.email}
+                </Text>
+              </div>
+            </Flex>
+          </UserPopup>
         );
       })}
     </div>
