@@ -14,23 +14,21 @@ const MessageFunctions = ({ handleEdit }: IMessageFunctions): JSX.Element => {
   };
 
   return (
-    <div>
-      <Flex
-        gap={10}
-        style={{ marginRight: "10px" }}
-      >
-        <CornerUpLeft
-          size={20}
-          className={classes.icons}
-          onClick={handleReply}
-        />
-        <Edit
-          size={20}
-          className={classes.icons}
-          onClick={handleEdit}
-        />
-      </Flex>
-    </div>
+    <Flex
+      gap={10}
+      style={{ marginRight: "10px" }}
+    >
+      <CornerUpLeft
+        size={20}
+        className={classes.icons}
+        onClick={handleReply}
+      />
+      <Edit
+        size={20}
+        className={classes.icons}
+        onClick={handleEdit}
+      />
+    </Flex>
   );
 };
 

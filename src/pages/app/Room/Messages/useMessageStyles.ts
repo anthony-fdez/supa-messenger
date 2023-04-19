@@ -6,6 +6,13 @@ const useMessageStyles = createStyles((theme) => ({
     position: "relative",
     width: "100%",
     paddingLeft: 10,
+
+    "&:hover": {
+      backgroundColor:
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[6]
+          : theme.colors.gray[1],
+    },
   },
   avatarDiv: {
     display: "flex",
@@ -13,9 +20,14 @@ const useMessageStyles = createStyles((theme) => ({
   messageFunctionsDiv: {
     display: "flex",
     alignItems: "center",
-    position: "absolute",
     height: "100%",
     right: 0,
+    paddingTop: "10px",
+  },
+  edit_input: {
+    width: "calc(100% -  60px)",
+    zIndex: 9999,
+    top: 0,
   },
   icons: {
     cursor: "pointer",

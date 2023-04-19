@@ -58,7 +58,7 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
             size={20}
             lineClamp={1}
           >
-            {user.name}
+            {user.id === uid ? `You (${user.name})` : user.name}
           </Title>
           <Text
             size={12}
