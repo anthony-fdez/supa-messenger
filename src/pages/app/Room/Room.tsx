@@ -11,6 +11,7 @@ import useRoomStyles from "./useRoomStyles";
 import useListenToRoomChanges from "../../../Hooks/rooms/useListenToRoomChanges";
 import useTypingStatus from "../../../Hooks/rooms/useTypingStatus";
 import JoinPublicRoom from "./JoinPublicRoom/JoinPublicRoom";
+import useGetRoomMessages from "../../../Hooks/rooms/useGetRoomMessages";
 
 interface Props {
   getRoomData: () => Promise<void>;
@@ -22,8 +23,9 @@ const Room = ({ roomId, getRoomData }: Props): JSX.Element => {
   const { classes } = useRoomStyles();
   const {
     currentRoom: { roomData, isRoomMember },
-    setCurrentRoom,
   } = useGlobalStore();
+
+  const { getRoomMessages } = useGetRoomMessages();
 
   const roomChannel = supabase.channel(roomId);
 
@@ -33,27 +35,7 @@ const Room = ({ roomId, getRoomData }: Props): JSX.Element => {
   useEffect(() => {
     if (!roomData?.id) return;
 
-    const getRoomMessages = async (): Promise<void> => {
-      const { data, error } = await supabase
-        .from("messages")
-        .select("*, userData:users(*)")
-        .eq("room_id", roomData.id)
-        .limit(50)
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        return showNotification({
-          title: "Error",
-          message: "Unable to get messages",
-        });
-      }
-
-      return setCurrentRoom({
-        messages: data,
-      });
-    };
-
-    getRoomMessages();
+    getRoomMessages({ roomId: roomData.id });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomData]);
 

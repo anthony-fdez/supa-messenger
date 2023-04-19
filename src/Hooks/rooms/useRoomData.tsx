@@ -7,7 +7,7 @@ interface Props {
   roomId?: string;
 }
 
-const useChatData = ({ roomId }: Props) => {
+const useRoomData = ({ roomId }: Props) => {
   const session = useSession();
   const supabase = useSupabaseClient<Database>();
 
@@ -90,4 +90,4 @@ const useChatData = ({ roomId }: Props) => {
   };
 };
 
-export default useChatData;
+export default useRoomData;

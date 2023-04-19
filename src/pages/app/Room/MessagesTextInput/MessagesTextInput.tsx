@@ -73,10 +73,12 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
     ];
     const ranInt = Math.floor(Math.random() * 4);
     if (message.length <= 0) {
-      return showNotification({
+      showNotification({
         title: "Error",
         message: `${noMessageNotification[ranInt]}`,
       });
+
+      return;
     }
 
     setIsSendingMessage(true);
