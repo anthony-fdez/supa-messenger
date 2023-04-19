@@ -28,6 +28,8 @@ const useMessageStyles = createStyles((theme) => ({
     width: "calc(100% -  60px)",
     zIndex: 9999,
     top: 0,
+    marginBottom: 10,
+    marginTop: 10,
   },
   icons: {
     cursor: "pointer",

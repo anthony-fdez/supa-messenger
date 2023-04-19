@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { ActionIcon, Flex, Loader, Text, TextInput } from "@mantine/core";
+import { ActionIcon, Flex, Loader, Text, Textarea } from "@mantine/core";
 import moment from "moment";
 
 import { Send } from "react-feather";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { showNotification } from "@mantine/notifications";
+import { useClickOutside } from "@mantine/hooks";
 import { IDatabaseMessages } from "../../../../../store/useGlobalStore";
 import useMessageStyles from "../useMessageStyles";
 import UserPopup from "../../../../../components/UserPopup/UserPopup";
 import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import MessageFunctions from "../MessagesFunctions/MessageFunctions";
 import { Database } from "../../../../../../types/database.types";
-import { useClickOutside } from "@mantine/hooks";
 
 interface Props {
   message: IDatabaseMessages;
@@ -110,7 +110,9 @@ const Message = ({ message }: Props): JSX.Element => {
                 handleEdit(message);
               }}
             >
-              <TextInput
+              <Textarea
+                sx={{ maxWidth: "calc(100vw - 100px)", width: 600 }}
+                autosize
                 className={classes.edit_input}
                 onChange={
                   (event): void =>
