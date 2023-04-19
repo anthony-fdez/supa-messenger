@@ -5,7 +5,7 @@ import useGlobalStore from "../../../store/useGlobalStore";
 import Messages from "./Messages/Messages";
 import MessagesTextInput from "./MessagesTextInput/MessagesTextInput";
 import RoomHeader from "./RoomHeader/RoomHeader";
-import RoomSettingsDrawer from "./RoomHeader/RoomSettingsDrawer/RoomSettingsDrawer";
+import RoomSettingsDrawer from "./RoomSideMenu/RoomSideMenu";
 import useRoomStyles from "./useRoomStyles";
 import useListenToRoomChanges from "../../../Hooks/rooms/useListenToRoomChanges";
 import useTypingStatus from "../../../Hooks/rooms/useTypingStatus";

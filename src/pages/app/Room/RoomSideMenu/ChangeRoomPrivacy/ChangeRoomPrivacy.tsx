@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { showNotification } from "@mantine/notifications";
-import useGlobalStore from "../../../../../../store/useGlobalStore";
-import { Database } from "../../../../../../../types/database.types";
-import useHttp from "../../../../../../Hooks/useHttp";
+import useGlobalStore from "../../../../../store/useGlobalStore";
+import { Database } from "../../../../../../types/database.types";
+import useHttp from "../../../../../Hooks/useHttp";
 
 interface FormValues {
   roomPassword: string;

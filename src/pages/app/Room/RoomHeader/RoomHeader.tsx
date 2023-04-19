@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Settings } from "react-feather";
 import UserAvatarWithIndicator from "../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../../store/useGlobalStore";
-import RoomSettingsDrawer from "./RoomSettingsDrawer/RoomSettingsDrawer";
+import RoomSettingsDrawer from "../RoomSideMenu/RoomSideMenu";
 import useRoomHeaderStyles from "./useRoomHeaderStyles";
 
 const RoomHeader = (): JSX.Element => {
