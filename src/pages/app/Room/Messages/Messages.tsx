@@ -25,7 +25,7 @@ const Messages = (): JSX.Element => {
   return (
     <ScrollArea
       w="100%"
-      h="calc(100vh - 150px)"
+      h="calc(100%)"
     >
       <Box>
         {messages.map((message) => {

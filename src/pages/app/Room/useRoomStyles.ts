@@ -7,7 +7,17 @@ const useRoomStyles = createStyles((theme) => ({
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
   },
   messagesContainer: {
-    minHeight: "85vh",
+    paddingTop: 20,
+
+    "@media (min-width: 901px)": {
+      minHeight: "85vh",
+      position: "relative",
+      height: "calc(100vh - 200px)",
+    },
+    "@media (max-width: 900px)": {
+      height: "calc(100vh - 200px)",
+      position: "relative",
+    },
   },
   textInputContainer: {
     backgroundColor:
