@@ -239,7 +239,8 @@ const RoomSettingsDrawer = ({
                       <Badge ml={10}>Friends</Badge>
                     </FriendsConditionalRendering>
                   </Flex>
-                  {usersTyping.find(
+                  {usersTyping &&
+                  usersTyping.find(
                     // @ts-ignore
                     (user) => user.uid === participant.userData.id,
                   ) ? (
