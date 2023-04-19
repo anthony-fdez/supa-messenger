@@ -47,6 +47,7 @@ const Messages = (): JSX.Element => {
   const [indexOfEdit, setIndexOfEdit] = useState(-1);
   const [editMessage, setEditMessage] = useState("");
   const [isSendingMessage, setIsSendingMessage] = useState(false);
+
   const handleEdit = (message: IMessage, index: number) => {
     if (index === indexOfEdit) {
       setIndexOfEdit(-1);
@@ -57,6 +58,7 @@ const Messages = (): JSX.Element => {
     console.log(messages);
     console.log(message);
   };
+
   const onEdit = async (
     e: React.FormEvent<HTMLFormElement>,
     message: IMessage,
@@ -65,6 +67,7 @@ const Messages = (): JSX.Element => {
 
     setIsSendingMessage(true);
     console.log(message.id);
+
     const { error } = await supabase
       .from("messages")
       .update({
@@ -79,10 +82,12 @@ const Messages = (): JSX.Element => {
         message: "Unable to send message.",
       });
     }
+
     setIsSendingMessage(false);
     setIndexOfEdit(-1);
     return setEditMessage("");
   };
+
   const sendButton = (): JSX.Element | null => {
     if (editMessage.length <= 0) return null;
 
