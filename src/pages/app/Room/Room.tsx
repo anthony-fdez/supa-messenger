@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useEffect } from "react";
 import { Database } from "../../../../types/database.types";
