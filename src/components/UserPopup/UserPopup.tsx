@@ -1,10 +1,11 @@
 import React from "react";
 import { Badge, Button, Flex, Loader, Menu, Text, Title } from "@mantine/core";
 import { UserPlus } from "react-feather";
+import { openConfirmModal } from "@mantine/modals";
 import FriendsConditionalRendering from "../Friends/FriendsConditionalRendering/FriendsConditionalrendering";
 import UserAvatarWithIndicator from "../UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useHandleFriendsRequests from "../../Hooks/friendships/useHandleFriendRequests";
-import useGlobalStore, { IFriend } from "../../store/useGlobalStore";
+import useGlobalStore from "../../store/useGlobalStore";
 
 interface Props {
   children: JSX.Element;
@@ -81,14 +82,29 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
               <Button
                 loading={isLoading}
                 fullWidth
+                color="red"
+                variant="light"
                 onClick={() => {
                   const friendship = friends.find((friend) => {
                     return friend.user_id_1 === uid || friend.user_id_2 === uid;
                   });
 
                   if (friendship) {
-                    handleDeleteFriendship({
-                      friendship,
+                    openConfirmModal({
+                      zIndex: 1001,
+                      overlayProps: {
+                        blur: 5,
+                      },
+                      labels: {
+                        confirm: "Yes, delete the mofo",
+                        cancel: "No, I like them",
+                      },
+                      title: "Are you sure you want to remove this friend?",
+                      onConfirm: () => {
+                        handleDeleteFriendship({
+                          friendship,
+                        });
+                      },
                     });
                   }
                 }}
