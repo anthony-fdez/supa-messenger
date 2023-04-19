@@ -18,6 +18,7 @@ import MessageFunctions from "./components/MessageFunctions";
 import useMessageStyles from "./useMessageStyles";
 
 import { Database } from "../../../../../types/database.types";
+import EmptyRoom from "../../../../components/InfoScreens/EmptyRoom";
 
 const Messages = (): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
@@ -99,6 +100,7 @@ const Messages = (): JSX.Element => {
   };
 
   if (!messages) return <p>Error loading messages</p>;
+  if (messages.length === 0) return <EmptyRoom />;
 
   return (
     <ScrollArea
