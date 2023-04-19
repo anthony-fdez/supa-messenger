@@ -97,7 +97,7 @@ const RoomSideMenu = ({
   };
 
   const handleLeaveRoom = (): void => {
-    const leaveRoomAsync = async (): Promise<void> => {
+    const leaveRoomAsync = async (): Promise<void | null> => {
       if (!roomData?.id || !session?.user.id) {
         return showNotification({
           title: "Error",
@@ -118,7 +118,7 @@ const RoomSideMenu = ({
         });
       }
 
-      return navigate("/");
+      return null;
     };
 
     openModal({

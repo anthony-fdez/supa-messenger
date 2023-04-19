@@ -19,6 +19,7 @@ import useMessageStyles from "./useMessageStyles";
 
 import { Database } from "../../../../../types/database.types";
 import EmptyRoom from "../../../../components/InfoScreens/EmptyRoom";
+import UserPopup from "../../../../components/UserPopup/UserPopup";
 
 const Messages = (): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
@@ -116,13 +117,26 @@ const Messages = (): JSX.Element => {
               className={classes.messageDiv}
             >
               <div className={classes.avatarDiv}>
-                <UserAvatarWithIndicator
-                  // @ts-ignore
-                  user_email={message.userData.email}
-                  size={30}
-                  // @ts-ignore
-                  image={message.userData.image_url}
-                />
+                <UserPopup
+                  user={{
+                    // @ts-ignore
+                    email: message.userData.email || "",
+                    // @ts-ignore
+                    id: message.userData.id || "",
+                    // @ts-ignore
+                    imageUrl: message.userData.image_url || "",
+                    // @ts-ignore
+                    name: message.userData.name || "",
+                  }}
+                >
+                  <UserAvatarWithIndicator
+                    // @ts-ignore
+                    user_email={message.userData.email}
+                    size={30}
+                    // @ts-ignore
+                    image={message.userData.image_url}
+                  />
+                </UserPopup>
               </div>
               <div style={{ marginLeft: 10 }}>
                 <Text

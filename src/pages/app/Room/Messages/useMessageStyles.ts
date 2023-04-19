@@ -6,13 +6,6 @@ const useMessageStyles = createStyles((theme) => ({
     position: "relative",
     width: "100%",
     paddingLeft: 10,
-
-    "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[6]
-          : theme.colors.gray[1],
-    },
   },
   avatarDiv: {
     display: "flex",

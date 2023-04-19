@@ -65,7 +65,6 @@ const useHandleFriendsRequests = () => {
   };
 
   const handleAcceptFriendRequest = async ({
-    friendData,
     friendship,
   }: IAcceptFriendRequest): Promise<void> => {
     setIsLoading(true);
@@ -92,11 +91,6 @@ const useHandleFriendsRequests = () => {
 
       return;
     }
-
-    showNotification({
-      title: "You got a new friends",
-      message: `You and ${friendData.name} are now friends! Now you can go outside and touch grass together`,
-    });
 
     setIsLoading(false);
   };

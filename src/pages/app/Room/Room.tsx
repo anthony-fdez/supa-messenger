@@ -43,9 +43,14 @@ const Room = ({ roomId, getRoomData }: Props): JSX.Element => {
       <div>
         <div className={classes.headerContainer}>
           <RoomHeader />
-          {!isRoomMember && <JoinPublicRoom />}
         </div>
         <div className={classes.messagesContainer}>
+          {!isRoomMember && (
+            <div className={classes.join_room_container}>
+              <JoinPublicRoom />
+            </div>
+          )}
+
           <Messages />
         </div>
         {isRoomMember && (

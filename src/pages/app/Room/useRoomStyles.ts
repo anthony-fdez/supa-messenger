@@ -2,12 +2,14 @@ import { createStyles } from "@mantine/core";
 
 const useRoomStyles = createStyles((theme) => ({
   headerContainer: {
-    top: 0,
+    position: "relative",
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
   },
   messagesContainer: {
     paddingTop: 20,
+    position: "relative",
+    width: "100%",
 
     "@media (min-width: 901px)": {
       minHeight: "85vh",
@@ -42,6 +44,13 @@ const useRoomStyles = createStyles((theme) => ({
     "@media (max-width: 1200px)": {
       display: "none",
     },
+  },
+  join_room_container: {
+    position: "absolute",
+    zIndex: 100,
+    width: "100%",
+    left: 0,
+    top: 0,
   },
 }));
 

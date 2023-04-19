@@ -1,4 +1,4 @@
-import { Alert, Button } from "@mantine/core";
+import { Alert, Button, Text } from "@mantine/core";
 import React, { useState } from "react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { showNotification } from "@mantine/notifications";
@@ -41,10 +41,18 @@ const JoinPublicRoom = () => {
 
   return (
     <Alert
+      variant="filled"
       mt={20}
-      title="You are not a participant in this room, join to send messages"
+      color="gray"
+      title="Unleash Your Inner Comedian in this Chat Room"
     >
+      <Text>
+        Join our uproarious chat room for laughter-filled connections and
+        side-splitting conversations with fellow humor enthusiasts. Don&apos;t
+        miss out on the fun – hop in and let the good times roll!
+      </Text>
       <Button
+        mt={20}
         onClick={() => {
           setIsLoadingJoiningRoom(true);
 
