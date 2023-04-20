@@ -39,7 +39,7 @@ const Step1 = ({ nextStep }: IStepProps): JSX.Element => {
         description="This is going to be your public name"
         error={errors.name?.message}
         label="Name"
-        placeholder="Fidel Castro"
+        placeholder="Stephen Smith"
         withAsterisk
       />
       <Divider

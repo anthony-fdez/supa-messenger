@@ -69,6 +69,7 @@ const EnterRoomPassword = ({ getRoomData, roomId }: Props): JSX.Element => {
       onSubmit={onSubmit}
     >
       <Card
+        mt={100}
         sx={{ maxWidth: "500px", margin: "auto" }}
         withBorder
       >

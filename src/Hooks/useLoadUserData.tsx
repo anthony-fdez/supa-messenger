@@ -1,6 +1,9 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useCallback, useEffect } from "react";
-import useGlobalStore, { IFriend } from "../store/useGlobalStore";
+import useGlobalStore, {
+  IDatabaseRoom,
+  IFriend,
+} from "../store/useGlobalStore";
 import { Database } from "../../types/database.types";
 import useHandleSignout from "./useHandleSignout";
 
@@ -14,6 +17,7 @@ const useLoadUserData = () => {
     setRooms,
     setFriendships,
     user: { uid },
+    setDms,
   } = useGlobalStore();
 
   const getUserSession = useCallback(async () => {
@@ -63,12 +67,16 @@ const useLoadUserData = () => {
       .from("rooms")
       .select(
         `*, 
+        friendships(
+          *
+        ),
         participants!inner(
           *,
           userData:users(
             *
           )
-        )`,
+        )
+        `,
       )
       .filter("participants.user_id", "eq", uid);
 
@@ -76,8 +84,24 @@ const useLoadUserData = () => {
       return;
     }
 
+    const newDms: IDatabaseRoom[] = [];
+    const newRooms: IDatabaseRoom[] = [];
+
+    data.forEach((room) => {
+      if (room.friendship_id && room.is_dm) {
+        newDms.push(room);
+        return;
+      }
+
+      newRooms.push(room);
+    });
+
+    console.log("dms", newDms);
+
     // @ts-ignore
-    setRooms(data);
+    setRooms(newRooms);
+    // @ts-ignore
+    setDms(newDms);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

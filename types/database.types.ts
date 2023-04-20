@@ -13,7 +13,7 @@ export interface Database {
         Row: {
           action_user_id: string
           created_at: string | null
-          id: number
+          id: string
           status: string
           user_email_1: string | null
           user_email_2: string | null
@@ -23,7 +23,7 @@ export interface Database {
         Insert: {
           action_user_id: string
           created_at?: string | null
-          id?: number
+          id?: string
           status?: string
           user_email_1?: string | null
           user_email_2?: string | null
@@ -33,7 +33,7 @@ export interface Database {
         Update: {
           action_user_id?: string
           created_at?: string | null
-          id?: number
+          id?: string
           status?: string
           user_email_1?: string | null
           user_email_2?: string | null
@@ -47,7 +47,7 @@ export interface Database {
           id: number
           is_edited: boolean
           message_body: string
-          room_id: number
+          room_id: string
           thread_id: number | null
           user_id: string
         }
@@ -56,7 +56,7 @@ export interface Database {
           id?: number
           is_edited?: boolean
           message_body: string
-          room_id: number
+          room_id: string
           thread_id?: number | null
           user_id: string
         }
@@ -65,7 +65,7 @@ export interface Database {
           id?: number
           is_edited?: boolean
           message_body?: string
-          room_id?: number
+          room_id?: string
           thread_id?: number | null
           user_id?: string
         }
@@ -74,19 +74,19 @@ export interface Database {
         Row: {
           created_at: string | null
           id: number
-          room_id: number
+          room_id: string
           user_id: string
         }
         Insert: {
           created_at?: string | null
           id?: number
-          room_id: number
+          room_id: string
           user_id: string
         }
         Update: {
           created_at?: string | null
           id?: number
-          room_id?: number
+          room_id?: string
           user_id?: string
         }
       }
@@ -96,45 +96,51 @@ export interface Database {
           created_by: string
           id: number
           password: string
-          room_id: number
+          room_id: string
         }
         Insert: {
           created_at?: string | null
           created_by: string
           id?: number
           password: string
-          room_id: number
+          room_id: string
         }
         Update: {
           created_at?: string | null
           created_by?: string
           id?: number
           password?: string
-          room_id?: number
+          room_id?: string
         }
       }
       rooms: {
         Row: {
           created_at: string | null
-          created_by: string
+          created_by: string | null
+          friendship_id: string | null
           has_voice_channel: boolean
-          id: number
+          id: string
+          is_dm: boolean
           is_private: boolean
           name: string
         }
         Insert: {
           created_at?: string | null
-          created_by: string
+          created_by?: string | null
+          friendship_id?: string | null
           has_voice_channel?: boolean
-          id?: number
+          id?: string
+          is_dm?: boolean
           is_private?: boolean
           name: string
         }
         Update: {
           created_at?: string | null
-          created_by?: string
+          created_by?: string | null
+          friendship_id?: string | null
           has_voice_channel?: boolean
-          id?: number
+          id?: string
+          is_dm?: boolean
           is_private?: boolean
           name?: string
         }
@@ -143,17 +149,17 @@ export interface Database {
         Row: {
           created_at: string | null
           id: number
-          room_id: number
+          room_id: string
         }
         Insert: {
           created_at?: string | null
           id?: number
-          room_id: number
+          room_id: string
         }
         Update: {
           created_at?: string | null
           id?: number
-          room_id?: number
+          room_id?: string
         }
       }
       users: {
@@ -204,7 +210,13 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_user_participant_in_room: {
+        Args: {
+          p_user_id: string
+          p_room_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

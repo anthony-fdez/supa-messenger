@@ -40,6 +40,7 @@ const AuthUser = ({ message, messageHeader }: Props): JSX.Element => {
       setIsLoadingDemoSignup(false);
     }
   };
+
   return (
     <Card
       className={styles.container}

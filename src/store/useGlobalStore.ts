@@ -78,6 +78,7 @@ interface IFriendships {
 interface IGlobalStateValues {
   app: IApp;
   currentRoom: ICurrentRoom;
+  dms: IRoom[];
   friendships: IFriendships;
   preferences: IPreferences;
   rooms: IRoom[];
@@ -95,6 +96,7 @@ export interface IGlobalState extends IGlobalStateValues {
   clearState: () => void;
   setApp: (state: Partial<IApp>) => void;
   setCurrentRoom: (state: Partial<ICurrentRoom>) => void;
+  setDms: (state: IRoom[]) => void;
   setFriendships: (state: Partial<IFriendships>) => void;
   setPreferences: (state: Partial<IPreferences>) => void;
   setRooms: (state: IRoom[]) => void;
@@ -104,6 +106,7 @@ export interface IGlobalState extends IGlobalStateValues {
 
 const initialState: IGlobalStateValues = {
   rooms: [],
+  dms: [],
   friendships: {
     friends: [],
     requests: [],
@@ -194,6 +197,11 @@ const useGlobalStore = create<IGlobalState>()(
         setRooms: (newRooms): void => {
           set(() => ({
             rooms: newRooms,
+          }));
+        },
+        setDms: (newRooms): void => {
+          set(() => ({
+            dms: newRooms,
           }));
         },
         setCurrentRoom: (newCurrentRoom): void => {

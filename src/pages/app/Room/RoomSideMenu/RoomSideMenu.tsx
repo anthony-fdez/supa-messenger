@@ -249,19 +249,21 @@ const RoomSideMenu = ({
             return <RoomSideMenuParticipant participant={participant} />;
           })}
         </ScrollArea>
-        {isRoomMember && roomData?.created_by !== session?.user.id && (
-          <div>
-            <Button
-              onClick={handleLeaveRoom}
-              fullWidth
-              variant="light"
-              color="red"
-              leftIcon={<LogOut size={14} />}
-            >
-              Leave Room
-            </Button>
-          </div>
-        )}
+        {isRoomMember &&
+          roomData?.created_by !== session?.user.id &&
+          !roomData?.is_dm && (
+            <div>
+              <Button
+                onClick={handleLeaveRoom}
+                fullWidth
+                variant="light"
+                color="red"
+                leftIcon={<LogOut size={14} />}
+              >
+                Leave Room
+              </Button>
+            </div>
+          )}
       </div>
     );
   };

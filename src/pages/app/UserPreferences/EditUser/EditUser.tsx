@@ -161,7 +161,7 @@ const EditUser = ({ setIsEditingUser }: Props): JSX.Element => {
             description="This is your publicly shown name"
             error={errors.name?.message}
             label="Your Name"
-            placeholder="Fidel Castro"
+            placeholder="Stephen Smith"
             withAsterisk
           />
         </Grid.Col>
