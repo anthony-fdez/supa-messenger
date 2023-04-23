@@ -85,6 +85,9 @@ const Message = ({ message }: Props): JSX.Element => {
       setIsSendingMessage(false);
 
       return openModal({
+        overlayProps: {
+          blur: 5,
+        },
         title: "Warning",
         children: (
           <>
