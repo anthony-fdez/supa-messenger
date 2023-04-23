@@ -50,7 +50,6 @@ const Step2 = ({ prevStep }: IStepProps): JSX.Element => {
           cacheControl: "0",
           upsert: true,
         });
-      console.log(`${session.user.id}/profile.png`);
       if (error) {
         return showNotification({
           title: "Error.",
