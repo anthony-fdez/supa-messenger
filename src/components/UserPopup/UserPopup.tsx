@@ -21,6 +21,7 @@ interface Props {
 const UserPopup = ({ user, children }: Props): JSX.Element => {
   const {
     friendships: { friends },
+    setApp,
     user: { uid },
   } = useGlobalStore();
 
@@ -89,6 +90,10 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
                 onClick={() => {
                   const friendship = friends.find((friend) => {
                     return friend.user_id_1 === uid || friend.user_id_2 === uid;
+                  });
+
+                  setApp({
+                    secondaryActiveSideMenu: friendship?.room_id,
                   });
 
                   navigate(`/chat/${friendship?.room_id}`);
