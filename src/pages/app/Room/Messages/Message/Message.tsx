@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   ActionIcon,
   Button,
@@ -9,20 +8,20 @@ import {
   Textarea,
 } from "@mantine/core";
 import moment from "moment";
-
-import { Flag, Send } from "react-feather";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import React, { useState } from "react";
+import { useClickOutside } from "@mantine/hooks";
+import { closeAllModals, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
-import { useClickOutside, useDisclosure } from "@mantine/hooks";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Send } from "react-feather";
+import { Database } from "../../../../../../types/database.types";
+import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
+import UserPopup from "../../../../../components/UserPopup/UserPopup";
 import useGlobalStore, {
   IDatabaseMessages,
 } from "../../../../../store/useGlobalStore";
-import useMessageStyles from "../useMessageStyles";
-import UserPopup from "../../../../../components/UserPopup/UserPopup";
-import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import MessageFunctions from "../MessagesFunctions/MessageFunctions";
-import { Database } from "../../../../../../types/database.types";
-import { closeAllModals, openModal } from "@mantine/modals";
+import useMessageStyles from "../useMessageStyles";
 
 interface Props {
   message: IDatabaseMessages;
@@ -40,28 +39,28 @@ const Message = ({ message }: Props): JSX.Element => {
   const outsideClickRef = useClickOutside(() => setIsEditingMessage(false));
 
   const removeMessage = (id: number) => {
-    const removeMessage = async() => {
-      if(!message.id || !user.uid){
+    const removeMessageAsync = async () => {
+      if (!message.id || !user.uid) {
         return showNotification({
           title: "Error",
-          message: "Error, please refresh page and try again."
-        })
+          message: "Error, please refresh page and try again.",
+        });
       }
 
       const { error } = await supabase.from("messages").delete().eq("id", id);
-      if(error){
+      if (error) {
         return showNotification({
           title: "Error",
-          message: error.message
-        })
+          message: error.message,
+        });
       }
       return null;
-    }
+    };
 
-    removeMessage().finally(() => {
+    removeMessageAsync().finally(() => {
       closeAllModals();
-    })
-  }
+    });
+  };
 
   const handleEdit = async (m: IDatabaseMessages) => {
     setIsSendingMessage(true);
@@ -82,20 +81,35 @@ const Message = ({ message }: Props): JSX.Element => {
       });
     }
 
-    if(editMessage.length <= 0){
+    if (editMessage.length <= 0) {
       setIsSendingMessage(false);
+
       return openModal({
         title: "Warning",
         children: (
           <>
-          <p>Are you sure you want to remove message?</p>
-          <Flex mt={20} justify="flex-end">
-            <Button mr={10} onClick={() => closeAllModals()}>Cancel</Button>
-            <Button color="red" onClick={() => removeMessage(message.id)}>Remove</Button>
-          </Flex>
-        </>
-        )
-    })
+            <p>Are you sure you want to remove message?</p>
+            <Flex
+              mt={20}
+              justify="flex-end"
+            >
+              <Button
+                variant="light"
+                mr={10}
+                onClick={() => closeAllModals()}
+              >
+                Cancel
+              </Button>
+              <Button
+                color="red"
+                onClick={() => removeMessage(message.id)}
+              >
+                Remove
+              </Button>
+            </Flex>
+          </>
+        ),
+      });
     }
 
     setIsSendingMessage(false);
@@ -104,19 +118,21 @@ const Message = ({ message }: Props): JSX.Element => {
     return setEditMessage("");
   };
 
-
   const sendButton = (): JSX.Element => {
     return (
       <ActionIcon type="submit">
-        { isSendingMessage ? <Loader size={16} /> : <Send size={16} />}
+        {isSendingMessage ? <Loader size={16} /> : <Send size={16} />}
       </ActionIcon>
     );
   };
 
   return (
-    <>
+    <div>
       {!isEditingMessage && user.uid === message.user_id ? (
-        <HoverCard shadow="md" position="top-end">
+        <HoverCard
+          shadow="md"
+          position="top-end"
+        >
           <HoverCard.Target>
             <Flex
               key={message.id}
@@ -274,7 +290,7 @@ const Message = ({ message }: Props): JSX.Element => {
           </Flex>
         </Flex>
       )}
-    </>
+    </div>
   );
 };
 
