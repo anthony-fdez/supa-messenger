@@ -68,7 +68,16 @@ const useLoadUserData = () => {
       .select(
         `*, 
         friendships(
-          *
+          *,
+          userData1:users!friendships_user_id_1_fkey(
+            *
+          ),
+          userData2:users!friendships_user_id_2_fkey(
+            *
+          ),
+          actionUserData:users!friendships_action_user_id_fkey(
+            *
+          )
         ),
         participants!inner(
           *,
@@ -88,15 +97,14 @@ const useLoadUserData = () => {
     const newRooms: IDatabaseRoom[] = [];
 
     data.forEach((room) => {
-      if (room.friendship_id && room.is_dm) {
+      // @ts-ignore
+      if (room.friendships && room.friendships[0] && room.is_dm) {
         newDms.push(room);
         return;
       }
 
       newRooms.push(room);
     });
-
-    console.log("dms", newDms);
 
     // @ts-ignore
     setRooms(newRooms);

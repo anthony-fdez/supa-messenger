@@ -13,7 +13,8 @@ export interface Database {
         Row: {
           action_user_id: string
           created_at: string | null
-          id: string
+          id: number
+          room_id: string | null
           status: string
           user_email_1: string | null
           user_email_2: string | null
@@ -23,7 +24,8 @@ export interface Database {
         Insert: {
           action_user_id: string
           created_at?: string | null
-          id?: string
+          id?: number
+          room_id?: string | null
           status?: string
           user_email_1?: string | null
           user_email_2?: string | null
@@ -33,7 +35,8 @@ export interface Database {
         Update: {
           action_user_id?: string
           created_at?: string | null
-          id?: string
+          id?: number
+          room_id?: string | null
           status?: string
           user_email_1?: string | null
           user_email_2?: string | null
@@ -117,7 +120,6 @@ export interface Database {
         Row: {
           created_at: string | null
           created_by: string | null
-          friendship_id: string | null
           has_voice_channel: boolean
           id: string
           is_dm: boolean
@@ -127,7 +129,6 @@ export interface Database {
         Insert: {
           created_at?: string | null
           created_by?: string | null
-          friendship_id?: string | null
           has_voice_channel?: boolean
           id?: string
           is_dm?: boolean
@@ -137,7 +138,6 @@ export interface Database {
         Update: {
           created_at?: string | null
           created_by?: string | null
-          friendship_id?: string | null
           has_voice_channel?: boolean
           id?: string
           is_dm?: boolean

@@ -33,6 +33,7 @@ export interface IDatabaseMessages extends IDatabaseMessagesWithoutUsers {
 }
 
 export interface IRoom extends IDatabaseRoom {
+  friendships: IFriend[];
   participants: IDatabaseParticipants[];
 }
 
