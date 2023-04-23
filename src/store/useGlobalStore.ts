@@ -40,6 +40,7 @@ export interface IRoom extends IDatabaseRoom {
 interface IApp {
   isFriendsMenuOpen: boolean;
   isLoading: boolean;
+  isLoadingRooms: boolean;
   isMobileMenuOpen: boolean;
   mainActiveSideMenu: string | null;
   onlineUsers: RealtimePresenceState | null;
@@ -133,6 +134,7 @@ const initialState: IGlobalStateValues = {
     isFriendsMenuOpen: false,
     isMobileMenuOpen: false,
     onlineUsers: null,
+    isLoadingRooms: false,
     isLoading: false,
     mainActiveSideMenu: "Messages",
     secondaryActiveSideMenu: null,

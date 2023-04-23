@@ -62,6 +62,7 @@ const useLoadUserData = () => {
 
   const getUserRoomData = useCallback(async (): Promise<void> => {
     setRooms([]);
+    setApp({ isLoadingRooms: true });
 
     const { data, error } = await supabase
       .from("rooms")
@@ -110,6 +111,11 @@ const useLoadUserData = () => {
     setRooms(newRooms);
     // @ts-ignore
     setDms(newDms);
+
+    setTimeout(() => {
+      setApp({ isLoadingRooms: false });
+    }, 2000);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

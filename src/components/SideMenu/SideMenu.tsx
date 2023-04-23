@@ -8,6 +8,10 @@ import {
   Accordion,
   Button,
   Badge,
+  Flex,
+  Loader,
+  Text,
+  Collapse,
 } from "@mantine/core";
 import { MessageSquare, Settings, Users } from "react-feather";
 import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
@@ -136,6 +140,20 @@ const SideMenu = (): JSX.Element => {
 
     return (
       <>
+        <Collapse in={app.isLoadingRooms}>
+          <Flex
+            align="center"
+            p={20}
+            pt={0}
+          >
+            <Loader
+              mr={10}
+              size={20}
+            />
+            <Text size={14}>Updating...</Text>
+          </Flex>
+        </Collapse>
+
         <Button
           onClick={() => {
             setApp({ isFriendsMenuOpen: true });
