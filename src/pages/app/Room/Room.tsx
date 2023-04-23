@@ -7,7 +7,7 @@ import MessagesTextInput from "./MessagesTextInput/MessagesTextInput";
 import RoomHeader from "./RoomHeader/RoomHeader";
 import RoomSettingsDrawer from "./RoomSideMenu/RoomSideMenu";
 import useRoomStyles from "./useRoomStyles";
-import useListenToRoomChanges from "../../../Hooks/rooms/useListenToRoomChanges";
+import useListenToMessagesChanges from "../../../Hooks/rooms/useListenToMessagesChanges";
 import useTypingStatus from "../../../Hooks/rooms/useTypingStatus";
 import JoinPublicRoom from "./JoinPublicRoom/JoinPublicRoom";
 import useGetRoomMessages from "../../../Hooks/rooms/useGetRoomMessages";
@@ -28,7 +28,7 @@ const Room = ({ roomId, getRoomData }: Props): JSX.Element => {
 
   const roomChannel = supabase.channel(roomId);
 
-  useListenToRoomChanges({ getRoomData });
+  useListenToMessagesChanges({ getRoomData });
   useTypingStatus({ roomChannel });
 
   useEffect(() => {

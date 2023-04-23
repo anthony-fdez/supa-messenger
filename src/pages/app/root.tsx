@@ -12,10 +12,12 @@ import { Database } from "../../../types/database.types";
 import removeTypingIndicatorFromOfflineUsers from "../../helpers/removeTypingIndicatorFromOfflineUsers";
 import useListenToFriendshipChanges from "../../Hooks/friendships/useListenToFrienshipChanges";
 import useGlobalStore from "../../store/useGlobalStore";
+import useListenToRoomChanges from "../../Hooks/rooms/useListenToRoomChanges";
 
 const Root = (): JSX.Element => {
-  const { getUserFriends } = useLoadUserData();
+  const { getUserFriends, getUserRoomData } = useLoadUserData();
   useListenToFriendshipChanges({ getUserFriends });
+  useListenToRoomChanges({ getUserRoomData });
 
   const { classes } = useRootStyles();
 
