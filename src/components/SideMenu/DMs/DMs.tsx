@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "@mantine/core";
+import { Alert, Text } from "@mantine/core";
 import { useNavigate } from "react-router";
 import useGlobalStore, {
   IDatabaseUser,
@@ -28,6 +28,18 @@ const DMs = (): JSX.Element => {
 
     return friend.friendData;
   };
+
+  if (dms.length === 0) {
+    return (
+      <Alert
+        m={10}
+        mt={0}
+        title="No direct messages"
+      >
+        You have no DMs yet. Go to a public room to start chatting with people.
+      </Alert>
+    );
+  }
 
   return (
     <div>
