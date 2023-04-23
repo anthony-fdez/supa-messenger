@@ -1,4 +1,4 @@
-import { Button, Text } from "@mantine/core";
+import { Alert, Button, Text } from "@mantine/core";
 import { openModal } from "@mantine/modals";
 import React from "react";
 import { MessageSquare } from "react-feather";
@@ -11,6 +11,46 @@ const ChatRooms = (): JSX.Element => {
   const { classes, cx } = useSideMenuStyles();
   const { app, setApp, rooms } = useGlobalStore();
   const navigate = useNavigate();
+
+  const renderLoader = (): JSX.Element => {
+    if (rooms.length === 0) {
+      return (
+        <Alert
+          mt={0}
+          m={10}
+          title="So empty"
+        >
+          Looks like you don&apos;t have any rooms yet. Create one to start
+          chatting with people.
+        </Alert>
+      );
+    }
+
+    return (
+      <>
+        {rooms.map((room) => (
+          <a
+            key={room.id}
+            className={cx(classes.link, {
+              [classes.linkActive]:
+                app.secondaryActiveSideMenu === room.id.toString(),
+            })}
+            href="/"
+            onClick={(event): void => {
+              event.preventDefault();
+              setApp({
+                secondaryActiveSideMenu: room.id.toString(),
+                isMobileMenuOpen: false,
+              });
+              navigate(`/chat/${room.id}`);
+            }}
+          >
+            <Text lineClamp={1}>{room.name}</Text>
+          </a>
+        ))}
+      </>
+    );
+  };
 
   return (
     <div>
@@ -31,26 +71,7 @@ const ChatRooms = (): JSX.Element => {
       >
         Create New Room
       </Button>
-      {rooms.map((room) => (
-        <a
-          key={room.id}
-          className={cx(classes.link, {
-            [classes.linkActive]:
-              app.secondaryActiveSideMenu === room.id.toString(),
-          })}
-          href="/"
-          onClick={(event): void => {
-            event.preventDefault();
-            setApp({
-              secondaryActiveSideMenu: room.id.toString(),
-              isMobileMenuOpen: false,
-            });
-            navigate(`/chat/${room.id}`);
-          }}
-        >
-          <Text lineClamp={1}>{room.name}</Text>
-        </a>
-      ))}
+      {renderLoader()}
     </div>
   );
 };
