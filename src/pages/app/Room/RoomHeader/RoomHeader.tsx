@@ -12,6 +12,8 @@ const RoomHeader = (): JSX.Element => {
   const { classes } = useRoomHeaderStyles();
   const {
     currentRoom: { roomData, roomParticipants },
+
+    user: { uid },
   } = useGlobalStore();
   const isMobile = useMediaQuery("(max-width: 1200px)");
 
@@ -21,7 +23,64 @@ const RoomHeader = (): JSX.Element => {
     return <p>Error</p>;
   }
 
-  // const [friend] = useState(getFriend(curr));
+  const getRoomName = () => {
+    if (!roomData.is_dm) {
+      return roomData.name;
+    }
+
+    console.log(roomData);
+
+    // @ts-ignore
+    if (!roomData?.friendships) return "Direct Message";
+
+    const friend = getFriend({
+      // @ts-ignore
+      friendship: roomData.friendships[0],
+      userId: uid || "",
+    });
+
+    console.log(friend);
+    return friend.friendData?.name;
+  };
+
+  const getRoomBadge = () => {
+    if (roomData.is_dm) {
+      return (
+        <Tooltip label="Direct Message">
+          <Badge
+            ml={30}
+            mt={3}
+            variant="outline"
+          >
+            DM
+          </Badge>
+        </Tooltip>
+      );
+    }
+
+    if (roomData.is_private) {
+      return (
+        <Badge
+          ml={30}
+          mt={3}
+          variant="outline"
+        >
+          Private Room
+        </Badge>
+      );
+    }
+
+    return (
+      <Badge
+        color="red"
+        ml={30}
+        mt={3}
+        variant="outline"
+      >
+        Public Room
+      </Badge>
+    );
+  };
 
   return (
     <div style={{ zIndex: "9999" }}>
@@ -64,26 +123,9 @@ const RoomHeader = (): JSX.Element => {
             lineClamp={1}
             size={20}
           >
-            {roomData.name}
+            {getRoomName()}
           </Title>
-          {roomData.is_private ? (
-            <Badge
-              ml={30}
-              mt={3}
-              variant="outline"
-            >
-              Private Room
-            </Badge>
-          ) : (
-            <Badge
-              color="red"
-              ml={30}
-              mt={3}
-              variant="outline"
-            >
-              Public Room
-            </Badge>
-          )}
+          {getRoomBadge()}
         </div>
         {isMobile && (
           <Tooltip

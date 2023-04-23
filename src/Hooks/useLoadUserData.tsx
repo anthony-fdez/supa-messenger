@@ -33,6 +33,8 @@ const useLoadUserData = () => {
   }, []);
 
   const getUserData = useCallback(async (): Promise<void> => {
+    if (!session) return;
+
     const { data, error } = await supabase
       .from("users")
       .select("*")
@@ -62,6 +64,8 @@ const useLoadUserData = () => {
   }, []);
 
   const getUserRoomData = useCallback(async (): Promise<void> => {
+    if (!session) return;
+
     setRooms([]);
     setApp({ isLoadingRooms: true });
 
@@ -122,6 +126,8 @@ const useLoadUserData = () => {
   }, []);
 
   const getUserFriends = useCallback(async (): Promise<void> => {
+    if (!session) return;
+
     setFriendships({
       friends: [],
       requests: [],
@@ -189,6 +195,7 @@ const useLoadUserData = () => {
       setApp({ isLoading: false });
     });
   }, [
+    session,
     getUserData,
     getUserFriends,
     getUserRoomData,
