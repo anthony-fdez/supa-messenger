@@ -6,6 +6,7 @@ import UserAvatarWithIndicator from "../../../../components/UserAvatarWithIndica
 import useGlobalStore from "../../../../store/useGlobalStore";
 import RoomSettingsDrawer from "../RoomSideMenu/RoomSideMenu";
 import useRoomHeaderStyles from "./useRoomHeaderStyles";
+import getFriend from "../../../../utils/friendships/getFriend";
 
 const RoomHeader = (): JSX.Element => {
   const { classes } = useRoomHeaderStyles();
@@ -19,6 +20,8 @@ const RoomHeader = (): JSX.Element => {
   if (!roomData || !roomParticipants) {
     return <p>Error</p>;
   }
+
+  // const [friend] = useState(getFriend(curr));
 
   return (
     <div style={{ zIndex: "9999" }}>

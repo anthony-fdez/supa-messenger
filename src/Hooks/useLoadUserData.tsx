@@ -1,4 +1,4 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useCallback, useEffect } from "react";
 import useGlobalStore, {
   IDatabaseRoom,
@@ -10,6 +10,7 @@ import useHandleSignout from "./useHandleSignout";
 const useLoadUserData = () => {
   const supabase = useSupabaseClient<Database>();
   const { handleSignout } = useHandleSignout();
+  const session = useSession();
 
   const {
     setUser,
@@ -35,7 +36,7 @@ const useLoadUserData = () => {
     const { data, error } = await supabase
       .from("users")
       .select("*")
-      .eq("id", uid)
+      .eq("id", session?.user.id)
       .single();
 
     if (error || !data) {
@@ -91,6 +92,7 @@ const useLoadUserData = () => {
       .filter("participants.user_id", "eq", uid);
 
     if (error || !data) {
+      setApp({ isLoadingRooms: false });
       return;
     }
 
@@ -150,12 +152,12 @@ const useLoadUserData = () => {
 
     data.forEach((friendship) => {
       if (friendship.status === "PENDING") {
-        if (friendship.action_user_id === uid) return pending.push(friendship);
-
-        return requests.push(friendship);
-      }
-
-      if (friendship.status === "FRIENDS") {
+        if (friendship.action_user_id === uid) {
+          pending.push(friendship);
+        } else {
+          requests.push(friendship);
+        }
+      } else if (friendship.status === "FRIENDS") {
         return friends.push(friendship);
       }
 
