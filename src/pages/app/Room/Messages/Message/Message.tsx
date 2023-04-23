@@ -39,6 +39,30 @@ const Message = ({ message }: Props): JSX.Element => {
 
   const outsideClickRef = useClickOutside(() => setIsEditingMessage(false));
 
+  const removeMessage = (id: number) => {
+    const removeMessage = async() => {
+      if(!message.id || !user.uid){
+        return showNotification({
+          title: "Error",
+          message: "Error, please refresh page and try again."
+        })
+      }
+
+      const { error } = await supabase.from("messages").delete().eq("id", id);
+      if(error){
+        return showNotification({
+          title: "Error",
+          message: error.message
+        })
+      }
+      return null;
+    }
+
+    removeMessage().finally(() => {
+      closeAllModals();
+    })
+  }
+
   const handleEdit = async (m: IDatabaseMessages) => {
     setIsSendingMessage(true);
     console.log(message.id);
@@ -67,11 +91,12 @@ const Message = ({ message }: Props): JSX.Element => {
           <>
           <p>Are you sure you want to remove message?</p>
           <Flex mt={20} justify="flex-end">
-            <Button color="red" onClick={() => closeAllModals()}>Remove</Button>
+            <Button mr={10} onClick={() => closeAllModals()}>Cancel</Button>
+            <Button color="red" onClick={() => removeMessage(message.id)}>Remove</Button>
           </Flex>
         </>
         )
-      })
+    })
     }
 
     setIsSendingMessage(false);
