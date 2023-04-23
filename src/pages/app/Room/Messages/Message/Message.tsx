@@ -82,7 +82,6 @@ const Message = ({ message }: Props): JSX.Element => {
       });
     }
 
-    // TODO : Remove message handler after onclick
     if(editMessage.length <= 0){
       setIsSendingMessage(false);
       return openModal({
