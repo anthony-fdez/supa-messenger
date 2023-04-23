@@ -23,7 +23,12 @@ const supabase = createClient(
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: (
+      <>
+        <FriendsMenu />
+        <Root />
+      </>
+    ),
     errorElement: <Error404 />,
     children: [
       {
@@ -50,7 +55,7 @@ const App = (): JSX.Element => {
           // @ts-ignore
           colorScheme:
             preferences.theme === "system" ? colorScheme : preferences.theme,
-          primaryColor: "green",
+          primaryColor: "blue",
           defaultRadius: "md",
           colors: {
             // override dark colors to change them for all components
@@ -71,7 +76,7 @@ const App = (): JSX.Element => {
             Button: {
               defaultProps: {
                 size: "xs",
-                color: "green",
+                color: "blue",
               },
             },
             Modal: {
@@ -94,7 +99,6 @@ const App = (): JSX.Element => {
         <ModalsProvider>
           <RouterProvider router={router} />
           <LoadingOverlay />
-          <FriendsMenu />
         </ModalsProvider>
       </MantineProvider>
     </SessionContextProvider>
