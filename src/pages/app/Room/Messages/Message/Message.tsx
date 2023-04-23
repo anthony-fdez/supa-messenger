@@ -40,6 +40,7 @@ const Message = ({ message }: Props): JSX.Element => {
 
   const removeMessage = (id: number) => {
     const removeMessageAsync = async () => {
+      setIsSendingMessage(true);
       if (!message.id || !user.uid) {
         return showNotification({
           title: "Error",
@@ -63,27 +64,8 @@ const Message = ({ message }: Props): JSX.Element => {
   };
 
   const handleEdit = async (m: IDatabaseMessages) => {
-    setIsSendingMessage(true);
-    console.log(message.id);
-
-    const { error } = await supabase
-      .from("messages")
-      .update({
-        message_body: editMessage,
-      })
-      .eq("id", m.id);
-
-    if (error) {
-      setIsSendingMessage(false);
-      return showNotification({
-        title: "Error",
-        message: "Unable to send message.",
-      });
-    }
-
     if (editMessage.length <= 0) {
       setIsSendingMessage(false);
-
       return openModal({
         overlayProps: {
           blur: 5,
@@ -91,7 +73,7 @@ const Message = ({ message }: Props): JSX.Element => {
         title: "Warning",
         children: (
           <>
-            <p>Are you sure you want to remove message?</p>
+            <p>Are you sure you want to remove this message?</p>
             <Flex
               mt={20}
               justify="flex-end"
@@ -115,13 +97,29 @@ const Message = ({ message }: Props): JSX.Element => {
       });
     }
 
+    setIsSendingMessage(true);
+    const { error } = await supabase
+      .from("messages")
+      .update({
+        message_body: editMessage,
+      })
+      .eq("id", m.id);
+
+    if (error) {
+      setIsSendingMessage(false);
+      return showNotification({
+        title: "Error",
+        message: "Unable to send message.",
+      });
+    }
+
     setIsSendingMessage(false);
     setIsEditingMessage(false);
 
     return setEditMessage("");
   };
 
-  const sendButton = (): JSX.Element => {
+  const sendButton = (): JSX.Element | any => {
     return (
       <ActionIcon type="submit">
         {isSendingMessage ? <Loader size={16} /> : <Send size={16} />}
