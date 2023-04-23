@@ -3,19 +3,13 @@ import { Auth } from "@supabase/auth-ui-react";
 import React, { useState } from "react";
 import { Card, useMantineTheme, Alert, Button, HoverCard } from "@mantine/core";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { AlertCircle } from "react-feather";
 import { useColorScheme } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import styles from "./AuthUser.module.css";
 import useGlobalStore from "../../store/useGlobalStore";
 import { Database } from "../../../types/database.types";
 
-interface Props {
-  message?: string;
-  messageHeader?: string;
-}
-
-const AuthUser = ({ message, messageHeader }: Props): JSX.Element => {
+const AuthUser = (): JSX.Element => {
   const supabase = useSupabaseClient<Database>();
   const theme = useMantineTheme();
   const { preferences } = useGlobalStore();
@@ -47,14 +41,6 @@ const AuthUser = ({ message, messageHeader }: Props): JSX.Element => {
       withBorder
     >
       <h1>Account.</h1>
-      {message && (
-        <Alert
-          icon={<AlertCircle size={16} />}
-          title={messageHeader && messageHeader}
-        >
-          {message}
-        </Alert>
-      )}
       <Auth
         appearance={{
           theme: ThemeSupa,
@@ -62,8 +48,8 @@ const AuthUser = ({ message, messageHeader }: Props): JSX.Element => {
           variables: {
             default: {
               colors: {
-                brand: theme.colors.green[6],
-                brandAccent: theme.colors.green[7],
+                brand: theme.colors.blue[6],
+                brandAccent: theme.colors.blue[7],
               },
             },
           },

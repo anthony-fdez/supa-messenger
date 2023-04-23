@@ -76,12 +76,7 @@ const Root = (): JSX.Element => {
   }, [session]);
 
   if (!session) {
-    return (
-      <AuthUser
-        message="Please log in to continue"
-        messageHeader="Unauthorized"
-      />
-    );
+    return <AuthUser />;
   }
 
   if (session && !user.registerComplete) {
