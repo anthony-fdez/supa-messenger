@@ -67,7 +67,7 @@ const useLoadUserData = () => {
     const { data, error } = await supabase
       .from("rooms")
       .select(
-        `*, 
+        `*,
         friendships(
           *,
           userData1:users!friendships_user_id_1_fkey(

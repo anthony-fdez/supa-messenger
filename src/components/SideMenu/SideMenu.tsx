@@ -24,6 +24,7 @@ import ChangeThemeModal from "./ChangeThemeModal/ChangeThemeModal";
 import ChatRooms from "./ChatRooms/ChatRooms";
 import PublicRooms from "./PublicRooms/PublicRooms";
 import DMs from "./DMs/DMs";
+import UserAvatarWithIndicator from "../UserAvatarWithIndicator/UserAvatarWithIndicator";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
@@ -38,6 +39,7 @@ const SideMenu = (): JSX.Element => {
     preferences,
     app,
     setApp,
+    user,
     friendships: { requests },
   } = useGlobalStore();
 
@@ -69,6 +71,28 @@ const SideMenu = (): JSX.Element => {
     if (app.mainActiveSideMenu === "Settings") {
       return (
         <>
+          <Flex
+            mb={10}
+            p={10}
+            align="center"
+            direction="column"
+          >
+            <UserAvatarWithIndicator
+              user_email={user.email || ""}
+              image={user.imageUrl || ""}
+              size={80}
+              checkOnline
+            />
+            <div>
+              <Title
+                mt={10}
+                size={24}
+                lineClamp={1}
+              >
+                {user.name}
+              </Title>
+            </div>
+          </Flex>
           <a
             className={cx(classes.link, {
               [classes.linkActive]:

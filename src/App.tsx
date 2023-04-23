@@ -23,7 +23,12 @@ const supabase = createClient(
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: (
+      <>
+        <FriendsMenu />
+        <Root />
+      </>
+    ),
     errorElement: <Error404 />,
     children: [
       {
@@ -94,7 +99,6 @@ const App = (): JSX.Element => {
         <ModalsProvider>
           <RouterProvider router={router} />
           <LoadingOverlay />
-          <FriendsMenu />
         </ModalsProvider>
       </MantineProvider>
     </SessionContextProvider>
