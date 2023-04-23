@@ -50,7 +50,7 @@ const App = (): JSX.Element => {
           // @ts-ignore
           colorScheme:
             preferences.theme === "system" ? colorScheme : preferences.theme,
-          primaryColor: "green",
+          primaryColor: "blue",
           defaultRadius: "md",
           colors: {
             // override dark colors to change them for all components
@@ -71,7 +71,7 @@ const App = (): JSX.Element => {
             Button: {
               defaultProps: {
                 size: "xs",
-                color: "green",
+                color: "blue",
               },
             },
             Modal: {

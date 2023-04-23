@@ -1,7 +1,8 @@
 import React from "react";
 import { Badge, Button, Flex, Loader, Menu, Text, Title } from "@mantine/core";
-import { UserPlus } from "react-feather";
+import { MessageSquare, UserPlus, X } from "react-feather";
 import { openConfirmModal } from "@mantine/modals";
+import { useNavigate } from "react-router";
 import FriendsConditionalRendering from "../Friends/FriendsConditionalRendering/FriendsConditionalrendering";
 import UserAvatarWithIndicator from "../UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useHandleFriendsRequests from "../../Hooks/friendships/useHandleFriendRequests";
@@ -22,6 +23,8 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
     friendships: { friends },
     user: { uid },
   } = useGlobalStore();
+
+  const navigate = useNavigate();
 
   const { isLoading, handleSendFriendRequest, handleDeleteFriendship } =
     useHandleFriendsRequests();
@@ -82,8 +85,24 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
               <Button
                 loading={isLoading}
                 fullWidth
+                leftIcon={<MessageSquare size={14} />}
+                onClick={() => {
+                  const friendship = friends.find((friend) => {
+                    return friend.user_id_1 === uid || friend.user_id_2 === uid;
+                  });
+
+                  navigate(`/chat/${friendship?.room_id}`);
+                }}
+              >
+                {`Message ${user.name}`}
+              </Button>
+              <Button
+                mt={10}
+                loading={isLoading}
+                fullWidth
                 color="red"
                 variant="light"
+                leftIcon={<X size={14} />}
                 onClick={() => {
                   const friendship = friends.find((friend) => {
                     return friend.user_id_1 === uid || friend.user_id_2 === uid;

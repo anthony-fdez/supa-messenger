@@ -5,6 +5,7 @@ const LoadingRoomData = (): JSX.Element => {
   return (
     <div>
       <Skeleton
+        mt={20}
         height={50}
         width="100%"
       />
