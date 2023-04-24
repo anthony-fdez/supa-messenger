@@ -32,6 +32,8 @@ const Root = (): JSX.Element => {
     setCurrentRoom,
   } = useGlobalStore();
 
+  console.log(session?.access_token);
+
   useEffect((): void | (() => void) => {
     if (!session) return;
 
