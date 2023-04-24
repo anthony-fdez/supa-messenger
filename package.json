@@ -30,6 +30,7 @@
     "react-feather": "^2.0.10",
     "react-hook-form": "^7.43.5",
     "react-router-dom": "^6.8.2",
+    "react-typist-component": "^1.0.5",
     "sort-by": "^1.2.0",
     "zustand": "^4.3.6"
   },

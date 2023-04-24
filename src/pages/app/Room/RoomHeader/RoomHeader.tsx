@@ -20,7 +20,7 @@ const RoomHeader = (): JSX.Element => {
   const { classes } = useRoomHeaderStyles();
   const {
     currentRoom: { roomData, roomParticipants },
-
+    setApp,
     user: { uid },
   } = useGlobalStore();
   const isMobile = useMediaQuery("(max-width: 1200px)");
@@ -141,6 +141,11 @@ const RoomHeader = (): JSX.Element => {
             label="See a summary of the last 50 messages in this conversation"
           >
             <Button
+              onClick={() => {
+                setApp({
+                  isTldrMenuOpen: true,
+                });
+              }}
               mr={10}
               variant="light"
             >

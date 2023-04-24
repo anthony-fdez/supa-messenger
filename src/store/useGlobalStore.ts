@@ -42,6 +42,7 @@ interface IApp {
   isLoading: boolean;
   isLoadingRooms: boolean;
   isMobileMenuOpen: boolean;
+  isTldrMenuOpen: boolean;
   mainActiveSideMenu: string | null;
   onlineUsers: RealtimePresenceState | null;
   registerUserActiveStep: number;
@@ -132,6 +133,7 @@ const initialState: IGlobalStateValues = {
   },
   app: {
     isFriendsMenuOpen: false,
+    isTldrMenuOpen: false,
     isMobileMenuOpen: false,
     onlineUsers: null,
     isLoadingRooms: false,
