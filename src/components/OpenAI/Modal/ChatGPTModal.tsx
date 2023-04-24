@@ -1,52 +1,19 @@
-import {
-  Button,
-  Card,
-  Flex,
-  Modal,
-  Skeleton,
-  Text,
-  Title,
-} from "@mantine/core";
-import React, { useEffect, useState } from "react";
-import Typist from "react-typist-component";
-import useHttp from "../../../Hooks/useHttp";
-import useGlobalStore from "../../../store/useGlobalStore";
-import useModalStyles from "./useModalStyles";
+import { Button, Card, Flex, Modal, Text, Title } from "@mantine/core";
 import { openModal } from "@mantine/modals";
+import React from "react";
+import useGlobalStore from "../../../store/useGlobalStore";
 import Tldr from "./Tldr/Tldr";
+import useModalStyles from "./useModalStyles";
+import Insult from "./Insult/Insult";
 
 const ChatGptModal = (): JSX.Element => {
   const { classes } = useModalStyles();
 
   const {
     app: { isTldrMenuOpen },
-    user: { uid },
-    currentRoom: { messages },
+
     setApp,
   } = useGlobalStore();
-
-  const getConversationContext = () => {
-    const conversationContext: string[] = [];
-
-    messages?.forEach((message) => {
-      // @ts-ignore
-      if (message.userData.id === uid) {
-        conversationContext.push(
-          // @ts-ignore
-          `You: ${message.message_body}`,
-        );
-
-        return;
-      }
-
-      conversationContext.push(
-        // @ts-ignore
-        `${message.userData.name}: ${message.message_body}`,
-      );
-    });
-
-    return conversationContext.join("\n");
-  };
 
   return (
     <Modal
@@ -82,6 +49,18 @@ const ChatGptModal = (): JSX.Element => {
         <Text>Get the current chat history and generate a brief summary</Text>
       </Card>
       <Card
+        onClick={() => {
+          setApp({
+            isTldrMenuOpen: false,
+          });
+          openModal({
+            overlayProps: {
+              blur: 5,
+            },
+            title: "BE A MENACE",
+            children: <Insult />,
+          });
+        }}
         withBorder
         className={classes.card}
       >

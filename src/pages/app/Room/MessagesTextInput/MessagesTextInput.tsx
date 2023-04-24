@@ -1,7 +1,7 @@
 import { ActionIcon, Loader, TextInput } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Send } from "react-feather";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { Database } from "../../../../../types/database.types";
@@ -17,13 +17,20 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
   const session = useSession();
 
   const {
-    currentRoom: { roomData, usersTyping },
+    currentRoom: { roomData, usersTyping, myMessage },
+    setCurrentRoom,
   } = useGlobalStore();
 
   const [message, setMessage] = useState("");
   const [isSendingMessage, setIsSendingMessage] = useState(false);
 
   useTypingBroadCast({ roomChannel, message });
+
+  useEffect(() => {
+    if (myMessage) {
+      setMessage(myMessage);
+    }
+  }, [myMessage]);
 
   const getUsersTypingMessage = () => {
     if (!usersTyping) return false;
@@ -45,6 +52,10 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
 
   const onMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setCurrentRoom({
+      myMessage: "",
+    });
 
     if (message.length === 0) {
       showNotification({
@@ -106,6 +117,9 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
 
     setIsSendingMessage(false);
     setMessage("");
+    setCurrentRoom({
+      myMessage: "",
+    });
   };
 
   const sendButton = (): JSX.Element | null => {

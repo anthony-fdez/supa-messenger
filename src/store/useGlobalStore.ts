@@ -66,6 +66,7 @@ export interface ICurrentRoom {
   isLoading: boolean;
   isRoomMember: boolean;
   messages: IDatabaseMessages[] | null;
+  myMessage: string;
   roomData: Database["public"]["Tables"]["rooms"]["Row"] | null;
   roomNotFound: boolean;
   roomParticipants: IDatabaseParticipants[] | null;
@@ -125,6 +126,7 @@ const initialState: IGlobalStateValues = {
   currentRoom: {
     isLoading: false,
     isRoomMember: false,
+    myMessage: "",
     roomData: null,
     roomNotFound: false,
     roomParticipants: null,
