@@ -1,33 +1,30 @@
 import React from "react";
 import { CornerUpLeft, Edit } from "react-feather";
 
-import { Flex } from "@mantine/core";
-import useMessageStyles from "../useMessageStyles";
+import { ActionIcon, Flex } from "@mantine/core";
 
 interface IMessageFunctions {
   handleEdit: () => void;
 }
 const MessageFunctions = ({ handleEdit }: IMessageFunctions): JSX.Element => {
-  const { classes } = useMessageStyles();
   const handleReply = () => {
     console.log("reply");
   };
 
   return (
-    <Flex
-      gap={10}
-      style={{ marginRight: "10px" }}
-    >
-      <CornerUpLeft
-        size={20}
-        className={classes.icons}
-        onClick={handleReply}
-      />
-      <Edit
-        size={20}
-        className={classes.icons}
-        onClick={handleEdit}
-      />
+    <Flex gap={5}>
+      <ActionIcon>
+        <CornerUpLeft
+          size={14}
+          onClick={handleReply}
+        />
+      </ActionIcon>
+      <ActionIcon>
+        <Edit
+          size={14}
+          onClick={handleEdit}
+        />
+      </ActionIcon>
     </Flex>
   );
 };

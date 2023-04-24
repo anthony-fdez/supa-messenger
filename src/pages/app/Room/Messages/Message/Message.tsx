@@ -133,6 +133,7 @@ const Message = ({ message }: Props): JSX.Element => {
         <HoverCard
           shadow="md"
           position="top-end"
+          withArrow
         >
           <HoverCard.Target>
             <Flex
@@ -207,7 +208,7 @@ const Message = ({ message }: Props): JSX.Element => {
               </Flex>
             </Flex>
           </HoverCard.Target>
-          <HoverCard.Dropdown>
+          <HoverCard.Dropdown p={5}>
             <div className={classes.messageFunctionsDiv}>
               <MessageFunctions
                 handleEdit={() => {

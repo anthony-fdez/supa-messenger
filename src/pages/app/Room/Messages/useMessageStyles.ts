@@ -22,7 +22,6 @@ const useMessageStyles = createStyles((theme) => ({
     alignItems: "center",
     height: "100%",
     right: 0,
-    paddingTop: "10px",
   },
   edit_input: {
     width: "calc(100% -  60px)",
@@ -30,19 +29,6 @@ const useMessageStyles = createStyles((theme) => ({
     top: 0,
     marginBottom: 10,
     marginTop: 10,
-  },
-  icons: {
-    cursor: "pointer",
-    color:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[4]
-        : theme.colors.gray[6],
-    "&:hover": {
-      color:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[1]
-          : theme.colors.gray[9],
-    },
   },
 }));
 
