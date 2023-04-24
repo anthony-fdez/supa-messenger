@@ -13,17 +13,11 @@ const MessageFunctions = ({ handleEdit }: IMessageFunctions): JSX.Element => {
 
   return (
     <Flex gap={5}>
-      <ActionIcon>
-        <CornerUpLeft
-          size={14}
-          onClick={handleReply}
-        />
+      <ActionIcon onClick={handleReply}>
+        <CornerUpLeft size={14} />
       </ActionIcon>
-      <ActionIcon>
-        <Edit
-          size={14}
-          onClick={handleEdit}
-        />
+      <ActionIcon onClick={handleEdit}>
+        <Edit size={14} />
       </ActionIcon>
     </Flex>
   );
