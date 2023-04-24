@@ -1,4 +1,12 @@
-import { ActionIcon, Avatar, Badge, Title, Tooltip } from "@mantine/core";
+import {
+  ActionIcon,
+  Avatar,
+  Badge,
+  Button,
+  Flex,
+  Title,
+  Tooltip,
+} from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import React, { useState } from "react";
 import { Settings } from "react-feather";
@@ -12,7 +20,7 @@ const RoomHeader = (): JSX.Element => {
   const { classes } = useRoomHeaderStyles();
   const {
     currentRoom: { roomData, roomParticipants },
-
+    setApp,
     user: { uid },
   } = useGlobalStore();
   const isMobile = useMediaQuery("(max-width: 1200px)");
@@ -127,20 +135,38 @@ const RoomHeader = (): JSX.Element => {
           </Title>
           {getRoomBadge()}
         </div>
-        {isMobile && (
+        <Flex align="center">
           <Tooltip
-            label="Room Settings"
             withArrow
+            label="See a summary of the last 50 messages in this conversation"
           >
-            <ActionIcon
-              color="green"
-              onClick={(): void => setIsRoomSettingsOpened(true)}
-              size="xl"
+            <Button
+              onClick={() => {
+                setApp({
+                  isTldrMenuOpen: true,
+                });
+              }}
+              mr={10}
+              variant="light"
             >
-              <Settings size={20} />
-            </ActionIcon>
+              TL;DR
+            </Button>
           </Tooltip>
-        )}
+          {isMobile && (
+            <Tooltip
+              label="Room Settings"
+              withArrow
+            >
+              <ActionIcon
+                color="blue"
+                onClick={(): void => setIsRoomSettingsOpened(true)}
+                size="xl"
+              >
+                <Settings size={20} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </Flex>
       </div>
     </div>
   );

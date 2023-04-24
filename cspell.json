@@ -10,11 +10,13 @@
     "Mantine",
     "nextjs",
     "nprogress",
+    "openai",
     "Signout",
     "signup",
     "Supa",
     "supabase",
     "tabler",
+    "tldr",
     "upsert",
     "zustand"
   ],

@@ -8,6 +8,7 @@ import rateLimit from "express-rate-limit";
 
 // Routers
 import RoomRoutes from "./Controllers/Room/roomRoutes";
+import AiRoutes from "./Controllers/AI/aiRoutes";
 import error from "./utils/middleware/errors";
 
 const limiter = rateLimit({
@@ -34,6 +35,7 @@ app.use(urlencoded({ extended: true }));
 app.use(express.json());
 app.use(limiter);
 app.use(RoomRoutes);
+app.use(AiRoutes);
 app.use(error);
 
 export default app;
