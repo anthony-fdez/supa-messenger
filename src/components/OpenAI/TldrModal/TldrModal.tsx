@@ -93,8 +93,8 @@ const TldrModal = (): JSX.Element => {
         </>
       ) : (
         <Typist
-          splitter={(text) => text.split("")}
-          typingDelay={10}
+          splitter={(text) => text.split(" ").join("### ").split("###")}
+          typingDelay={100}
         >
           {tldr}
         </Typist>
