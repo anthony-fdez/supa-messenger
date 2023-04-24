@@ -14,7 +14,7 @@ import useGlobalStore from "./store/useGlobalStore";
 import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
 import FriendsMenu from "./components/Friends/FriendsMenu/FriendsMenu";
-import TldrModal from "./components/OpenAI/TldrModal/TldrModal";
+import ChatGptModal from "./components/OpenAI/Modal/ChatGPTModal";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL || "",
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     element: (
       <>
         <FriendsMenu />
-        <TldrModal />
+        <ChatGptModal />
         <Root />
       </>
     ),

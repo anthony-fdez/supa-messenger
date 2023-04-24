@@ -1,25 +1,34 @@
-import { Button, Flex, Modal, Skeleton } from "@mantine/core";
+import { Button, Flex, Skeleton } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import Typist from "react-typist-component";
-import useHttp from "../../../Hooks/useHttp";
-import useGlobalStore from "../../../store/useGlobalStore";
+import { closeAllModals } from "@mantine/modals";
+import useHttp from "../../../../Hooks/useHttp";
+import useGlobalStore from "../../../../store/useGlobalStore";
 
-const TldrModal = (): JSX.Element => {
+const Tldr = (): JSX.Element => {
   const { http } = useHttp();
+
   const {
-    app: { isTldrMenuOpen },
+    user: { uid },
     currentRoom: { messages },
-    setApp,
   } = useGlobalStore();
 
-  const [tldr, setTldr] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [tldr, setTldr] = useState<string>("");
 
   const getConversationContext = () => {
     const conversationContext: string[] = [];
 
     messages?.forEach((message) => {
-      console.log(message);
+      // @ts-ignore
+      if (message.userData.id === uid) {
+        conversationContext.push(
+          // @ts-ignore
+          `You: ${message.message_body}`,
+        );
+
+        return;
+      }
 
       conversationContext.push(
         // @ts-ignore
@@ -30,12 +39,8 @@ const TldrModal = (): JSX.Element => {
     return conversationContext.join("\n");
   };
 
-  console.log(getConversationContext());
-
   useEffect(() => {
-    if (!isTldrMenuOpen) return;
-
-    const getResponse = async () => {
+    const generateTldr = async () => {
       setIsLoading(true);
       const response = await http({
         method: "POST",
@@ -49,25 +54,13 @@ const TldrModal = (): JSX.Element => {
       setIsLoading(false);
     };
 
-    getResponse();
+    generateTldr();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTldrMenuOpen]);
+  }, []);
 
   return (
-    <Modal
-      title="TLDR"
-      overlayProps={{
-        blur: 5,
-      }}
-      size="lg"
-      opened={isTldrMenuOpen}
-      onClose={() => {
-        setApp({
-          isTldrMenuOpen: false,
-        });
-      }}
-      keepMounted={false}
-    >
+    <div>
       {isLoading ? (
         <>
           <Skeleton
@@ -81,12 +74,7 @@ const TldrModal = (): JSX.Element => {
             mb={10}
           />
           <Skeleton
-            width="100%"
-            height={30}
-            mb={10}
-          />
-          <Skeleton
-            width="100%"
+            width="40%"
             height={30}
             mb={10}
           />
@@ -100,14 +88,19 @@ const TldrModal = (): JSX.Element => {
         </Typist>
       )}
       <Flex
-        onClick={() => setApp({ isTldrMenuOpen: false })}
         justify="flex-end"
         mt={20}
       >
-        <Button>Close</Button>
+        <Button
+          onClick={() => {
+            closeAllModals();
+          }}
+        >
+          Close
+        </Button>
       </Flex>
-    </Modal>
+    </div>
   );
 };
 
-export default TldrModal;
+export default Tldr;

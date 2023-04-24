@@ -138,7 +138,7 @@ const RoomHeader = (): JSX.Element => {
         <Flex align="center">
           <Tooltip
             withArrow
-            label="See a summary of the last 50 messages in this conversation"
+            label="Use AI tools to help you write your messages, or to be a menace to your friends."
           >
             <Button
               onClick={() => {
@@ -149,7 +149,7 @@ const RoomHeader = (): JSX.Element => {
               mr={10}
               variant="light"
             >
-              TL;DR
+              ChatGPT
             </Button>
           </Tooltip>
           {isMobile && (
