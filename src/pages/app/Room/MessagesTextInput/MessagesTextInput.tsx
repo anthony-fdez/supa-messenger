@@ -95,7 +95,6 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
       .single();
 
     if (!data || error) {
-      console.log(error);
       setIsSendingMessage(false);
       showNotification({
         title: "Error",
