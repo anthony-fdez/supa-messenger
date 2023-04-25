@@ -7,7 +7,7 @@ const useSideMenuStyles = createStyles((theme) => ({
 
   aside: {
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+      theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -26,7 +26,7 @@ const useSideMenuStyles = createStyles((theme) => ({
     flex: 1,
     backgroundColor:
       theme.colorScheme === "dark"
-        ? theme.colors.dark[6]
+        ? theme.colors.dark[8]
         : theme.colors.gray[0],
   },
   linkContainer: {
@@ -72,7 +72,7 @@ const useSideMenuStyles = createStyles((theme) => ({
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
     marginBottom: theme.spacing.xl,
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
     padding: theme.spacing.md,
     paddingTop: 18,
     height: 60,

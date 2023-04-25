@@ -35,7 +35,7 @@ const useRoomStyles = createStyles((theme) => ({
       theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
     height: "100%",
     padding: 20,
     "@media (max-width: 1200px)": {
