@@ -104,8 +104,6 @@ const useSideMenuStyles = createStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     textDecoration: "none",
-    borderTopRightRadius: theme.radius.md,
-    borderBottomRightRadius: theme.radius.md,
     color:
       theme.colorScheme === "dark"
         ? theme.colors.dark[0]
@@ -115,6 +113,7 @@ const useSideMenuStyles = createStyles((theme) => ({
     marginRight: theme.spacing.md,
     fontWeight: 500,
     height: 44,
+    width: "100%",
 
     "&:hover": {
       backgroundColor:
