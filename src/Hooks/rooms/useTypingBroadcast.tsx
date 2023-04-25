@@ -13,6 +13,7 @@ const useTypingBroadCast = ({ roomChannel, message }: Props) => {
   const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
+    console.log(message);
     if (message.length >= 1) {
       return setIsTyping(true);
     }
