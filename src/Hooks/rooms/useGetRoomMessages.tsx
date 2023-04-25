@@ -32,6 +32,12 @@ const useGetRoomMessages = () => {
       });
     }
 
+    if (data.length === 0) {
+      return setCurrentRoom({
+        messages: [],
+      });
+    }
+
     const reversedMessages = data.reverse();
 
     const { error: lastReadError } = await supabase

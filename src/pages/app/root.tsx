@@ -17,7 +17,7 @@ import useLoadUnreadMessages from "../../Hooks/rooms/useLoadUnreadMessages";
 
 const Root = (): JSX.Element => {
   const { getUserFriends, getUserRoomData } = useLoadUserData();
-  useListenToFriendshipChanges({ getUserFriends });
+  useListenToFriendshipChanges({ getUserFriends, getUserRoomData });
   useListenToRoomChanges({ getUserRoomData });
 
   const { getUnreadMessages } = useLoadUnreadMessages();
