@@ -35,10 +35,10 @@ const Root = (): JSX.Element => {
     setCurrentRoom,
   } = useGlobalStore();
 
-  // useEffect(() => {
-  //   getUnreadMessages();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    getUnreadMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect((): void | (() => void) => {
     if (!session) return;

@@ -11,6 +11,7 @@ import useListenToMessagesChanges from "../../../Hooks/rooms/useListenToMessages
 import useTypingStatus from "../../../Hooks/rooms/useTypingStatus";
 import JoinPublicRoom from "./JoinPublicRoom/JoinPublicRoom";
 import useGetRoomMessages from "../../../Hooks/rooms/useGetRoomMessages";
+import useLoadUnreadMessages from "../../../Hooks/rooms/useLoadUnreadMessages";
 
 interface Props {
   getRoomData: () => Promise<void>;
@@ -25,6 +26,7 @@ const Room = ({ roomId, getRoomData }: Props): JSX.Element => {
   } = useGlobalStore();
 
   const { getRoomMessages } = useGetRoomMessages();
+  const { getUnreadMessages } = useLoadUnreadMessages();
 
   const roomChannel = supabase.channel(roomId);
 
@@ -34,7 +36,13 @@ const Room = ({ roomId, getRoomData }: Props): JSX.Element => {
   useEffect(() => {
     if (!roomData?.id) return;
 
-    getRoomMessages({ roomId: roomData.id });
+    const fetchData = async () => {
+      getRoomMessages({ roomId: roomData.id });
+      await getUnreadMessages();
+    };
+
+    fetchData();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomData]);
 

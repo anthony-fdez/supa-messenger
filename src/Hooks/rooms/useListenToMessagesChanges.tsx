@@ -4,6 +4,7 @@ import { showNotification } from "@mantine/notifications";
 import { Database } from "../../../types/database.types";
 import useGlobalStore from "../../store/useGlobalStore";
 import useGetRoomMessages from "./useGetRoomMessages";
+import useLoadUnreadMessages from "./useLoadUnreadMessages";
 
 interface Props {
   getRoomData?: () => Promise<void>;
@@ -12,6 +13,8 @@ interface Props {
 const useListenToMessagesChanges = ({ getRoomData }: Props) => {
   const supabase = useSupabaseClient<Database>();
   const { getRoomMessages } = useGetRoomMessages();
+  const { getUnreadMessages } = useLoadUnreadMessages();
+
   const {
     currentRoom,
     user: { uid },
@@ -52,6 +55,8 @@ const useListenToMessagesChanges = ({ getRoomData }: Props) => {
               });
             }
           }
+
+          await getUnreadMessages();
         },
       )
       .on(
