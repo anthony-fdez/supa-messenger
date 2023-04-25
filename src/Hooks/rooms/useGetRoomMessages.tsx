@@ -4,12 +4,16 @@ import { Database } from "../../../types/database.types";
 import useGlobalStore from "../../store/useGlobalStore";
 
 interface IGetRoomMessages {
-  roomId: number;
+  roomId: string;
 }
 
 const useGetRoomMessages = () => {
   const supabase = useSupabaseClient<Database>();
-  const { setCurrentRoom } = useGlobalStore();
+  const {
+    setCurrentRoom,
+    currentRoom,
+    user: { uid },
+  } = useGlobalStore();
 
   const getRoomMessages = async ({
     roomId,
@@ -28,8 +32,31 @@ const useGetRoomMessages = () => {
       });
     }
 
+    if (data.length === 0) {
+      return setCurrentRoom({
+        messages: [],
+      });
+    }
+
+    const reversedMessages = data.reverse();
+
+    const { error: lastReadError } = await supabase
+      .from("participants")
+      .update({
+        last_message_read: reversedMessages[reversedMessages.length - 1].id,
+      })
+      .eq("room_id", currentRoom.roomData?.id)
+      .eq("user_id", uid);
+
+    if (lastReadError) {
+      showNotification({
+        title: "Error",
+        message: "Unable to update last read message",
+      });
+    }
+
     return setCurrentRoom({
-      messages: data.reverse(),
+      messages: reversedMessages,
     });
   };
 

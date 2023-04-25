@@ -6,9 +6,13 @@ import useGlobalStore from "../../store/useGlobalStore";
 
 interface Props {
   getUserFriends?: () => Promise<void>;
+  getUserRoomData?: () => Promise<void>;
 }
 
-const useListenToFriendshipChanges = ({ getUserFriends }: Props) => {
+const useListenToFriendshipChanges = ({
+  getUserFriends,
+  getUserRoomData,
+}: Props) => {
   const supabase = useSupabaseClient<Database>();
 
   const {
@@ -48,6 +52,7 @@ const useListenToFriendshipChanges = ({ getUserFriends }: Props) => {
         },
         () => {
           if (getUserFriends) getUserFriends();
+          if (getUserRoomData) getUserRoomData();
         },
       )
       .on(
@@ -70,6 +75,7 @@ const useListenToFriendshipChanges = ({ getUserFriends }: Props) => {
           }
 
           if (getUserFriends) getUserFriends();
+          if (getUserRoomData) getUserRoomData();
         },
       )
       .subscribe();

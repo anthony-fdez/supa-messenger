@@ -27,7 +27,7 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
   useTypingBroadCast({ roomChannel, message });
 
   useEffect(() => {
-    if (myMessage) {
+    if (myMessage && myMessage.length >= 1) {
       setMessage(myMessage);
     }
   }, [myMessage]);
@@ -57,12 +57,21 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
       myMessage: "",
     });
 
-    if (message.length === 0) {
+    const noMessageNotification = [
+      "At least type something",
+      "Message is empty!",
+      "I think you forgot to type something",
+      "Wow, sending a message with no message",
+    ];
+
+    const ranInt = Math.floor(Math.random() * 4);
+
+    if (message.length <= 0) {
       showNotification({
-        message: "Bruh you gotta type something",
         title: "Error",
         color: "red",
         variant: "filled",
+        message: `${noMessageNotification[ranInt]}`,
       });
 
       return;
@@ -72,21 +81,6 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
       showNotification({
         title: "Error",
         message: "Unable to send message",
-      });
-
-      return;
-    }
-    const noMessageNotification = [
-      "At least type something",
-      "Message is empty!",
-      "I think you forgot to type something",
-      "Wow, sending a message with no message",
-    ];
-    const ranInt = Math.floor(Math.random() * 4);
-    if (message.length <= 0) {
-      showNotification({
-        title: "Error",
-        message: `${noMessageNotification[ranInt]}`,
       });
 
       return;
@@ -117,9 +111,6 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
 
     setIsSendingMessage(false);
     setMessage("");
-    setCurrentRoom({
-      myMessage: "",
-    });
   };
 
   const sendButton = (): JSX.Element | null => {

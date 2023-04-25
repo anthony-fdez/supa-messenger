@@ -19,8 +19,8 @@ const useListenToRoomChanges = ({ getUserRoomData }: Props) => {
           schema: "public",
           table: "rooms",
         },
-        () => {
-          if (getUserRoomData) getUserRoomData();
+        async () => {
+          if (getUserRoomData) await getUserRoomData();
         },
       )
       .on(
@@ -30,8 +30,8 @@ const useListenToRoomChanges = ({ getUserRoomData }: Props) => {
           schema: "public",
           table: "rooms",
         },
-        () => {
-          if (getUserRoomData) getUserRoomData();
+        async () => {
+          if (getUserRoomData) await getUserRoomData();
         },
       )
       .on(
@@ -41,8 +41,8 @@ const useListenToRoomChanges = ({ getUserRoomData }: Props) => {
           schema: "public",
           table: "rooms",
         },
-        () => {
-          if (getUserRoomData) getUserRoomData();
+        async () => {
+          if (getUserRoomData) await getUserRoomData();
         },
       )
       .subscribe();

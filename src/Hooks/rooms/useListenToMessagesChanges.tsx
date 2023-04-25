@@ -1,8 +1,10 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect } from "react";
+import { showNotification } from "@mantine/notifications";
 import { Database } from "../../../types/database.types";
 import useGlobalStore from "../../store/useGlobalStore";
 import useGetRoomMessages from "./useGetRoomMessages";
+import useLoadUnreadMessages from "./useLoadUnreadMessages";
 
 interface Props {
   getRoomData?: () => Promise<void>;
@@ -11,6 +13,12 @@ interface Props {
 const useListenToMessagesChanges = ({ getRoomData }: Props) => {
   const supabase = useSupabaseClient<Database>();
   const { getRoomMessages } = useGetRoomMessages();
+  const { getUnreadMessages } = useLoadUnreadMessages();
+
+  const {
+    currentRoom,
+    user: { uid },
+  } = useGlobalStore();
 
   const {
     addNewCurrentRoomMessage,
@@ -27,9 +35,28 @@ const useListenToMessagesChanges = ({ getRoomData }: Props) => {
           schema: "public",
           table: "messages",
         },
-        (payload) => {
+        async (payload) => {
           // @ts-ignore
           addNewCurrentRoomMessage({ newMessage: payload.new, supabase });
+
+          if (payload.new.room_id === currentRoom.roomData?.id) {
+            const { error: lastReadError } = await supabase
+              .from("participants")
+              .update({
+                last_message_read: payload.new.id,
+              })
+              .eq("room_id", currentRoom.roomData?.id)
+              .eq("user_id", uid);
+
+            if (lastReadError) {
+              showNotification({
+                title: "Error",
+                message: "Unable to update last read message",
+              });
+            }
+          }
+
+          await getUnreadMessages();
         },
       )
       .on(
@@ -75,18 +102,17 @@ const useListenToMessagesChanges = ({ getRoomData }: Props) => {
           getRoomData();
         },
       )
-      .on
-      (
+      .on(
         "postgres_changes",
         {
           event: "DELETE",
           schema: "public",
-          table: "messages"
+          table: "messages",
         },
         () => {
-         if(!getRoomData) return;
+          if (!getRoomData) return;
           getRoomData();
-        }
+        },
       )
       .subscribe();
 

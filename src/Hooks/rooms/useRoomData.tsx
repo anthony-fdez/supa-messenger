@@ -28,7 +28,17 @@ const useRoomData = ({ roomId }: Props) => {
 
       const { error: roomDataError, data: roomDataReq } = await supabase
         .from("rooms")
-        .select("*, participants(*), friendships(*)")
+        .select(
+          `*, participants(*), friendships(*,  userData1:users!friendships_user_id_1_fkey(
+          *
+        ),
+        userData2:users!friendships_user_id_2_fkey(
+          *
+        ),
+        actionUserData:users!friendships_action_user_id_fkey(
+          *
+        ))`,
+        )
         .eq("participants.user_id", session.user.id)
         .eq("id", roomId)
         .single();

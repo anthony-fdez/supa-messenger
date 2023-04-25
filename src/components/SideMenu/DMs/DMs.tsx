@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Text } from "@mantine/core";
+import { Alert, Badge, Text } from "@mantine/core";
 import { useNavigate } from "react-router";
 import useGlobalStore, {
   IDatabaseUser,
@@ -15,6 +15,7 @@ const DMs = (): JSX.Element => {
     app,
     setApp,
     dms,
+    unreadMessages,
     user: { uid },
   } = useGlobalStore();
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ const DMs = (): JSX.Element => {
     <div>
       {dms.map((room) => {
         const friendData = getFriendData(room.friendships);
+        const unread = unreadMessages.find((r) => r.room_id === room.id);
 
         if (!friendData) return null;
 
@@ -71,8 +73,17 @@ const DMs = (): JSX.Element => {
               user_email={friendData?.email || "Error"}
               image={friendData?.image_url || ""}
             />
+            {unread && unread?.message_count >= 1 && (
+              <Badge
+                variant="filled"
+                color="red"
+                ml={8}
+              >
+                {unread.message_count || 0}
+              </Badge>
+            )}
             <Text
-              ml={10}
+              ml={8}
               lineClamp={1}
             >
               {friendData?.name || "Error"}

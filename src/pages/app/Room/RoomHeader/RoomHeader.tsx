@@ -36,8 +36,6 @@ const RoomHeader = (): JSX.Element => {
       return roomData.name;
     }
 
-    console.log(roomData);
-
     // @ts-ignore
     if (!roomData?.friendships) return "Direct Message";
 
@@ -47,7 +45,6 @@ const RoomHeader = (): JSX.Element => {
       userId: uid || "",
     });
 
-    console.log(friend);
     return friend.friendData?.name;
   };
 

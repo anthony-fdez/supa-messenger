@@ -13,11 +13,14 @@ import removeTypingIndicatorFromOfflineUsers from "../../helpers/removeTypingInd
 import useListenToFriendshipChanges from "../../Hooks/friendships/useListenToFrienshipChanges";
 import useGlobalStore from "../../store/useGlobalStore";
 import useListenToRoomChanges from "../../Hooks/rooms/useListenToRoomChanges";
+import useLoadUnreadMessages from "../../Hooks/rooms/useLoadUnreadMessages";
 
 const Root = (): JSX.Element => {
   const { getUserFriends, getUserRoomData } = useLoadUserData();
-  useListenToFriendshipChanges({ getUserFriends });
+  useListenToFriendshipChanges({ getUserFriends, getUserRoomData });
   useListenToRoomChanges({ getUserRoomData });
+
+  const { getUnreadMessages } = useLoadUnreadMessages();
 
   const { classes } = useRootStyles();
 
@@ -32,7 +35,10 @@ const Root = (): JSX.Element => {
     setCurrentRoom,
   } = useGlobalStore();
 
-  console.log(session?.access_token);
+  useEffect(() => {
+    getUnreadMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect((): void | (() => void) => {
     if (!session) return;

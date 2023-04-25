@@ -41,10 +41,37 @@ const SideMenu = (): JSX.Element => {
     setApp,
     user,
     friendships: { requests },
+    unreadMessages,
+    dms,
+    rooms,
   } = useGlobalStore();
 
   const { classes, cx } = useSideMenuStyles();
   const isMobile = useMediaQuery("(max-width: 900px)");
+
+  const getUnreadDms = () => {
+    let unread = 0;
+
+    unreadMessages.forEach((message) => {
+      if (dms.find((dm) => dm.id === message.room_id)) {
+        unread += message.message_count;
+      }
+    });
+
+    return unread;
+  };
+
+  const getUnreadRooms = () => {
+    let unread = 0;
+
+    unreadMessages.forEach((message) => {
+      if (rooms.find((dm) => dm.id === message.room_id)) {
+        unread += message.message_count;
+      }
+    });
+
+    return unread;
+  };
 
   const mainLinks = mainLinksMockdata.map((link) => (
     <Tooltip
@@ -198,6 +225,10 @@ const SideMenu = (): JSX.Element => {
           Friends
         </Button>
         <Accordion
+          onChange={(value) => {
+            setApp({ messageAccordionSelected: value || "chat-rooms" });
+          }}
+          value={app.messageAccordionSelected}
           sx={{
             ".mantine-Accordion-content": {
               padding: 0,
@@ -207,13 +238,43 @@ const SideMenu = (): JSX.Element => {
           }}
         >
           <Accordion.Item value="dms">
-            <Accordion.Control>DMs</Accordion.Control>
+            <Accordion.Control>
+              <Flex align="center">
+                {getUnreadDms() !== 0 &&
+                  app.messageAccordionSelected !== "dms" && (
+                    <Badge
+                      mr={8}
+                      color="red"
+                      variant="filled"
+                    >
+                      {getUnreadDms()}
+                    </Badge>
+                  )}
+
+                <Text>DMs</Text>
+              </Flex>
+            </Accordion.Control>
             <Accordion.Panel>
               <DMs />
             </Accordion.Panel>
           </Accordion.Item>
-          <Accordion.Item value="chat-room">
-            <Accordion.Control>Chat Room</Accordion.Control>
+          <Accordion.Item value="chat-rooms">
+            <Accordion.Control>
+              <Flex align="center">
+                {getUnreadRooms() !== 0 &&
+                  app.messageAccordionSelected !== "chat-rooms" && (
+                    <Badge
+                      mr={8}
+                      color="red"
+                      variant="filled"
+                    >
+                      {getUnreadRooms()}
+                    </Badge>
+                  )}
+
+                <Text>Chat Rooms</Text>
+              </Flex>
+            </Accordion.Control>
             <Accordion.Panel>
               <ChatRooms />
             </Accordion.Panel>
