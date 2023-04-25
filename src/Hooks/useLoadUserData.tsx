@@ -30,7 +30,7 @@ const useLoadUserData = () => {
 
     return null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session]);
 
   const getUserData = useCallback(async (): Promise<void> => {
     if (!session) return;
@@ -61,7 +61,7 @@ const useLoadUserData = () => {
       uid: data?.id,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session]);
 
   const getUserRoomData = useCallback(async (): Promise<void> => {
     if (!session) return;
@@ -123,7 +123,7 @@ const useLoadUserData = () => {
     }, 2000);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session]);
 
   const getUserFriends = useCallback(async (): Promise<void> => {
     if (!session) return;
@@ -177,7 +177,7 @@ const useLoadUserData = () => {
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session]);
 
   useEffect(() => {
     setApp({

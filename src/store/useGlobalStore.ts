@@ -79,6 +79,11 @@ interface IFriendships {
   requests: IFriend[];
 }
 
+interface IUnreadMessages {
+  message_count: number;
+  room_id: string;
+}
+
 interface IGlobalStateValues {
   app: IApp;
   currentRoom: ICurrentRoom;
@@ -86,6 +91,7 @@ interface IGlobalStateValues {
   friendships: IFriendships;
   preferences: IPreferences;
   rooms: IRoom[];
+  unreadMessages: IUnreadMessages[];
   user: IUser;
 }
 
@@ -105,11 +111,13 @@ export interface IGlobalState extends IGlobalStateValues {
   setPreferences: (state: Partial<IPreferences>) => void;
   setRooms: (state: IRoom[]) => void;
   setState: (state: Partial<IGlobalStateValues>) => void;
+  setUnreadMessages: (state: IUnreadMessages[]) => void;
   setUser: (state: Partial<IUser>) => void;
 }
 
 const initialState: IGlobalStateValues = {
   rooms: [],
+  unreadMessages: [],
   dms: [],
   friendships: {
     friends: [],
@@ -204,6 +212,11 @@ const useGlobalStore = create<IGlobalState>()(
         setRooms: (newRooms): void => {
           set(() => ({
             rooms: newRooms,
+          }));
+        },
+        setUnreadMessages: (newUnreadMessages): void => {
+          set(() => ({
+            unreadMessages: newUnreadMessages,
           }));
         },
         setDms: (newRooms): void => {

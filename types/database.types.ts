@@ -216,6 +216,15 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      get_message_count: {
+        Args: {
+          p_user_id: string
+        }
+        Returns: {
+          room_id: string
+          message_count: number
+        }[]
+      }
       is_user_participant_in_room: {
         Args: {
           p_user_id: string

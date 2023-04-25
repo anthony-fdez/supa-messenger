@@ -4,7 +4,7 @@ import { Database } from "../../../types/database.types";
 import useGlobalStore from "../../store/useGlobalStore";
 
 interface IGetRoomMessages {
-  roomId: number;
+  roomId: string;
 }
 
 const useGetRoomMessages = () => {
