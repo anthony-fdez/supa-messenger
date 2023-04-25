@@ -1,10 +1,7 @@
 import { Box, ScrollArea } from "@mantine/core";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useEffect, useRef } from "react";
 import useGlobalStore from "../../../../store/useGlobalStore";
-import useMessageStyles from "./useMessageStyles";
 
-import { Database } from "../../../../../types/database.types";
 import EmptyRoom from "../../../../components/InfoScreens/EmptyRoom";
 import Message from "./Message/Message";
 
