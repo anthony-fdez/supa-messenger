@@ -36,10 +36,10 @@ const RoomHeader = (): JSX.Element => {
       return roomData.name;
     }
 
-    console.log(roomData);
-
     // @ts-ignore
     if (!roomData?.friendships) return "Direct Message";
+
+    console.log(roomData.friendships);
 
     const friend = getFriend({
       // @ts-ignore
@@ -48,6 +48,7 @@ const RoomHeader = (): JSX.Element => {
     });
 
     console.log(friend);
+
     return friend.friendData?.name;
   };
 
