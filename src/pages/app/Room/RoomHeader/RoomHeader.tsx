@@ -39,15 +39,11 @@ const RoomHeader = (): JSX.Element => {
     // @ts-ignore
     if (!roomData?.friendships) return "Direct Message";
 
-    console.log(roomData.friendships);
-
     const friend = getFriend({
       // @ts-ignore
       friendship: roomData.friendships[0],
       userId: uid || "",
     });
-
-    console.log(friend);
 
     return friend.friendData?.name;
   };
