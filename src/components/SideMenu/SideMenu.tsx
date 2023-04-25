@@ -198,6 +198,10 @@ const SideMenu = (): JSX.Element => {
           Friends
         </Button>
         <Accordion
+          onChange={(value) => {
+            setApp({ messageAccordionSelected: value || "chat-rooms" });
+          }}
+          value={app.messageAccordionSelected}
           sx={{
             ".mantine-Accordion-content": {
               padding: 0,
@@ -212,7 +216,7 @@ const SideMenu = (): JSX.Element => {
               <DMs />
             </Accordion.Panel>
           </Accordion.Item>
-          <Accordion.Item value="chat-room">
+          <Accordion.Item value="chat-rooms">
             <Accordion.Control>Chat Room</Accordion.Control>
             <Accordion.Panel>
               <ChatRooms />

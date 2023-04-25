@@ -44,6 +44,7 @@ interface IApp {
   isMobileMenuOpen: boolean;
   isTldrMenuOpen: boolean;
   mainActiveSideMenu: string | null;
+  messageAccordionSelected: string;
   onlineUsers: RealtimePresenceState | null;
   registerUserActiveStep: number;
   secondaryActiveSideMenu: string | null;
@@ -145,6 +146,7 @@ const initialState: IGlobalStateValues = {
     isFriendsMenuOpen: false,
     isTldrMenuOpen: false,
     isMobileMenuOpen: false,
+    messageAccordionSelected: "chat-rooms",
     onlineUsers: null,
     isLoadingRooms: false,
     isLoading: false,
