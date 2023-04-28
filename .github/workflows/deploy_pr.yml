@@ -56,6 +56,8 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
+            Your branch has been deployed to this URL: ${{steps.deploy_job.outputs.deploy-url}}
+
             This comment was written by a bot!
           reactions: rocket
 
