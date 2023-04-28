@@ -40,7 +40,7 @@ const AuthUser = (): JSX.Element => {
       className={styles.container}
       withBorder
     >
-      <h1>Account. (workflow branch)</h1>
+      <h1>Account.</h1>
       <Auth
         appearance={{
           theme: ThemeSupa,
