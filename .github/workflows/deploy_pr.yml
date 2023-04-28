@@ -67,5 +67,7 @@ jobs:
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           body: |
+            Your branch has been deployed to this URL: ${{steps.deploy_job.outputs.deploy-url}}
+
             This comment has been updated!
           reactions: hooray
