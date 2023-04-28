@@ -2,7 +2,7 @@
 name: Deploy Develop
 
 on:
-  # Runs on pushes targeting the default branch
+  # Runs on pushes targeting the default branch,
   pull_request:
     branches:
       - develop
