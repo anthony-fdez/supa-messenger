@@ -6,7 +6,7 @@ import EmptyRoom from "../../../../components/InfoScreens/EmptyRoom";
 import Message from "./Message/Message";
 
 const Messages = (): JSX.Element => {
-  const messagesEndRef = useRef();
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const scrollToBottom = () => {
     // @ts-ignore
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

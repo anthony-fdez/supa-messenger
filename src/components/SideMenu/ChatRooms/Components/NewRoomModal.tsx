@@ -115,6 +115,7 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
     const roomFormattedData: IRoom = {
       ...roomData,
       participants: [],
+      friendships: [],
     };
 
     participantData.forEach((participant) => {

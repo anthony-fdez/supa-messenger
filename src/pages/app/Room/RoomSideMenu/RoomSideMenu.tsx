@@ -46,7 +46,7 @@ const RoomSideMenu = ({
     currentRoom: { roomData, roomParticipants, isRoomMember },
   } = useGlobalStore();
 
-  const removeRoom = (id: number) => {
+  const removeRoom = (id: string) => {
     const removeRoomAsync = async (): Promise<void> => {
       if (!roomData?.id || !session?.user.id) {
         return showNotification({
