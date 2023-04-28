@@ -1,6 +1,6 @@
 import { createStyles } from "@mantine/core";
 
-const useRegisterUserStyles = createStyles((theme) => ({
+const useRegisterUserStyles = createStyles(() => ({
   content: {
     maxWidth: 800,
     margin: "auto",

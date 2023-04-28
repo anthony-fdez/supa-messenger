@@ -119,7 +119,7 @@ const Message = ({ message }: Props): JSX.Element => {
     return setEditMessage("");
   };
 
-  const sendButton = (): JSX.Element | any => {
+  const sendButton = (): JSX.Element => {
     return (
       <ActionIcon type="submit">
         {isSendingMessage ? <Loader size={16} /> : <Send size={16} />}

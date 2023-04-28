@@ -2,6 +2,7 @@ import { useSession } from "@supabase/auth-helpers-react";
 import constants from "../constants/constants";
 
 interface IHttp {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body: any;
   endpoint: string;
   method: "POST" | "GET" | "DELETE" | "UPDATE";
@@ -10,6 +11,7 @@ interface IHttp {
 const useHttp = () => {
   const session = useSession();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const http = async ({ body, endpoint, method }: IHttp): Promise<any> => {
     if (!session) return;
 
