@@ -165,6 +165,7 @@ const RoomSideMenu = ({
             overlayProps: {
               blur: 5,
             },
+            zIndex: 999,
             children: (
               <>
                 <ChangeRoomNameForm />
