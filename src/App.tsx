@@ -15,10 +15,11 @@ import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
 import FriendsMenu from "./components/Friends/FriendsMenu/FriendsMenu";
 import ChatGptModal from "./components/OpenAI/Modal/ChatGPTModal";
+import constants from "./constants/constants";
 
 const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL || "",
-  import.meta.env.VITE_SUPABASE_ANON_KEY || "",
+  constants.supabaseUrl || "",
+  constants.supabaseAnonKey || "",
 );
 
 const router = createBrowserRouter([
