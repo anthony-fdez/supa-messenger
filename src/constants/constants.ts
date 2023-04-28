@@ -1,3 +1,11 @@
+export const isProd = () => {
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+    return false;
+  }
+
+  return true;
+};
+
 const shared = {
   avatarPlaceholder: (seed: string | number) => {
     return `https://api.dicebear.com/6.x/micah/svg?seed=${seed}`;
@@ -16,7 +24,6 @@ const prodConstants = {
   serverURL: "https://supabase-chat.onrender.com",
 };
 
-const constants =
-  process.env.NODE_ENV === "prod" ? prodConstants : devConstants;
+const constants = isProd() ? prodConstants : devConstants;
 
 export default { ...shared, ...constants };
