@@ -5,6 +5,7 @@ on:
   # Runs on pushes targeting the default branch,
   pull_request:
     branches:
+      - main
       - develop
       - staging
 
@@ -39,25 +40,13 @@ jobs:
         with:
           publish-dir: "./dist"
           production-branch: develop
-          production-deploy: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
-          enable-pull-request-comment: false
+          enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true
           alias: develop
-        - name: Comment with deployed URL
-          uses: actions/github-script@v5
-          with:
-            github-token: ${{secrets.GITHUB_TOKEN}}
-            script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "Deployed URL:" ${{steps.deploy_pr.outputs.deploy-url}}
-            })        
           env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+            NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+            NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         timeout-minutes: 1
