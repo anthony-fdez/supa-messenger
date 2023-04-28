@@ -19,6 +19,7 @@ import { Database } from "../../../../../types/database.types";
 import useGlobalStore from "../../../../store/useGlobalStore";
 import ChangeRoomNameForm from "./ChangeRoomNameForm/ChangeRoomNameForm";
 import ChangeRoomPrivacy from "./ChangeRoomPrivacy/ChangeRoomPrivacy";
+// eslint-disable-next-line import/no-named-as-default
 import RoomSideMenuParticipant from "./RoomSideMenuParticipant/RoomSideMenuParticipant";
 import useRoomSideMenuStyles from "./useRoomSideMenuStyles";
 

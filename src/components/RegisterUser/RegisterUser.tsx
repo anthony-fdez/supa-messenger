@@ -1,5 +1,5 @@
 import { Stepper } from "@mantine/core";
-import React, { useState } from "react";
+import React from "react";
 import useGlobalStore from "../../store/useGlobalStore";
 import useRegisterUserStyles from "./RegisterUser.styles";
 import Step1 from "./steps/step1";
@@ -12,7 +12,7 @@ export interface IStepProps {
 }
 
 const RegisterUser = (): JSX.Element => {
-  const { classes, cx } = useRegisterUserStyles();
+  const { classes } = useRegisterUserStyles();
 
   const { app, setApp } = useGlobalStore();
 

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "lint": "npx eslint src && tsc",
     "generate-types": "npx supabase gen types typescript --project-id jnpimfbtbogiuqydflkh > types/database.types.ts"
   },
   "dependencies": {
