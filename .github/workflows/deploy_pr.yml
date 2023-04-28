@@ -2,7 +2,7 @@
 name: Deploy Branch
 
 on:
-  pull_request_target:
+  pull_request:
     branches: ["develop", "staging"]
 
 permissions:
@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   deploy:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
