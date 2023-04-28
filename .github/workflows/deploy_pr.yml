@@ -3,8 +3,10 @@ name: Deploy Develop
 
 on:
   # Runs on pushes targeting the default branch
-  push:
-    branches: ["develop"]
+  pull_request:
+    branches:
+      - develop
+      - staging
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -32,6 +34,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Deploy to Netlify
+        id: deploy_pr
         uses: nwtgck/actions-netlify@v2.0
         with:
           publish-dir: "./dist"
@@ -43,7 +46,18 @@ jobs:
           enable-commit-comment: true
           overwrites-pull-request-comment: true
           alias: develop
-        env:
+        - name: Comment with deployed URL
+          uses: actions/github-script@v5
+          with:
+            github-token: ${{secrets.GITHUB_TOKEN}}
+            script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Deployed URL:" ${{steps.deploy_pr.outputs.deploy-url}}
+            })        
+          env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         timeout-minutes: 1
