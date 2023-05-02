@@ -25,11 +25,11 @@ const useListenToFriendshipChanges = ({
       .on(
         "postgres_changes",
         {
-          event: "INSERT",
+          event: "*",
           schema: "public",
           table: "friendships",
         },
-        (payload) => {
+        (payload: any) => {
           if (
             payload.new.status === "PENDING" &&
             payload.new.action_user_id !== uid
@@ -38,32 +38,7 @@ const useListenToFriendshipChanges = ({
               title: "Yoo",
               message: "You just got a friend request",
             });
-          }
-
-          if (getUserFriends) getUserFriends();
-        },
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "DELETE",
-          schema: "public",
-          table: "friendships",
-        },
-        () => {
-          if (getUserFriends) getUserFriends();
-          if (getUserRoomData) getUserRoomData();
-        },
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "friendships",
-        },
-        (payload) => {
-          if (
+          } else if (
             payload.new.status === "FRIENDS" &&
             payload.new.action_user_id !== uid
           ) {

@@ -287,7 +287,7 @@ const SideMenu = (): JSX.Element => {
   return (
     <Navbar
       className={classes.container}
-      width={{ sm: 300 }}
+      width={{ sm: 400 }}
     >
       <Navbar.Section
         className={classes.wrapper}
