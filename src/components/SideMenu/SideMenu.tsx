@@ -6,7 +6,6 @@ import {
   Title,
   CloseButton,
   Accordion,
-  Button,
   Badge,
   Flex,
   Loader,
@@ -28,23 +27,15 @@ import UserAvatarWithIndicator from "../UserAvatarWithIndicator/UserAvatarWithIn
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
-  { icon: <Users size={16} />, label: "Public Rooms", path: "/public" },
+  { icon: <Users size={16} />, label: "Friends", path: "/friends" },
   { icon: <Settings size={16} />, label: "Settings", path: "/settings" },
 ];
 
 const SideMenu = (): JSX.Element => {
   const { handleSignout } = useHandleSignout();
   const navigate = useNavigate();
-  const {
-    preferences,
-    app,
-    setApp,
-    user,
-    friendships: { requests },
-    unreadMessages,
-    dms,
-    rooms,
-  } = useGlobalStore();
+  const { preferences, app, setApp, user, unreadMessages, dms, rooms } =
+    useGlobalStore();
 
   const { classes, cx } = useSideMenuStyles();
   const isMobile = useMediaQuery("(max-width: 900px)");
@@ -86,6 +77,14 @@ const SideMenu = (): JSX.Element => {
           [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
         })}
         onClick={(): void => {
+          if (link.label === "Friends") {
+            setApp({
+              isFriendsMenuOpen: true,
+            });
+
+            return;
+          }
+
           setApp({ mainActiveSideMenu: link.label });
         }}
       >
@@ -187,8 +186,6 @@ const SideMenu = (): JSX.Element => {
       );
     }
 
-    if (app.mainActiveSideMenu === "Public Rooms") return <PublicRooms />;
-
     return (
       <>
         <Collapse in={app.isLoadingRooms}>
@@ -204,32 +201,15 @@ const SideMenu = (): JSX.Element => {
             <Text size={14}>Updating...</Text>
           </Flex>
         </Collapse>
-
-        <Button
-          onClick={() => {
-            setApp({ isFriendsMenuOpen: true });
-          }}
-          variant="light"
-          className={classes.newRoomButton}
-          rightIcon={
-            requests.length !== 0 && (
-              <Badge
-                color="red"
-                variant="filled"
-              >
-                {requests.length}
-              </Badge>
-            )
-          }
-        >
-          Friends
-        </Button>
         <Accordion
+          variant="separated"
           onChange={(value) => {
             setApp({ messageAccordionSelected: value || "chat-rooms" });
           }}
           value={app.messageAccordionSelected}
           sx={{
+            marginLeft: 10,
+            marginRight: 10,
             ".mantine-Accordion-content": {
               padding: 0,
               paddingTop: 20,
@@ -272,11 +252,32 @@ const SideMenu = (): JSX.Element => {
                     </Badge>
                   )}
 
-                <Text>Chat Rooms</Text>
+                <Text>My Rooms</Text>
               </Flex>
             </Accordion.Control>
             <Accordion.Panel>
               <ChatRooms />
+            </Accordion.Panel>
+          </Accordion.Item>
+          <Accordion.Item value="public-chat-rooms">
+            <Accordion.Control>
+              <Flex align="center">
+                {getUnreadRooms() !== 0 &&
+                  app.messageAccordionSelected !== "public-chat-rooms" && (
+                    <Badge
+                      mr={8}
+                      color="red"
+                      variant="filled"
+                    >
+                      {getUnreadRooms()}
+                    </Badge>
+                  )}
+
+                <Text>Public Chat Rooms</Text>
+              </Flex>
+            </Accordion.Control>
+            <Accordion.Panel>
+              <PublicRooms />
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>
