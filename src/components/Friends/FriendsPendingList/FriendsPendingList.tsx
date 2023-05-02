@@ -1,4 +1,12 @@
-import { Alert, Badge, Button, Flex, Text, Title } from "@mantine/core";
+import {
+  Alert,
+  Badge,
+  Button,
+  Flex,
+  Text,
+  Title,
+  Tooltip,
+} from "@mantine/core";
 import React from "react";
 import { X } from "react-feather";
 import useGlobalStore from "../../../store/useGlobalStore";
@@ -83,17 +91,22 @@ const FriendsPendingList = (): JSX.Element => {
                 </Text>
               </div>
             </Flex>
-            <Button
-              color="red"
-              variant="light"
-              leftIcon={<X size={14} />}
-              loading={isLoading}
-              onClick={() => {
-                handleDeleteFriendship({ friendship });
-              }}
+            <Tooltip
+              withinPortal
+              label="Cancel friend request"
+              withArrow
             >
-              Cancel Request
-            </Button>
+              <Button
+                color="red"
+                variant="light"
+                loading={isLoading}
+                onClick={() => {
+                  handleDeleteFriendship({ friendship });
+                }}
+              >
+                <X size={14} />
+              </Button>
+            </Tooltip>
           </Flex>
         );
       })}

@@ -1,6 +1,14 @@
-import { Alert, Button, Flex, Text, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Alert,
+  Flex,
+  Loader,
+  Menu,
+  Text,
+  Title,
+} from "@mantine/core";
 import React from "react";
-import { UserPlus, X } from "react-feather";
+import { MoreHorizontal, Trash, UserPlus } from "react-feather";
 import useGlobalStore from "../../../store/useGlobalStore";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
 import getFriend from "../../../utils/friendships/getFriend";
@@ -80,35 +88,51 @@ const FriendsRequestsList = (): JSX.Element => {
                 </Text>
               </div>
             </Flex>
-            <Flex>
-              <Button
-                leftIcon={<X size={14} />}
-                color="red"
-                variant="light"
-                loading={isLoading}
-                onClick={() => {
-                  handleDeleteFriendship({
-                    friendship,
-                  });
-                }}
-              >
-                Decline
-              </Button>
+            <Menu
+              shadow="md"
+              width={200}
+              position="bottom"
+              withinPortal
+              withArrow
+            >
+              <Menu.Target>
+                <ActionIcon disabled={isLoading}>
+                  {isLoading ? (
+                    <Loader size={16} />
+                  ) : (
+                    <MoreHorizontal size={20} />
+                  )}
+                </ActionIcon>
+              </Menu.Target>
 
-              <Button
-                ml={10}
-                onClick={() => {
-                  handleAcceptFriendRequest({
-                    friendData,
-                    friendship,
-                  });
-                }}
-                leftIcon={<UserPlus size={14} />}
-                loading={isLoading}
-              >
-                Accept
-              </Button>
-            </Flex>
+              <Menu.Dropdown>
+                <Menu.Item
+                  onClick={() => {
+                    handleAcceptFriendRequest({
+                      friendData,
+                      friendship,
+                    });
+                  }}
+                  icon={<UserPlus size={16} />}
+                >
+                  Accept
+                </Menu.Item>
+
+                <Menu.Divider />
+
+                <Menu.Label>Danger zone</Menu.Label>
+                <Menu.Item
+                  onClick={() => {
+                    handleDeleteFriendship({
+                      friendship,
+                    });
+                  }}
+                  icon={<Trash size={16} />}
+                >
+                  Decline Request
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           </Flex>
         );
       })}

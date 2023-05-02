@@ -11,6 +11,7 @@ import {
   Loader,
   Text,
   Collapse,
+  Indicator,
 } from "@mantine/core";
 import { MessageSquare, Settings, Users } from "react-feather";
 import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
@@ -34,8 +35,16 @@ const mainLinksMockdata = [
 const SideMenu = (): JSX.Element => {
   const { handleSignout } = useHandleSignout();
   const navigate = useNavigate();
-  const { preferences, app, setApp, user, unreadMessages, dms, rooms } =
-    useGlobalStore();
+  const {
+    preferences,
+    app,
+    setApp,
+    user,
+    unreadMessages,
+    dms,
+    rooms,
+    friendships: { requests },
+  } = useGlobalStore();
 
   const { classes, cx } = useSideMenuStyles();
   const isMobile = useMediaQuery("(max-width: 900px)");
@@ -64,6 +73,22 @@ const SideMenu = (): JSX.Element => {
     return unread;
   };
 
+  const getUnreadNotificationsForMostLeftMenu = ({
+    menu,
+  }: {
+    menu: string;
+  }) => {
+    if (menu === "Friends") {
+      return requests.length;
+    }
+
+    if (menu === "Messages") {
+      return getUnreadRooms() + getUnreadDms();
+    }
+
+    return 0;
+  };
+
   const mainLinks = mainLinksMockdata.map((link) => (
     <Tooltip
       key={link.label}
@@ -72,24 +97,38 @@ const SideMenu = (): JSX.Element => {
       transitionProps={{ duration: 0 }}
       withArrow
     >
-      <UnstyledButton
-        className={cx(classes.mainLink, {
-          [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
-        })}
-        onClick={(): void => {
-          if (link.label === "Friends") {
-            setApp({
-              isFriendsMenuOpen: true,
-            });
-
-            return;
-          }
-
-          setApp({ mainActiveSideMenu: link.label });
-        }}
+      <Indicator
+        label={getUnreadNotificationsForMostLeftMenu({ menu: link.label })}
+        disabled={
+          getUnreadNotificationsForMostLeftMenu({
+            menu: link.label,
+          }) === 0
+        }
+        inline
+        color="red"
+        size={16}
+        offset={5}
+        position="bottom-end"
       >
-        {link.icon}
-      </UnstyledButton>
+        <UnstyledButton
+          className={cx(classes.mainLink, {
+            [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
+          })}
+          onClick={(): void => {
+            if (link.label === "Friends") {
+              setApp({
+                isFriendsMenuOpen: true,
+              });
+
+              return;
+            }
+
+            setApp({ mainActiveSideMenu: link.label });
+          }}
+        >
+          {link.icon}
+        </UnstyledButton>
+      </Indicator>
     </Tooltip>
   ));
 
@@ -234,6 +273,7 @@ const SideMenu = (): JSX.Element => {
                 <Text>DMs</Text>
               </Flex>
             </Accordion.Control>
+
             <Accordion.Panel>
               <DMs />
             </Accordion.Panel>
