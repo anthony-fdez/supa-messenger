@@ -65,6 +65,7 @@ export interface IFriend extends IDatabaseFriends {
 
 export interface ICurrentRoom {
   isLoading: boolean;
+  isLoadingMessages: boolean;
   isRoomMember: boolean;
   messages: IDatabaseMessages[] | null;
   myMessage: string;
@@ -133,6 +134,7 @@ const initialState: IGlobalStateValues = {
     registerComplete: false,
   },
   currentRoom: {
+    isLoadingMessages: false,
     isLoading: false,
     isRoomMember: false,
     myMessage: "",

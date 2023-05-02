@@ -18,6 +18,10 @@ const useGetRoomMessages = () => {
   const getRoomMessages = async ({
     roomId,
   }: IGetRoomMessages): Promise<void> => {
+    setCurrentRoom({
+      isLoadingMessages: true,
+    });
+
     const { data, error } = await supabase
       .from("messages")
       .select("*, userData:users(*)")
@@ -35,6 +39,7 @@ const useGetRoomMessages = () => {
     if (data.length === 0) {
       return setCurrentRoom({
         messages: [],
+        isLoadingMessages: false,
       });
     }
 
@@ -57,6 +62,7 @@ const useGetRoomMessages = () => {
 
     return setCurrentRoom({
       messages: reversedMessages,
+      isLoadingMessages: false,
     });
   };
 
