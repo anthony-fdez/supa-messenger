@@ -1,7 +1,6 @@
 import {
   ActionIcon,
   Avatar,
-  Badge,
   Button,
   Flex,
   Title,
@@ -48,45 +47,6 @@ const RoomHeader = (): JSX.Element => {
     return friend.friendData?.name;
   };
 
-  const getRoomBadge = () => {
-    if (roomData.is_dm) {
-      return (
-        <Tooltip label="Direct Message">
-          <Badge
-            ml={30}
-            mt={3}
-            variant="outline"
-          >
-            DM
-          </Badge>
-        </Tooltip>
-      );
-    }
-
-    if (roomData.is_private) {
-      return (
-        <Badge
-          ml={30}
-          mt={3}
-          variant="outline"
-        >
-          Private Room
-        </Badge>
-      );
-    }
-
-    return (
-      <Badge
-        color="red"
-        ml={30}
-        mt={3}
-        variant="outline"
-      >
-        Public Room
-      </Badge>
-    );
-  };
-
   return (
     <div style={{ zIndex: "9999" }}>
       <RoomSettingsDrawer
@@ -130,7 +90,6 @@ const RoomHeader = (): JSX.Element => {
           >
             {getRoomName()}
           </Title>
-          {getRoomBadge()}
         </div>
         <Flex align="center">
           <Tooltip

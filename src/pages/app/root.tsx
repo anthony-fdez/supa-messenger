@@ -1,4 +1,4 @@
-import { ActionIcon, Burger, Drawer } from "@mantine/core";
+import { Burger, Drawer } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useEffect } from "react";
@@ -14,6 +14,7 @@ import useListenToFriendshipChanges from "../../Hooks/friendships/useListenToFri
 import useGlobalStore from "../../store/useGlobalStore";
 import useListenToRoomChanges from "../../Hooks/rooms/useListenToRoomChanges";
 import useLoadUnreadMessages from "../../Hooks/rooms/useLoadUnreadMessages";
+import RoomHeader from "./Room/RoomHeader/RoomHeader";
 
 const Root = (): JSX.Element => {
   const { getUserFriends, getUserRoomData } = useLoadUserData();
@@ -96,12 +97,13 @@ const Root = (): JSX.Element => {
       {isMobile ? (
         <>
           <div className={classes.header}>
-            <h3>App name</h3>
+            <RoomHeader />
+            {/* <h3>App name</h3>
             <ActionIcon
               onClick={(): void => setApp({ isMobileMenuOpen: true })}
             >
               <Burger opened={app.isMobileMenuOpen} />
-            </ActionIcon>
+            </ActionIcon> */}
           </div>
           <Drawer
             onClose={(): void => setApp({ isMobileMenuOpen: false })}
@@ -109,7 +111,7 @@ const Root = (): JSX.Element => {
             overlayProps={{ blur: 5 }}
             position="right"
             withCloseButton
-            zIndex={20}
+            zIndex={100}
           >
             <SideMenu />
           </Drawer>
