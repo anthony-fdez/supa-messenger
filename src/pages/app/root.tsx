@@ -1,4 +1,4 @@
-import { Burger, Drawer } from "@mantine/core";
+import { ActionIcon, Burger, Drawer } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useEffect } from "react";
@@ -97,13 +97,12 @@ const Root = (): JSX.Element => {
       {isMobile ? (
         <>
           <div className={classes.header}>
-            <RoomHeader />
-            {/* <h3>App name</h3>
+            <h3>App name</h3>
             <ActionIcon
               onClick={(): void => setApp({ isMobileMenuOpen: true })}
             >
               <Burger opened={app.isMobileMenuOpen} />
-            </ActionIcon> */}
+            </ActionIcon>
           </div>
           <Drawer
             onClose={(): void => setApp({ isMobileMenuOpen: false })}
