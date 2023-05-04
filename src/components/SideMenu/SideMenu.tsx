@@ -302,17 +302,6 @@ const SideMenu = (): JSX.Element => {
           <Accordion.Item value="public-chat-rooms">
             <Accordion.Control>
               <Flex align="center">
-                {getUnreadRooms() !== 0 &&
-                  app.messageAccordionSelected !== "public-chat-rooms" && (
-                    <Badge
-                      mr={8}
-                      color="red"
-                      variant="filled"
-                    >
-                      {getUnreadRooms()}
-                    </Badge>
-                  )}
-
                 <Text>Public Chat Rooms</Text>
               </Flex>
             </Accordion.Control>

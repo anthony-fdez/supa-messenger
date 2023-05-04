@@ -14,7 +14,6 @@ import useListenToFriendshipChanges from "../../Hooks/friendships/useListenToFri
 import useGlobalStore from "../../store/useGlobalStore";
 import useListenToRoomChanges from "../../Hooks/rooms/useListenToRoomChanges";
 import useLoadUnreadMessages from "../../Hooks/rooms/useLoadUnreadMessages";
-import RoomHeader from "./Room/RoomHeader/RoomHeader";
 
 const Root = (): JSX.Element => {
   const { getUserFriends, getUserRoomData } = useLoadUserData();
@@ -37,9 +36,11 @@ const Root = (): JSX.Element => {
   } = useGlobalStore();
 
   useEffect(() => {
+    if (!session) return;
+
     getUnreadMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session]);
 
   useEffect((): void | (() => void) => {
     if (!session) return;
