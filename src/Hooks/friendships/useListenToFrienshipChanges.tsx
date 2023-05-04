@@ -1,12 +1,16 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import {
+  Session,
+  useSession,
+  useSupabaseClient,
+} from "@supabase/auth-helpers-react";
 import { useEffect } from "react";
 import { showNotification } from "@mantine/notifications";
 import { Database } from "../../../types/database.types";
 import useGlobalStore from "../../store/useGlobalStore";
 
 interface Props {
-  getUserFriends?: () => Promise<void>;
-  getUserRoomData?: () => Promise<void>;
+  getUserFriends: (session: Session) => Promise<void>;
+  getUserRoomData: (session: Session) => Promise<void>;
 }
 
 const useListenToFriendshipChanges = ({
@@ -14,12 +18,15 @@ const useListenToFriendshipChanges = ({
   getUserRoomData,
 }: Props) => {
   const supabase = useSupabaseClient<Database>();
+  const session = useSession();
 
   const {
     user: { uid },
   } = useGlobalStore();
 
   useEffect(() => {
+    if (!session) return;
+
     const channel = supabase
       .channel("friendships-changes")
       .on(
@@ -30,6 +37,9 @@ const useListenToFriendshipChanges = ({
           table: "friendships",
         },
         (payload: any) => {
+          getUserFriends(session);
+          getUserRoomData(session);
+
           if (
             payload.new.status === "PENDING" &&
             payload.new.action_user_id !== uid
@@ -48,9 +58,6 @@ const useListenToFriendshipChanges = ({
                 "Someone just accepted your friend request, go check out who it is",
             });
           }
-
-          if (getUserFriends) getUserFriends();
-          if (getUserRoomData) getUserRoomData();
         },
       )
       .subscribe();
@@ -59,7 +66,7 @@ const useListenToFriendshipChanges = ({
       channel.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session]);
 };
 
 export default useListenToFriendshipChanges;

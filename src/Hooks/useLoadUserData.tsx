@@ -1,4 +1,8 @@
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import {
+  Session,
+  useSession,
+  useSupabaseClient,
+} from "@supabase/auth-helpers-react";
 import { useCallback, useEffect } from "react";
 import useGlobalStore, {
   IDatabaseRoom,
@@ -10,16 +14,10 @@ import useHandleSignout from "./useHandleSignout";
 const useLoadUserData = () => {
   const supabase = useSupabaseClient<Database>();
   const { handleSignout } = useHandleSignout();
-  const session = useSession();
+  const s = useSession();
 
-  const {
-    setUser,
-    setApp,
-    setRooms,
-    setFriendships,
-    user: { uid },
-    setDms,
-  } = useGlobalStore();
+  const { setUser, setApp, setRooms, setFriendships, setDms } =
+    useGlobalStore();
 
   const getUserSession = useCallback(async () => {
     const {
@@ -29,10 +27,11 @@ const useLoadUserData = () => {
     if (!user) return handleSignout();
 
     return null;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
 
-  const getUserData = useCallback(async (): Promise<void> => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getUserData = useCallback(async (session: Session): Promise<void> => {
     if (!session) return;
 
     const { data, error } = await supabase
@@ -60,19 +59,21 @@ const useLoadUserData = () => {
       registerComplete: data?.register_complete,
       uid: data?.id,
     });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+  }, []);
 
-  const getUserRoomData = useCallback(async (): Promise<void> => {
-    if (!session) return;
+  const getUserRoomData = useCallback(
+    async (session: Session): Promise<void> => {
+      if (!session) return;
 
-    setRooms([]);
-    setApp({ isLoadingRooms: true });
+      setRooms([]);
+      setApp({ isLoadingRooms: true });
 
-    const { data, error } = await supabase
-      .from("rooms")
-      .select(
-        `*,
+      const { data, error } = await supabase
+        .from("rooms")
+        .select(
+          `*,
         friendships(
           *,
           userData1:users!friendships_user_id_1_fkey(
@@ -92,50 +93,52 @@ const useLoadUserData = () => {
           )
         )
         `,
-      )
-      .filter("participants.user_id", "eq", uid);
+        )
+        .filter("participants.user_id", "eq", session.user.id);
 
-    if (error || !data) {
-      setApp({ isLoadingRooms: false });
-      return;
-    }
-
-    const newDms: IDatabaseRoom[] = [];
-    const newRooms: IDatabaseRoom[] = [];
-
-    data.forEach((room) => {
-      // @ts-ignore
-      if (room.friendships && room.friendships[0] && room.is_dm) {
-        newDms.push(room);
+      if (error || !data) {
+        setApp({ isLoadingRooms: false });
         return;
       }
 
-      newRooms.push(room);
-    });
+      const newDms: IDatabaseRoom[] = [];
+      const newRooms: IDatabaseRoom[] = [];
 
-    // @ts-ignore
-    setRooms(newRooms);
-    // @ts-ignore
-    setDms(newDms);
+      data.forEach((room) => {
+        // @ts-ignore
+        if (room.friendships && room.friendships[0] && room.is_dm) {
+          newDms.push(room);
+          return;
+        }
 
-    setTimeout(() => {
-      setApp({ isLoadingRooms: false });
-    }, 2000);
+        newRooms.push(room);
+      });
 
+      // @ts-ignore
+      setRooms(newRooms);
+      // @ts-ignore
+      setDms(newDms);
+
+      setTimeout(() => {
+        setApp({ isLoadingRooms: false });
+      }, 2000);
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+    [],
+  );
 
-  const getUserFriends = useCallback(async (): Promise<void> => {
-    if (!session) return;
+  const getUserFriends = useCallback(
+    async (session: Session): Promise<void> => {
+      if (!session) return;
 
-    setFriendships({
-      friends: [],
-      requests: [],
-      pending: [],
-    });
+      setFriendships({
+        friends: [],
+        requests: [],
+        pending: [],
+      });
 
-    const { data, error } = await supabase.from("friendships").select(
-      `*, 
+      const { data, error } = await supabase.from("friendships").select(
+        `*, 
         userData1:users!friendships_user_id_1_fkey(
           *
         ),
@@ -146,63 +149,57 @@ const useLoadUserData = () => {
           *
         )
       `,
-    );
+      );
 
-    const requests: IFriend[] = [];
-    const friends: IFriend[] = [];
-    const pending: IFriend[] = [];
+      const requests: IFriend[] = [];
+      const friends: IFriend[] = [];
+      const pending: IFriend[] = [];
 
-    if (error || !data) {
-      return;
-    }
-
-    data.forEach((friendship) => {
-      if (friendship.status === "PENDING") {
-        if (friendship.action_user_id === uid) {
-          pending.push(friendship);
-        } else {
-          requests.push(friendship);
-        }
-      } else if (friendship.status === "FRIENDS") {
-        return friends.push(friendship);
+      if (error || !data) {
+        return;
       }
 
-      return null;
-    });
+      data.forEach((friendship) => {
+        if (friendship.status === "PENDING") {
+          if (friendship.action_user_id === session.user.id) {
+            pending.push(friendship);
+          } else {
+            requests.push(friendship);
+          }
+        } else if (friendship.status === "FRIENDS") {
+          return friends.push(friendship);
+        }
 
-    setFriendships({
-      friends,
-      pending,
-      requests,
-    });
+        return null;
+      });
 
+      setFriendships({
+        friends,
+        pending,
+        requests,
+      });
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+    [],
+  );
 
   useEffect(() => {
+    if (!s) return;
+
     setApp({
       isLoading: true,
     });
 
     Promise.all([
-      getUserData(),
-      getUserRoomData(),
+      getUserData(s),
+      getUserRoomData(s),
       getUserSession(),
-      getUserFriends(),
+      getUserFriends(s),
     ]).finally(() => {
-      // setApp({ isLoading: false });
-
       setApp({ isLoading: false });
     });
-  }, [
-    session,
-    getUserData,
-    getUserFriends,
-    getUserRoomData,
-    getUserSession,
-    setApp,
-    supabase,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [s, supabase]);
 
   return { getUserData, getUserRoomData, getUserSession, getUserFriends };
 };
