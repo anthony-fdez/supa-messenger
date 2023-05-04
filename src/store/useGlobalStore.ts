@@ -44,7 +44,7 @@ interface IApp {
   isMobileMenuOpen: boolean;
   isTldrMenuOpen: boolean;
   mainActiveSideMenu: string | null;
-  messageAccordionSelected: string;
+  messageAccordionSelected: string | null;
   onlineUsers: RealtimePresenceState | null;
   registerUserActiveStep: number;
   secondaryActiveSideMenu: string | null;
@@ -117,7 +117,7 @@ export interface IGlobalState extends IGlobalStateValues {
   setUser: (state: Partial<IUser>) => void;
 }
 
-const initialState: IGlobalStateValues = {
+export const initialState: IGlobalStateValues = {
   rooms: [],
   unreadMessages: [],
   dms: [],

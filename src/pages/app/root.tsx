@@ -2,7 +2,7 @@ import { ActionIcon, Burger, Drawer } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import AuthUser from "../../components/AuthUser/AuthUser";
 import RegisterUser from "../../components/RegisterUser/RegisterUser";
 import SideMenu from "../../components/SideMenu/SideMenu";
@@ -11,7 +11,7 @@ import useRootStyles from "./useRootStyles";
 import { Database } from "../../../types/database.types";
 import removeTypingIndicatorFromOfflineUsers from "../../helpers/removeTypingIndicatorFromOfflineUsers";
 import useListenToFriendshipChanges from "../../Hooks/friendships/useListenToFrienshipChanges";
-import useGlobalStore from "../../store/useGlobalStore";
+import useGlobalStore, { initialState } from "../../store/useGlobalStore";
 import useListenToRoomChanges from "../../Hooks/rooms/useListenToRoomChanges";
 import useLoadUnreadMessages from "../../Hooks/rooms/useLoadUnreadMessages";
 
@@ -23,6 +23,7 @@ const Root = (): JSX.Element => {
   const { getUnreadMessages } = useLoadUnreadMessages();
 
   const { classes } = useRootStyles();
+  const location = useLocation();
 
   const isMobile = useMediaQuery("(max-width: 900px)");
   const session = useSession();
@@ -34,6 +35,21 @@ const Root = (): JSX.Element => {
     currentRoom: { usersTyping },
     setCurrentRoom,
   } = useGlobalStore();
+
+  useEffect(() => {
+    if (!session) return;
+    if (!location) return;
+
+    if (location.pathname === "/") {
+      setCurrentRoom(initialState.currentRoom);
+      setApp({
+        secondaryActiveSideMenu: null,
+        messageAccordionSelected: null,
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location, session]);
 
   useEffect(() => {
     if (!session) return;

@@ -243,7 +243,7 @@ const SideMenu = (): JSX.Element => {
         <Accordion
           variant="separated"
           onChange={(value) => {
-            setApp({ messageAccordionSelected: value || "chat-rooms" });
+            setApp({ messageAccordionSelected: value });
           }}
           value={app.messageAccordionSelected}
           sx={{
