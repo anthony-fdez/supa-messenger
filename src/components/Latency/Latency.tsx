@@ -30,7 +30,7 @@ const Latency = () => {
 
             const end = performance.now();
 
-            setLatency(end - begin);
+            setLatency(Math.trunc(end - begin));
           }, 5000);
         }
       });
