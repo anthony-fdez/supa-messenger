@@ -1,6 +1,7 @@
 import React from "react";
 import {
   CloseButton,
+  Flex,
   Indicator,
   Navbar,
   Title,
@@ -16,6 +17,7 @@ import useSideMenuStyles from "./SideMenu.styles";
 import MessagesSideMenuScreen from "./SideMenuScreens/MessagesSideMenuScreen";
 import SettingsSideMenuScreen from "./SideMenuScreens/SettingsSideMenuScreen";
 import FriendsSideMenuScreen from "./SideMenuScreens/FriendsSideMenuScreen";
+import Latency from "../Latency/Latency";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
@@ -118,7 +120,12 @@ const SideMenu = (): JSX.Element => {
             className={classes.title}
             order={4}
           >
-            {app.mainActiveSideMenu}
+            <Flex align="center">
+              <Latency />
+
+              {app.mainActiveSideMenu}
+            </Flex>
+
             {isMobile && (
               <CloseButton
                 onClick={(): void => setApp({ isMobileMenuOpen: false })}
@@ -126,6 +133,7 @@ const SideMenu = (): JSX.Element => {
               />
             )}
           </Title>
+
           <div className={classes.linkContainer}>{links()}</div>
         </div>
       </Navbar.Section>
