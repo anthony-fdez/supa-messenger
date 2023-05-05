@@ -341,17 +341,16 @@ const RoomSideMenu = ({
         {isRoomMember &&
           roomData?.created_by !== session?.user.id &&
           !roomData?.is_dm && (
-            <div>
-              <Button
-                onClick={handleLeaveRoom}
-                fullWidth
-                variant="light"
-                color="red"
-                leftIcon={<LogOut size={14} />}
-              >
-                Leave Room
-              </Button>
-            </div>
+            <Button
+              w={360}
+              onClick={handleLeaveRoom}
+              fullWidth
+              variant="light"
+              color="red"
+              leftIcon={<LogOut size={14} />}
+            >
+              Leave Room
+            </Button>
           )}
       </div>
     );
