@@ -25,6 +25,9 @@ import ChatRooms from "./ChatRooms/ChatRooms";
 import PublicRooms from "./PublicRooms/PublicRooms";
 import DMs from "./DMs/DMs";
 import UserAvatarWithIndicator from "../UserAvatarWithIndicator/UserAvatarWithIndicator";
+import getUnreadMessagesInRooms from "../../helpers/getUnreadMessagesInRooms";
+import getUnreadMessagesInDms from "../../helpers/getUnreadMessagesInDms";
+import MessagesSideMenuScreen from "./SideMenuScreens/MessagesSideMenuScreen";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
@@ -49,30 +52,6 @@ const SideMenu = (): JSX.Element => {
   const { classes, cx } = useSideMenuStyles();
   const isMobile = useMediaQuery("(max-width: 900px)");
 
-  const getUnreadDms = () => {
-    let unread = 0;
-
-    unreadMessages.forEach((message) => {
-      if (dms.find((dm) => dm.id === message.room_id)) {
-        unread += message.message_count;
-      }
-    });
-
-    return unread;
-  };
-
-  const getUnreadRooms = () => {
-    let unread = 0;
-
-    unreadMessages.forEach((message) => {
-      if (rooms.find((dm) => dm.id === message.room_id)) {
-        unread += message.message_count;
-      }
-    });
-
-    return unread;
-  };
-
   const getUnreadNotificationsForMostLeftMenu = ({
     menu,
   }: {
@@ -83,7 +62,10 @@ const SideMenu = (): JSX.Element => {
     }
 
     if (menu === "Messages") {
-      return getUnreadRooms() + getUnreadDms();
+      return (
+        getUnreadMessagesInRooms({ rooms, unreadMessages }) +
+        getUnreadMessagesInDms({ dms, unreadMessages })
+      );
     }
 
     return 0;
@@ -115,14 +97,6 @@ const SideMenu = (): JSX.Element => {
             [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
           })}
           onClick={(): void => {
-            if (link.label === "Friends") {
-              setApp({
-                isFriendsMenuOpen: true,
-              });
-
-              return;
-            }
-
             setApp({ mainActiveSideMenu: link.label });
           }}
         >
@@ -225,93 +199,7 @@ const SideMenu = (): JSX.Element => {
       );
     }
 
-    return (
-      <>
-        <Collapse in={app.isLoadingRooms}>
-          <Flex
-            align="center"
-            p={20}
-            pt={0}
-          >
-            <Loader
-              mr={10}
-              size={20}
-            />
-            <Text size={14}>Updating...</Text>
-          </Flex>
-        </Collapse>
-        <Accordion
-          variant="separated"
-          onChange={(value) => {
-            setApp({ messageAccordionSelected: value });
-          }}
-          value={app.messageAccordionSelected}
-          sx={{
-            marginLeft: 10,
-            marginRight: 10,
-            ".mantine-Accordion-content": {
-              padding: 0,
-              paddingTop: 20,
-              paddingBottom: 20,
-            },
-          }}
-        >
-          <Accordion.Item value="dms">
-            <Accordion.Control>
-              <Flex align="center">
-                {getUnreadDms() !== 0 &&
-                  app.messageAccordionSelected !== "dms" && (
-                    <Badge
-                      mr={8}
-                      color="red"
-                      variant="filled"
-                    >
-                      {getUnreadDms()}
-                    </Badge>
-                  )}
-
-                <Text>DMs</Text>
-              </Flex>
-            </Accordion.Control>
-
-            <Accordion.Panel>
-              <DMs />
-            </Accordion.Panel>
-          </Accordion.Item>
-          <Accordion.Item value="chat-rooms">
-            <Accordion.Control>
-              <Flex align="center">
-                {getUnreadRooms() !== 0 &&
-                  app.messageAccordionSelected !== "chat-rooms" && (
-                    <Badge
-                      mr={8}
-                      color="red"
-                      variant="filled"
-                    >
-                      {getUnreadRooms()}
-                    </Badge>
-                  )}
-
-                <Text>My Rooms</Text>
-              </Flex>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <ChatRooms />
-            </Accordion.Panel>
-          </Accordion.Item>
-          <Accordion.Item value="public-chat-rooms">
-            <Accordion.Control>
-              <Flex align="center">
-                <Text>Public Chat Rooms</Text>
-              </Flex>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <PublicRooms />
-            </Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
-      </>
-    );
+    return <MessagesSideMenuScreen />;
   };
 
   return (

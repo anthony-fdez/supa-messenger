@@ -14,11 +14,13 @@ import useListenToFriendshipChanges from "../../Hooks/friendships/useListenToFri
 import useGlobalStore, { initialState } from "../../store/useGlobalStore";
 import useListenToRoomChanges from "../../Hooks/rooms/useListenToRoomChanges";
 import useLoadUnreadMessages from "../../Hooks/rooms/useLoadUnreadMessages";
+import useListenToUnreadMessagesChanges from "../../Hooks/rooms/useListenToUnreadMessages";
 
 const Root = (): JSX.Element => {
   const { getUserFriends, getUserRoomData } = useLoadUserData();
   useListenToFriendshipChanges({ getUserFriends, getUserRoomData });
   useListenToRoomChanges({ getUserRoomData });
+  useListenToUnreadMessagesChanges();
 
   const { getUnreadMessages } = useLoadUnreadMessages();
 

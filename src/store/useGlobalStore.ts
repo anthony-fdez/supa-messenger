@@ -38,7 +38,6 @@ export interface IRoom extends IDatabaseRoom {
 }
 
 interface IApp {
-  isFriendsMenuOpen: boolean;
   isLoading: boolean;
   isLoadingRooms: boolean;
   isMobileMenuOpen: boolean;
@@ -81,7 +80,7 @@ interface IFriendships {
   requests: IFriend[];
 }
 
-interface IUnreadMessages {
+export interface IUnreadMessages {
   message_count: number;
   room_id: string;
 }
@@ -145,7 +144,6 @@ export const initialState: IGlobalStateValues = {
     usersTyping: [],
   },
   app: {
-    isFriendsMenuOpen: false,
     isTldrMenuOpen: false,
     isMobileMenuOpen: false,
     messageAccordionSelected: "chat-rooms",
