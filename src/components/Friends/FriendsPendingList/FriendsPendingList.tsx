@@ -1,12 +1,4 @@
-import {
-  Alert,
-  Badge,
-  Button,
-  Flex,
-  Text,
-  Title,
-  Tooltip,
-} from "@mantine/core";
+import { Alert, Button, Flex, Text, Title, Tooltip } from "@mantine/core";
 import React from "react";
 import { X } from "react-feather";
 import useGlobalStore from "../../../store/useGlobalStore";
@@ -39,7 +31,7 @@ const FriendsPendingList = (): JSX.Element => {
         sometimes), refresh the page if you wanna be sure.
       </Alert>
       {pending.map((friendship) => {
-        const { friendData, status } = getFriend({
+        const { friendData } = getFriend({
           friendship,
           userId: user.uid || "",
         });

@@ -1,5 +1,6 @@
 import {
   Alert,
+  Box,
   Button,
   Divider,
   Drawer,
@@ -312,18 +313,30 @@ const RoomSideMenu = ({
 
     return (
       <div className={classes.container}>
-        <ScrollArea h="100%">
-          {roomAdminSettings()}
-          <Flex align="center">
-            <Title size={26}>{roomData?.name}</Title>
-            {getRoomBadge()}
-          </Flex>
+        <ScrollArea
+          w={360}
+          h="100%"
+        >
+          <Box
+            sx={{ overflow: "hidden" }}
+            w={360}
+          >
+            {roomAdminSettings()}
+            <Flex align="center">
+              <Title
+                lineClamp={1}
+                size={26}
+              >
+                {roomData?.name}
+              </Title>
+              {getRoomBadge()}
+            </Flex>
+            {roomParticipants.map((participant) => {
+              if (!participant.userData) return null;
 
-          {roomParticipants.map((participant) => {
-            if (!participant.userData) return null;
-
-            return <RoomSideMenuParticipant participant={participant} />;
-          })}
+              return <RoomSideMenuParticipant participant={participant} />;
+            })}
+          </Box>
         </ScrollArea>
         {isRoomMember &&
           roomData?.created_by !== session?.user.id &&
@@ -359,7 +372,6 @@ const RoomSideMenu = ({
         size="md"
         title="Room Settings"
       >
-        {roomAdminSettings()}
         {renderRoomParticipants()}
       </Drawer>
     );
