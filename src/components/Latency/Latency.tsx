@@ -30,7 +30,6 @@ const Latency = () => {
 
             const end = performance.now();
 
-            console.log(`Latency is ${end - begin} milliseconds`);
             setLatency(end - begin);
           }, 5000);
         }
