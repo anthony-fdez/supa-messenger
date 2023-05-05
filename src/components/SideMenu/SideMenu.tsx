@@ -1,33 +1,21 @@
 import React from "react";
 import {
-  Navbar,
-  UnstyledButton,
-  Tooltip,
-  Title,
   CloseButton,
-  Accordion,
-  Badge,
-  Flex,
-  Loader,
-  Text,
-  Collapse,
   Indicator,
+  Navbar,
+  Title,
+  Tooltip,
+  UnstyledButton,
 } from "@mantine/core";
-import { MessageSquare, Settings, Users } from "react-feather";
-import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
-import { useNavigate } from "react-router";
 import { useMediaQuery } from "@mantine/hooks";
-import useSideMenuStyles from "./SideMenu.styles";
-import useHandleSignout from "../../Hooks/useHandleSignout";
-import useGlobalStore from "../../store/useGlobalStore";
-import ChangeThemeModal from "./ChangeThemeModal/ChangeThemeModal";
-import ChatRooms from "./ChatRooms/ChatRooms";
-import PublicRooms from "./PublicRooms/PublicRooms";
-import DMs from "./DMs/DMs";
-import UserAvatarWithIndicator from "../UserAvatarWithIndicator/UserAvatarWithIndicator";
-import getUnreadMessagesInRooms from "../../helpers/getUnreadMessagesInRooms";
+import { MessageSquare, Settings, Users } from "react-feather";
 import getUnreadMessagesInDms from "../../helpers/getUnreadMessagesInDms";
+import getUnreadMessagesInRooms from "../../helpers/getUnreadMessagesInRooms";
+import useGlobalStore from "../../store/useGlobalStore";
+import useSideMenuStyles from "./SideMenu.styles";
 import MessagesSideMenuScreen from "./SideMenuScreens/MessagesSideMenuScreen";
+import SettingsSideMenuScreen from "./SideMenuScreens/SettingsSideMenuScreen";
+import FriendsSideMenuScreen from "./SideMenuScreens/FriendsSideMenuScreen";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
@@ -36,13 +24,10 @@ const mainLinksMockdata = [
 ];
 
 const SideMenu = (): JSX.Element => {
-  const { handleSignout } = useHandleSignout();
-  const navigate = useNavigate();
   const {
-    preferences,
     app,
     setApp,
-    user,
+
     unreadMessages,
     dms,
     rooms,
@@ -108,95 +93,11 @@ const SideMenu = (): JSX.Element => {
 
   const links = (): JSX.Element | JSX.Element[] => {
     if (app.mainActiveSideMenu === "Settings") {
-      return (
-        <>
-          <Flex
-            mb={10}
-            p={10}
-            align="center"
-            direction="column"
-          >
-            <UserAvatarWithIndicator
-              user_email={user.email || ""}
-              image={user.imageUrl || ""}
-              size={80}
-              checkOnline
-            />
-            <div>
-              <Title
-                mt={10}
-                size={24}
-                lineClamp={1}
-              >
-                {user.name}
-              </Title>
-            </div>
-          </Flex>
-          <a
-            className={cx(classes.link, {
-              [classes.linkActive]:
-                app.secondaryActiveSideMenu === "Settings/Account",
-            })}
-            href="/"
-            onClick={(event): void => {
-              event.preventDefault();
-              setApp({
-                secondaryActiveSideMenu: "Settings/Account",
-                isMobileMenuOpen: false,
-              });
-              navigate("/account");
-            }}
-          >
-            User Preferences
-          </a>
-          <a
-            className={cx(classes.link, {
-              [classes.linkActive]:
-                app.secondaryActiveSideMenu === "Settings/Theme",
-            })}
-            href="/"
-            onClick={(event): void => {
-              event.preventDefault();
-              openModal({
-                title: "Change Theme",
-                children: <ChangeThemeModal />,
-                overlayProps: {
-                  blur: 5,
-                },
-              });
-            }}
-          >
-            {`Theme: ${preferences.theme}`}
-          </a>
-          <a
-            className={cx(classes.link, {
-              [classes.linkActive]:
-                app.secondaryActiveSideMenu === "Settings/Theme",
-            })}
-            href="/"
-            onClick={(event): void => {
-              event.preventDefault();
+      return <SettingsSideMenuScreen />;
+    }
 
-              openConfirmModal({
-                title: "Are you sure?",
-                labels: {
-                  confirm: "Yes, log out",
-                  cancel: "Cancel",
-                },
-                onConfirm: () => {
-                  handleSignout();
-                  closeAllModals();
-                },
-                overlayProps: {
-                  blur: 5,
-                },
-              });
-            }}
-          >
-            Sign out
-          </a>
-        </>
-      );
+    if (app.mainActiveSideMenu === "Friends") {
+      return <FriendsSideMenuScreen />;
     }
 
     return <MessagesSideMenuScreen />;

@@ -44,6 +44,7 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
       <Menu.Dropdown
         p={20}
         ml={10}
+        sx={{ maxWidth: 250 }}
       >
         <Flex
           p={20}
@@ -67,6 +68,7 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
           <Text
             size={12}
             lineClamp={1}
+            sx={{ maxWidth: "100%" }}
           >
             {user.email}
           </Text>

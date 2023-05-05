@@ -33,8 +33,10 @@ const FriendsPendingList = (): JSX.Element => {
 
   return (
     <div>
-      <Alert title="This are the requests that you have sent">
-        And are still pending...
+      <Alert title="Hold on, it might take a minute">
+        They may answer today, tomorrow or never... Or they already accepted
+        your request and the app hasn&apos;t updated yet (that happens
+        sometimes), refresh the page if you wanna be sure.
       </Alert>
       {pending.map((friendship) => {
         const { friendData, status } = getFriend({
@@ -78,14 +80,15 @@ const FriendsPendingList = (): JSX.Element => {
                   <Title
                     mr={10}
                     size={16}
+                    lineClamp={1}
                   >
                     {friendData.name}
                   </Title>
-                  <Badge>{status}</Badge>
                 </Flex>
                 <Text
                   c="dimmed"
                   size={14}
+                  lineClamp={1}
                 >
                   {friendData.email}
                 </Text>
