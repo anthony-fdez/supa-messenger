@@ -171,7 +171,7 @@ const RoomSideMenu = ({
         >
           <ThemeIcon
             p={5}
-            ml={10}
+            mr={10}
             color="blue"
             variant="outline"
           >
@@ -190,7 +190,7 @@ const RoomSideMenu = ({
         >
           <ThemeIcon
             p={5}
-            ml={10}
+            mr={10}
             color="green"
             variant="outline"
           >
@@ -208,7 +208,7 @@ const RoomSideMenu = ({
       >
         <ThemeIcon
           p={5}
-          ml={10}
+          mr={10}
           color="red"
           variant="outline"
         >
@@ -323,13 +323,13 @@ const RoomSideMenu = ({
           >
             {roomAdminSettings()}
             <Flex align="center">
+              {getRoomBadge()}
               <Title
                 lineClamp={1}
                 size={26}
               >
                 {roomData?.name}
               </Title>
-              {getRoomBadge()}
             </Flex>
             {roomParticipants.map((participant) => {
               if (!participant.userData) return null;
