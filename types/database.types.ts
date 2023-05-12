@@ -50,6 +50,7 @@ export interface Database {
           id: number
           is_edited: boolean
           message_body: string
+          replying_to: number | null
           room_id: string
           thread_id: number | null
           updated_at: string | null
@@ -60,6 +61,7 @@ export interface Database {
           id?: number
           is_edited?: boolean
           message_body: string
+          replying_to?: number | null
           room_id: string
           thread_id?: number | null
           updated_at?: string | null
@@ -70,6 +72,7 @@ export interface Database {
           id?: number
           is_edited?: boolean
           message_body?: string
+          replying_to?: number | null
           room_id?: string
           thread_id?: number | null
           updated_at?: string | null

@@ -5,6 +5,7 @@ import { closeAllModals } from "@mantine/modals";
 import { Database } from "../../../../../../types/database.types";
 import { IDatabaseMessages } from "../../../../../store/useGlobalStore";
 import { Alert, Button, Flex, Textarea } from "@mantine/core";
+import { Send } from "react-feather";
 
 interface Props {
   message: IDatabaseMessages;
@@ -111,6 +112,7 @@ const MessageReply = ({ message }: Props): JSX.Element => {
           Cancel
         </Button>
         <Button
+          rightIcon={<Send size={14} />}
           loading={isSendingMessage}
           type="submit"
         >
