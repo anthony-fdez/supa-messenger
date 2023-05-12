@@ -2,10 +2,10 @@ import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
 import { showNotification } from "@mantine/notifications";
 import { closeAllModals } from "@mantine/modals";
+import { Send } from "react-feather";
+import { Alert, Button, Flex, Textarea } from "@mantine/core";
 import { Database } from "../../../../../../types/database.types";
 import { IDatabaseMessages } from "../../../../../store/useGlobalStore";
-import { Alert, Button, Flex, Textarea } from "@mantine/core";
-import { Send } from "react-feather";
 
 interface Props {
   message: IDatabaseMessages;
@@ -85,6 +85,7 @@ const MessageReply = ({ message }: Props): JSX.Element => {
         onMessageSend(e);
       }}
     >
+      {/* @ts-ignore */}
       <Alert title={`Replying to: ${message.userData.name}`}>
         {message.message_body}
       </Alert>
