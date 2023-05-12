@@ -1,11 +1,13 @@
 import {
   ActionIcon,
+  Badge,
   Button,
   Flex,
   HoverCard,
   Loader,
   Text,
   Textarea,
+  Tooltip,
 } from "@mantine/core";
 import moment from "moment";
 import React, { useState } from "react";
@@ -102,6 +104,7 @@ const Message = ({ message }: Props): JSX.Element => {
       .from("messages")
       .update({
         message_body: editMessage,
+        is_edited: true,
       })
       .eq("id", m.id);
 
@@ -129,171 +132,112 @@ const Message = ({ message }: Props): JSX.Element => {
 
   return (
     <div>
-      {!isEditingMessage && user.uid === message.user_id ? (
-        <HoverCard
-          shadow="md"
-          position="top-end"
-          withArrow
-          closeDelay={0}
-          openDelay={0}
-        >
-          <HoverCard.Target>
-            <Flex
-              key={message.id}
-              mb={10}
-              className={classes.messageDiv}
-              justify="space-between"
-            >
-              <Flex>
-                <div className={classes.avatarDiv}>
-                  <UserPopup
-                    user={{
-                      // @ts-ignore
-                      email: message.userData.email || "",
-                      // @ts-ignore
-                      id: message.userData.id || "",
-                      // @ts-ignore
-                      imageUrl: message.userData.image_url || "",
-                      // @ts-ignore
-                      name: message.userData.name || "",
-                    }}
-                  >
-                    <UserAvatarWithIndicator
-                      // @ts-ignore
-                      user_email={message.userData.email}
-                      size={30}
-                      // @ts-ignore
-                      image={message.userData.image_url}
-                    />
-                  </UserPopup>
-                </div>
-                <div style={{ marginLeft: 10 }}>
-                  <Text
-                    c="dimmed"
-                    size={14}
-                  >
-                    {/* @ts-ignore */}
-                    {`${message.userData.name} - ${moment(
-                      message.created_at,
-                    ).fromNow()}`}
-                  </Text>
-                  {isEditingMessage ? (
-                    <form
-                      ref={outsideClickRef}
-                      onSubmit={(e): void => {
-                        e.preventDefault();
-                        handleEdit(message);
-                      }}
-                    >
-                      <Textarea
-                        sx={{ maxWidth: "calc(100vw - 100px)", width: 600 }}
-                        autosize
-                        className={classes.edit_input}
-                        onChange={
-                          (event): void =>
-                            // eslint-disable-next-line max-len
-                            // eslint-disable-next-line react/jsx-curly-newline, implicit-arrow-linebreak
-                            setEditMessage(event.target.value)
-                          // eslint-disable-next-line react/jsx-curly-newline
-                        }
-                        placeholder="Send message"
-                        rightSection={sendButton()}
-                        value={editMessage}
-                        spellCheck="false"
-                        autoComplete="off"
-                      />
-                    </form>
-                  ) : (
-                    <Text>{message.message_body}</Text>
-                  )}
-                </div>
-              </Flex>
-            </Flex>
-          </HoverCard.Target>
-          <HoverCard.Dropdown p={5}>
-            <div className={classes.messageFunctionsDiv}>
-              <MessageFunctions
-                handleEdit={() => {
-                  setEditMessage(message.message_body);
-                  setIsEditingMessage(true);
-                }}
-              />
-            </div>
-          </HoverCard.Dropdown>
-        </HoverCard>
-      ) : (
-        <Flex
-          key={message.id}
-          mb={10}
-          className={classes.messageDiv}
-          justify="space-between"
-        >
-          <Flex>
-            <div className={classes.avatarDiv}>
-              <UserPopup
-                user={{
-                  // @ts-ignore
-                  email: message.userData.email || "",
-                  // @ts-ignore
-                  id: message.userData.id || "",
-                  // @ts-ignore
-                  imageUrl: message.userData.image_url || "",
-                  // @ts-ignore
-                  name: message.userData.name || "",
-                }}
-              >
-                <UserAvatarWithIndicator
-                  // @ts-ignore
-                  user_email={message.userData.email}
-                  size={30}
-                  // @ts-ignore
-                  image={message.userData.image_url}
-                />
-              </UserPopup>
-            </div>
-            <div style={{ marginLeft: 10 }}>
-              <Text
-                c="dimmed"
-                size={14}
-              >
-                {/* @ts-ignore */}
-                {`${message.userData.name} - ${moment(
-                  message.created_at,
-                ).fromNow()}`}
-              </Text>
-              {isEditingMessage ? (
-                <form
-                  ref={outsideClickRef}
-                  onSubmit={(e): void => {
-                    e.preventDefault();
-                    handleEdit(message);
+      <HoverCard
+        shadow="md"
+        position="top-end"
+        withArrow
+        closeDelay={0}
+        openDelay={0}
+      >
+        <HoverCard.Target>
+          <Flex
+            key={message.id}
+            mb={10}
+            className={classes.messageDiv}
+            justify="space-between"
+          >
+            <Flex>
+              <div className={classes.avatarDiv}>
+                <UserPopup
+                  user={{
+                    // @ts-ignore
+                    email: message.userData.email || "",
+                    // @ts-ignore
+                    id: message.userData.id || "",
+                    // @ts-ignore
+                    imageUrl: message.userData.image_url || "",
+                    // @ts-ignore
+                    name: message.userData.name || "",
                   }}
                 >
-                  <Textarea
-                    sx={{ maxWidth: "calc(100vw - 100px)", width: 600 }}
-                    autosize
-                    className={classes.edit_input}
-                    onChange={
-                      (event): void =>
-                        // eslint-disable-next-line max-len
-                        // eslint-disable-next-line react/jsx-curly-newline, implicit-arrow-linebreak
-                        setEditMessage(event.target.value)
-                      // eslint-disable-next-line react/jsx-curly-newline
-                    }
-                    placeholder="Send message"
-                    rightSection={sendButton()}
-                    value={editMessage}
-                    spellCheck="false"
-                    autoComplete="off"
+                  <UserAvatarWithIndicator
+                    // @ts-ignore
+                    user_email={message.userData.email}
+                    size={30}
+                    // @ts-ignore
+                    image={message.userData.image_url}
                   />
-                </form>
-              ) : (
-                <Text>{message.message_body}</Text>
-              )}
-            </div>
+                </UserPopup>
+              </div>
+              <div style={{ marginLeft: 10 }}>
+                <Text
+                  c="dimmed"
+                  size={14}
+                >
+                  {/* @ts-ignore */}
+                  {`${message.userData.name} - ${moment(
+                    message.created_at,
+                  ).fromNow()}`}
+                  {message.is_edited && (
+                    <Tooltip
+                      withArrow
+                      withinPortal
+                      label="This message was... updated? Probably"
+                    >
+                      <Badge
+                        color="red"
+                        ml={10}
+                      >
+                        Edited
+                      </Badge>
+                    </Tooltip>
+                  )}
+                </Text>
+                {isEditingMessage ? (
+                  <form
+                    ref={outsideClickRef}
+                    onSubmit={(e): void => {
+                      e.preventDefault();
+                      handleEdit(message);
+                    }}
+                  >
+                    <Textarea
+                      sx={{ maxWidth: "calc(100vw - 100px)", width: 600 }}
+                      autosize
+                      className={classes.edit_input}
+                      onChange={
+                        (event): void =>
+                          // eslint-disable-next-line max-len
+                          // eslint-disable-next-line react/jsx-curly-newline, implicit-arrow-linebreak
+                          setEditMessage(event.target.value)
+                        // eslint-disable-next-line react/jsx-curly-newline
+                      }
+                      placeholder="Send message"
+                      rightSection={sendButton()}
+                      value={editMessage}
+                      spellCheck="false"
+                      autoComplete="off"
+                    />
+                  </form>
+                ) : (
+                  <Text>{message.message_body}</Text>
+                )}
+              </div>
+            </Flex>
           </Flex>
-        </Flex>
-      )}
+        </HoverCard.Target>
+        <HoverCard.Dropdown p={5}>
+          <div className={classes.messageFunctionsDiv}>
+            <MessageFunctions
+              handleEdit={() => {
+                setEditMessage(message.message_body);
+                setIsEditingMessage(true);
+              }}
+              message={message}
+            />
+          </div>
+        </HoverCard.Dropdown>
+      </HoverCard>
     </div>
   );
 };
