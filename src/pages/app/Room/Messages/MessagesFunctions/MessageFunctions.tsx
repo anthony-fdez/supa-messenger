@@ -1,19 +1,11 @@
-import React from "react";
 import { CornerUpLeft, Edit } from "react-feather";
-
-import {
-  ActionIcon,
-  Alert,
-  Button,
-  Flex,
-  TextInput,
-  Textarea,
-  Tooltip,
-} from "@mantine/core";
+import React from "react";
+import { ActionIcon, Flex, Tooltip } from "@mantine/core";
+import { openModal } from "@mantine/modals";
 import useGlobalStore, {
   IDatabaseMessages,
 } from "../../../../../store/useGlobalStore";
-import { closeAllModals, openModal } from "@mantine/modals";
+import MessageReply from "../MessageReply/MessageReply";
 
 interface IMessageFunctions {
   handleEdit: () => void;
@@ -27,43 +19,14 @@ const MessageFunctions = ({
     user: { uid },
   } = useGlobalStore();
 
-  const handleReply = () => {
+  const replyModal = () => {
     openModal({
       keepMounted: false,
       title: "Reply",
       overlayProps: {
         blur: 5,
       },
-      children: (
-        <div>
-          <Alert title={`Replying to: ${message.userData.name}`}>
-            {message.message_body}
-          </Alert>
-          <Textarea
-            mt={20}
-            label="Reply"
-            placeholder="Write your reply"
-            minRows={1}
-            autosize
-          />
-          <Flex
-            justify="flex-end"
-            mt={20}
-          >
-            <Button
-              mr={10}
-              onClick={() => {
-                closeAllModals();
-              }}
-              color="red"
-              variant="light"
-            >
-              Cancel
-            </Button>
-            <Button>Send</Button>
-          </Flex>
-        </div>
-      ),
+      children: <MessageReply message={message} />,
     });
   };
 
@@ -74,7 +37,7 @@ const MessageFunctions = ({
         withinPortal
         label="Reply"
       >
-        <ActionIcon onClick={handleReply}>
+        <ActionIcon onClick={replyModal}>
           <CornerUpLeft size={14} />
         </ActionIcon>
       </Tooltip>
