@@ -78,8 +78,9 @@ const DMs = (): JSX.Element => {
                 variant="filled"
                 color="red"
                 ml={8}
+                sx={{ minWidth: 50 }}
               >
-                {unread.message_count || 0}
+                {unread.message_count > 99 ? "99+" : unread.message_count || 0}
               </Badge>
             )}
             <Text
