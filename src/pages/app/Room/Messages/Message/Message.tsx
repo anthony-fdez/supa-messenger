@@ -89,7 +89,7 @@ const Message = ({ message }: Props): JSX.Element => {
                 color="red"
                 onClick={() => removeMessage(message.id)}
               >
-                Remove
+                Delete message
               </Button>
             </Flex>
           </>
@@ -134,6 +134,8 @@ const Message = ({ message }: Props): JSX.Element => {
           shadow="md"
           position="top-end"
           withArrow
+          closeDelay={0}
+          openDelay={0}
         >
           <HoverCard.Target>
             <Flex

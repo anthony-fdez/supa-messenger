@@ -1,11 +1,4 @@
-import {
-  ActionIcon,
-  Avatar,
-  Button,
-  Flex,
-  Title,
-  Tooltip,
-} from "@mantine/core";
+import { ActionIcon, Avatar, Flex, Title, Tooltip } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import React, { useState } from "react";
 import { Settings } from "react-feather";
@@ -19,7 +12,6 @@ const RoomHeader = (): JSX.Element => {
   const { classes } = useRoomHeaderStyles();
   const {
     currentRoom: { roomData, roomParticipants },
-    setApp,
     user: { uid },
   } = useGlobalStore();
   const isMobile = useMediaQuery("(max-width: 1200px)");
@@ -92,11 +84,11 @@ const RoomHeader = (): JSX.Element => {
           </Title>
         </div>
         <Flex align="center">
-          <Tooltip
+          {/* <Tooltip
             withArrow
             label="Use AI tools to help you write your messages, or to be a menace to your friends."
-          >
-            <Button
+          > */}
+          {/* <Button
               onClick={() => {
                 setApp({
                   isTldrMenuOpen: true,
@@ -106,8 +98,8 @@ const RoomHeader = (): JSX.Element => {
               variant="light"
             >
               ChatGPT
-            </Button>
-          </Tooltip>
+            </Button> */}
+          {/* </Tooltip> */}
           {isMobile && (
             <Tooltip
               label="Room Settings"
