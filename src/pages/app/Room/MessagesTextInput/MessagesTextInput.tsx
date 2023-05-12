@@ -1,4 +1,4 @@
-import { ActionIcon, Loader, TextInput } from "@mantine/core";
+import { ActionIcon, Loader, Text, TextInput } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useEffect, useState } from "react";
@@ -132,8 +132,8 @@ const MessagesTextInput = ({ roomChannel }: Props): JSX.Element => {
         value={message}
         spellCheck="false"
         autoComplete="off"
-        label={getUsersTypingMessage()}
       />
+      <Text size={12}>{getUsersTypingMessage()}</Text>
     </form>
   );
 };

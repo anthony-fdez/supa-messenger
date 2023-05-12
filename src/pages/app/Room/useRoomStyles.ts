@@ -12,7 +12,7 @@ const useRoomStyles = createStyles((theme) => ({
     width: "100%",
 
     "@media (min-width: 901px)": {
-      minHeight: "85vh",
+      minHeight: "calc(100vh - 120px)",
       position: "relative",
       height: "calc(100vh - 200px)",
     },
