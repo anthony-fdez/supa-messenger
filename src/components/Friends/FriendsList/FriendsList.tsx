@@ -67,6 +67,7 @@ const FriendsList = (): JSX.Element => {
               <div style={{ marginLeft: 10 }}>
                 <Flex>
                   <Title
+                    lineClamp={1}
                     mr={10}
                     size={16}
                   >
@@ -75,6 +76,7 @@ const FriendsList = (): JSX.Element => {
                   </Title>
                 </Flex>
                 <Text
+                  lineClamp={1}
                   c="dimmed"
                   size={14}
                 >

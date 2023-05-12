@@ -32,6 +32,7 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
 
   return (
     <Menu
+      shadow="lg"
       width="xl"
       position="bottom-start"
       withArrow
