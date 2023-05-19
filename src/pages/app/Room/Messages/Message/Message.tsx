@@ -136,9 +136,10 @@ const Message = ({ message }: Props): JSX.Element => {
       <HoverCard
         shadow="md"
         position="top-end"
-        withArrow
         closeDelay={0}
         openDelay={0}
+        offset={-15}
+        withinPortal
       >
         {message.replying_to &&
           message.replying_to_message &&
