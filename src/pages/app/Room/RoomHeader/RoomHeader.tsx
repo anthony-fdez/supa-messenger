@@ -1,12 +1,4 @@
-import {
-  ActionIcon,
-  Avatar,
-  Badge,
-  Button,
-  Flex,
-  Title,
-  Tooltip,
-} from "@mantine/core";
+import { ActionIcon, Avatar, Flex, Tooltip } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import React, { useState } from "react";
 import { Settings } from "react-feather";
@@ -14,14 +6,11 @@ import UserAvatarWithIndicator from "../../../../components/UserAvatarWithIndica
 import useGlobalStore from "../../../../store/useGlobalStore";
 import RoomSettingsDrawer from "../RoomSideMenu/RoomSideMenu";
 import useRoomHeaderStyles from "./useRoomHeaderStyles";
-import getFriend from "../../../../utils/friendships/getFriend";
 
 const RoomHeader = (): JSX.Element => {
   const { classes } = useRoomHeaderStyles();
   const {
     currentRoom: { roomData, roomParticipants },
-    setApp,
-    user: { uid },
   } = useGlobalStore();
   const isMobile = useMediaQuery("(max-width: 1200px)");
 
@@ -30,62 +19,6 @@ const RoomHeader = (): JSX.Element => {
   if (!roomData || !roomParticipants) {
     return <p>Error</p>;
   }
-
-  const getRoomName = () => {
-    if (!roomData.is_dm) {
-      return roomData.name;
-    }
-
-    // @ts-ignore
-    if (!roomData?.friendships) return "Direct Message";
-
-    const friend = getFriend({
-      // @ts-ignore
-      friendship: roomData.friendships[0],
-      userId: uid || "",
-    });
-
-    return friend.friendData?.name;
-  };
-
-  const getRoomBadge = () => {
-    if (roomData.is_dm) {
-      return (
-        <Tooltip label="Direct Message">
-          <Badge
-            ml={30}
-            mt={3}
-            variant="outline"
-          >
-            DM
-          </Badge>
-        </Tooltip>
-      );
-    }
-
-    if (roomData.is_private) {
-      return (
-        <Badge
-          ml={30}
-          mt={3}
-          variant="outline"
-        >
-          Private Room
-        </Badge>
-      );
-    }
-
-    return (
-      <Badge
-        color="red"
-        ml={30}
-        mt={3}
-        variant="outline"
-      >
-        Public Room
-      </Badge>
-    );
-  };
 
   return (
     <div style={{ zIndex: "9999" }}>
@@ -124,20 +57,13 @@ const RoomHeader = (): JSX.Element => {
               )}
             </Avatar.Group>
           </div>
-          <Title
-            lineClamp={1}
-            size={20}
-          >
-            {getRoomName()}
-          </Title>
-          {getRoomBadge()}
         </div>
         <Flex align="center">
-          <Tooltip
+          {/* <Tooltip
             withArrow
             label="Use AI tools to help you write your messages, or to be a menace to your friends."
-          >
-            <Button
+          > */}
+          {/* <Button
               onClick={() => {
                 setApp({
                   isTldrMenuOpen: true,
@@ -147,8 +73,8 @@ const RoomHeader = (): JSX.Element => {
               variant="light"
             >
               ChatGPT
-            </Button>
-          </Tooltip>
+            </Button> */}
+          {/* </Tooltip> */}
           {isMobile && (
             <Tooltip
               label="Room Settings"

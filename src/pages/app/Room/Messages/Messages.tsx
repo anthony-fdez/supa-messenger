@@ -1,4 +1,4 @@
-import { Box, Collapse, Divider, ScrollArea } from "@mantine/core";
+import { Box, Collapse, Divider, ScrollArea, Skeleton } from "@mantine/core";
 import React, { useEffect, useRef, useState } from "react";
 import useGlobalStore from "../../../../store/useGlobalStore";
 
@@ -9,11 +9,11 @@ const Messages = (): JSX.Element => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const scrollToBottom = () => {
     // @ts-ignore
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView();
   };
 
   const {
-    currentRoom: { messages, roomParticipants },
+    currentRoom: { messages, roomParticipants, isLoadingMessages },
     user: { uid },
   } = useGlobalStore();
 
@@ -51,6 +51,48 @@ const Messages = (): JSX.Element => {
       clearTimeout(timeout);
     };
   }, [lastMessageRead]);
+
+  if (isLoadingMessages) {
+    return (
+      <>
+        <Skeleton
+          h={30}
+          mb={10}
+          width="50%"
+        />
+        <Skeleton
+          h={30}
+          mb={10}
+          width="80%"
+        />
+        <Skeleton
+          h={30}
+          mb={10}
+          width="35%"
+        />
+        <Skeleton
+          h={30}
+          mb={10}
+          width="40%"
+        />
+        <Skeleton
+          h={30}
+          mb={10}
+          width="60%"
+        />
+        <Skeleton
+          h={30}
+          mb={10}
+          width="20%"
+        />
+        <Skeleton
+          h={30}
+          mb={10}
+          width="30%"
+        />
+      </>
+    );
+  }
 
   if (!messages) return <p>Error loading messages</p>;
   if (messages.length === 0) return <EmptyRoom />;

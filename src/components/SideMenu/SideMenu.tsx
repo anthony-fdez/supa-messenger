@@ -1,76 +1,61 @@
 import React from "react";
 import {
-  Navbar,
-  UnstyledButton,
-  Tooltip,
-  Title,
   CloseButton,
-  Accordion,
-  Button,
-  Badge,
   Flex,
-  Loader,
-  Text,
-  Collapse,
+  Indicator,
+  Navbar,
+  Title,
+  Tooltip,
+  UnstyledButton,
 } from "@mantine/core";
-import { MessageSquare, Settings, Users } from "react-feather";
-import { closeAllModals, openConfirmModal, openModal } from "@mantine/modals";
-import { useNavigate } from "react-router";
 import { useMediaQuery } from "@mantine/hooks";
-import useSideMenuStyles from "./SideMenu.styles";
-import useHandleSignout from "../../Hooks/useHandleSignout";
+import { MessageSquare, Settings, Users } from "react-feather";
+import getUnreadMessagesInDms from "../../helpers/getUnreadMessagesInDms";
+import getUnreadMessagesInRooms from "../../helpers/getUnreadMessagesInRooms";
 import useGlobalStore from "../../store/useGlobalStore";
-import ChangeThemeModal from "./ChangeThemeModal/ChangeThemeModal";
-import ChatRooms from "./ChatRooms/ChatRooms";
-import PublicRooms from "./PublicRooms/PublicRooms";
-import DMs from "./DMs/DMs";
-import UserAvatarWithIndicator from "../UserAvatarWithIndicator/UserAvatarWithIndicator";
+import useSideMenuStyles from "./SideMenu.styles";
+import MessagesSideMenuScreen from "./SideMenuScreens/MessagesSideMenuScreen";
+import SettingsSideMenuScreen from "./SideMenuScreens/SettingsSideMenuScreen";
+import FriendsSideMenuScreen from "./SideMenuScreens/FriendsSideMenuScreen";
+import Latency from "../Latency/Latency";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
-  { icon: <Users size={16} />, label: "Public Rooms", path: "/public" },
+  { icon: <Users size={16} />, label: "Friends", path: "/friends" },
   { icon: <Settings size={16} />, label: "Settings", path: "/settings" },
 ];
 
 const SideMenu = (): JSX.Element => {
-  const { handleSignout } = useHandleSignout();
-  const navigate = useNavigate();
   const {
-    preferences,
     app,
     setApp,
-    user,
-    friendships: { requests },
+
     unreadMessages,
     dms,
     rooms,
+    friendships: { requests },
   } = useGlobalStore();
 
   const { classes, cx } = useSideMenuStyles();
   const isMobile = useMediaQuery("(max-width: 900px)");
 
-  const getUnreadDms = () => {
-    let unread = 0;
+  const getUnreadNotificationsForMostLeftMenu = ({
+    menu,
+  }: {
+    menu: string;
+  }) => {
+    if (menu === "Friends") {
+      return requests.length;
+    }
 
-    unreadMessages.forEach((message) => {
-      if (dms.find((dm) => dm.id === message.room_id)) {
-        unread += message.message_count;
-      }
-    });
+    if (menu === "Messages") {
+      return (
+        getUnreadMessagesInRooms({ rooms, unreadMessages }) +
+        getUnreadMessagesInDms({ dms, unreadMessages })
+      );
+    }
 
-    return unread;
-  };
-
-  const getUnreadRooms = () => {
-    let unread = 0;
-
-    unreadMessages.forEach((message) => {
-      if (rooms.find((dm) => dm.id === message.room_id)) {
-        unread += message.message_count;
-      }
-    });
-
-    return unread;
+    return 0;
   };
 
   const mainLinks = mainLinksMockdata.map((link) => (
@@ -81,213 +66,49 @@ const SideMenu = (): JSX.Element => {
       transitionProps={{ duration: 0 }}
       withArrow
     >
-      <UnstyledButton
-        className={cx(classes.mainLink, {
-          [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
-        })}
-        onClick={(): void => {
-          setApp({ mainActiveSideMenu: link.label });
-        }}
+      <Indicator
+        label={getUnreadNotificationsForMostLeftMenu({ menu: link.label })}
+        disabled={
+          getUnreadNotificationsForMostLeftMenu({
+            menu: link.label,
+          }) === 0
+        }
+        inline
+        color="red"
+        size={16}
+        offset={5}
+        position="bottom-end"
       >
-        {link.icon}
-      </UnstyledButton>
+        <UnstyledButton
+          className={cx(classes.mainLink, {
+            [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
+          })}
+          onClick={(): void => {
+            setApp({ mainActiveSideMenu: link.label });
+          }}
+        >
+          {link.icon}
+        </UnstyledButton>
+      </Indicator>
     </Tooltip>
   ));
 
   const links = (): JSX.Element | JSX.Element[] => {
     if (app.mainActiveSideMenu === "Settings") {
-      return (
-        <>
-          <Flex
-            mb={10}
-            p={10}
-            align="center"
-            direction="column"
-          >
-            <UserAvatarWithIndicator
-              user_email={user.email || ""}
-              image={user.imageUrl || ""}
-              size={80}
-              checkOnline
-            />
-            <div>
-              <Title
-                mt={10}
-                size={24}
-                lineClamp={1}
-              >
-                {user.name}
-              </Title>
-            </div>
-          </Flex>
-          <a
-            className={cx(classes.link, {
-              [classes.linkActive]:
-                app.secondaryActiveSideMenu === "Settings/Account",
-            })}
-            href="/"
-            onClick={(event): void => {
-              event.preventDefault();
-              setApp({
-                secondaryActiveSideMenu: "Settings/Account",
-                isMobileMenuOpen: false,
-              });
-              navigate("/account");
-            }}
-          >
-            User Preferences
-          </a>
-          <a
-            className={cx(classes.link, {
-              [classes.linkActive]:
-                app.secondaryActiveSideMenu === "Settings/Theme",
-            })}
-            href="/"
-            onClick={(event): void => {
-              event.preventDefault();
-              openModal({
-                title: "Change Theme",
-                children: <ChangeThemeModal />,
-                overlayProps: {
-                  blur: 5,
-                },
-              });
-            }}
-          >
-            {`Theme: ${preferences.theme}`}
-          </a>
-          <a
-            className={cx(classes.link, {
-              [classes.linkActive]:
-                app.secondaryActiveSideMenu === "Settings/Theme",
-            })}
-            href="/"
-            onClick={(event): void => {
-              event.preventDefault();
-
-              openConfirmModal({
-                title: "Are you sure?",
-                labels: {
-                  confirm: "Yes, log out",
-                  cancel: "Cancel",
-                },
-                onConfirm: () => {
-                  handleSignout();
-                  closeAllModals();
-                },
-                overlayProps: {
-                  blur: 5,
-                },
-              });
-            }}
-          >
-            Sign out
-          </a>
-        </>
-      );
+      return <SettingsSideMenuScreen />;
     }
 
-    if (app.mainActiveSideMenu === "Public Rooms") return <PublicRooms />;
+    if (app.mainActiveSideMenu === "Friends") {
+      return <FriendsSideMenuScreen />;
+    }
 
-    return (
-      <>
-        <Collapse in={app.isLoadingRooms}>
-          <Flex
-            align="center"
-            p={20}
-            pt={0}
-          >
-            <Loader
-              mr={10}
-              size={20}
-            />
-            <Text size={14}>Updating...</Text>
-          </Flex>
-        </Collapse>
-
-        <Button
-          onClick={() => {
-            setApp({ isFriendsMenuOpen: true });
-          }}
-          variant="light"
-          className={classes.newRoomButton}
-          rightIcon={
-            requests.length !== 0 && (
-              <Badge
-                color="red"
-                variant="filled"
-              >
-                {requests.length}
-              </Badge>
-            )
-          }
-        >
-          Friends
-        </Button>
-        <Accordion
-          onChange={(value) => {
-            setApp({ messageAccordionSelected: value || "chat-rooms" });
-          }}
-          value={app.messageAccordionSelected}
-          sx={{
-            ".mantine-Accordion-content": {
-              padding: 0,
-              paddingTop: 20,
-              paddingBottom: 20,
-            },
-          }}
-        >
-          <Accordion.Item value="dms">
-            <Accordion.Control>
-              <Flex align="center">
-                {getUnreadDms() !== 0 &&
-                  app.messageAccordionSelected !== "dms" && (
-                    <Badge
-                      mr={8}
-                      color="red"
-                      variant="filled"
-                    >
-                      {getUnreadDms()}
-                    </Badge>
-                  )}
-
-                <Text>DMs</Text>
-              </Flex>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <DMs />
-            </Accordion.Panel>
-          </Accordion.Item>
-          <Accordion.Item value="chat-rooms">
-            <Accordion.Control>
-              <Flex align="center">
-                {getUnreadRooms() !== 0 &&
-                  app.messageAccordionSelected !== "chat-rooms" && (
-                    <Badge
-                      mr={8}
-                      color="red"
-                      variant="filled"
-                    >
-                      {getUnreadRooms()}
-                    </Badge>
-                  )}
-
-                <Text>Chat Rooms</Text>
-              </Flex>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <ChatRooms />
-            </Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
-      </>
-    );
+    return <MessagesSideMenuScreen />;
   };
 
   return (
     <Navbar
       className={classes.container}
-      width={{ sm: 300 }}
+      width={{ sm: 400 }}
     >
       <Navbar.Section
         className={classes.wrapper}
@@ -299,7 +120,12 @@ const SideMenu = (): JSX.Element => {
             className={classes.title}
             order={4}
           >
-            {app.mainActiveSideMenu}
+            <Flex align="center">
+              <Latency />
+
+              {app.mainActiveSideMenu}
+            </Flex>
+
             {isMobile && (
               <CloseButton
                 onClick={(): void => setApp({ isMobileMenuOpen: false })}
@@ -307,6 +133,7 @@ const SideMenu = (): JSX.Element => {
               />
             )}
           </Title>
+
           <div className={classes.linkContainer}>{links()}</div>
         </div>
       </Navbar.Section>

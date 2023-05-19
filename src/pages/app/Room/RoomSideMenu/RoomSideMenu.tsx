@@ -1,11 +1,14 @@
 import {
   Alert,
+  Box,
   Button,
   Divider,
   Drawer,
   Flex,
   ScrollArea,
+  ThemeIcon,
   Title,
+  Tooltip,
 } from "@mantine/core";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React from "react";
@@ -13,7 +16,14 @@ import React from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { closeAllModals, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
-import { LogOut, Settings, Smile, ThumbsDown } from "react-feather";
+import {
+  Lock,
+  LogOut,
+  Settings,
+  Smile,
+  ThumbsDown,
+  Unlock,
+} from "react-feather";
 import { useNavigate } from "react-router";
 import { Database } from "../../../../../types/database.types";
 import useGlobalStore from "../../../../store/useGlobalStore";
@@ -149,6 +159,65 @@ const RoomSideMenu = ({
     });
   };
 
+  const getRoomBadge = (): JSX.Element | null => {
+    if (!roomData) return null;
+
+    if (roomData.is_dm) {
+      return (
+        <Tooltip
+          withArrow
+          withinPortal
+          label="Direct Message"
+        >
+          <ThemeIcon
+            p={5}
+            mr={10}
+            color="blue"
+            variant="outline"
+          >
+            <Lock size={16} />
+          </ThemeIcon>
+        </Tooltip>
+      );
+    }
+
+    if (roomData.is_private) {
+      return (
+        <Tooltip
+          withArrow
+          withinPortal
+          label="Private Room"
+        >
+          <ThemeIcon
+            p={5}
+            mr={10}
+            color="green"
+            variant="outline"
+          >
+            <Lock size={16} />
+          </ThemeIcon>
+        </Tooltip>
+      );
+    }
+
+    return (
+      <Tooltip
+        withArrow
+        withinPortal
+        label="Public Room"
+      >
+        <ThemeIcon
+          p={5}
+          mr={10}
+          color="red"
+          variant="outline"
+        >
+          <Unlock size={16} />
+        </ThemeIcon>
+      </Tooltip>
+    );
+  };
+
   const isMobile = useMediaQuery("(max-width: 1200px)");
 
   const roomAdminSettings = (): JSX.Element | null => {
@@ -156,6 +225,7 @@ const RoomSideMenu = ({
 
     return (
       <Button
+        sx={{ position: "sticky", top: 0, zIndex: 20 }}
         fullWidth
         leftIcon={<Settings size={16} />}
         mb={20}
@@ -243,28 +313,44 @@ const RoomSideMenu = ({
 
     return (
       <div className={classes.container}>
-        <Title size={26}>People</Title>
-        <ScrollArea h="100%">
-          {roomParticipants.map((participant) => {
-            if (!participant.userData) return null;
+        <ScrollArea
+          w={360}
+          h="100%"
+        >
+          <Box
+            sx={{ overflow: "hidden" }}
+            w={360}
+          >
+            {roomAdminSettings()}
+            <Flex align="center">
+              {getRoomBadge()}
+              <Title
+                lineClamp={1}
+                size={26}
+              >
+                {roomData?.name}
+              </Title>
+            </Flex>
+            {roomParticipants.map((participant) => {
+              if (!participant.userData) return null;
 
-            return <RoomSideMenuParticipant participant={participant} />;
-          })}
+              return <RoomSideMenuParticipant participant={participant} />;
+            })}
+          </Box>
         </ScrollArea>
         {isRoomMember &&
           roomData?.created_by !== session?.user.id &&
           !roomData?.is_dm && (
-            <div>
-              <Button
-                onClick={handleLeaveRoom}
-                fullWidth
-                variant="light"
-                color="red"
-                leftIcon={<LogOut size={14} />}
-              >
-                Leave Room
-              </Button>
-            </div>
+            <Button
+              w={360}
+              onClick={handleLeaveRoom}
+              fullWidth
+              variant="light"
+              color="red"
+              leftIcon={<LogOut size={14} />}
+            >
+              Leave Room
+            </Button>
           )}
       </div>
     );
@@ -285,7 +371,6 @@ const RoomSideMenu = ({
         size="md"
         title="Room Settings"
       >
-        {roomAdminSettings()}
         {renderRoomParticipants()}
       </Drawer>
     );
@@ -293,12 +378,7 @@ const RoomSideMenu = ({
 
   if (!isMobile && isDrawer) return null;
 
-  return (
-    <div>
-      {roomAdminSettings()}
-      {renderRoomParticipants()}
-    </div>
-  );
+  return <div>{renderRoomParticipants()}</div>;
 };
 
 export default RoomSideMenu;

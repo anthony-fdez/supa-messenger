@@ -2,7 +2,7 @@ import { createStyles } from "@mantine/core";
 
 const useRootStyles = createStyles((theme) => ({
   container: {
-    marginLeft: 300,
+    marginLeft: 400,
     "@media (max-width: 900px)": {
       marginLeft: 0,
     },
