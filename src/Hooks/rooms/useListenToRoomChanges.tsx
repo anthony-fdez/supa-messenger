@@ -54,6 +54,7 @@ const useListenToRoomChanges = ({ getUserRoomData }: Props) => {
       )
       .subscribe();
 
+    // eslint-disable-next-line consistent-return
     return () => {
       channel.unsubscribe();
     };
