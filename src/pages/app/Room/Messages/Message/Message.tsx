@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Badge,
+  Box,
   Button,
   Flex,
   HoverCard,
@@ -15,7 +16,7 @@ import { useClickOutside } from "@mantine/hooks";
 import { closeAllModals, openModal } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { Send } from "react-feather";
+import { CornerUpRight, Send } from "react-feather";
 import { Database } from "../../../../../../types/database.types";
 import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import UserPopup from "../../../../../components/UserPopup/UserPopup";
@@ -139,6 +140,30 @@ const Message = ({ message }: Props): JSX.Element => {
         closeDelay={0}
         openDelay={0}
       >
+        {message.replying_to &&
+          message.replying_to_message &&
+          message.replying_to_name && (
+            <Flex
+              mt={20}
+              align="center"
+              m={5}
+            >
+              <Box
+                mr={5}
+                ml={15}
+              >
+                <CornerUpRight size={14} />
+              </Box>
+              <Text
+                mr={8}
+                size={14}
+                ml={5}
+                c="dimmed"
+              >
+                {`${message.replying_to_name} - ${message.replying_to_message}`}
+              </Text>
+            </Flex>
+          )}
         <HoverCard.Target>
           <Flex
             key={message.id}

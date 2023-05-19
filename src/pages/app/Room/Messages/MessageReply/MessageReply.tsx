@@ -60,6 +60,9 @@ const MessageReply = ({ message }: Props): JSX.Element => {
         is_edited: false,
         user_id: session.user.id,
         replying_to: message.id,
+        replying_to_message: message.message_body,
+        // @ts-ignore
+        replying_to_name: message.userData?.name,
       })
       .select()
       .single();
