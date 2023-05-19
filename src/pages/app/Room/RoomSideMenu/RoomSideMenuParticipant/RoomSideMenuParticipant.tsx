@@ -43,6 +43,7 @@ export const RoomSideMenuParticipant = ({ participant }: Props) => {
         sx={{
           padding: 5,
           borderRadius: 5,
+          width: "100%",
           cursor: "pointer",
           ":hover": {
             backgroundColor:
@@ -65,8 +66,13 @@ export const RoomSideMenuParticipant = ({ participant }: Props) => {
 
         <div style={{ marginLeft: 10 }}>
           <Flex>
-            {/* @ts-ignore */}
-            <Title size={16}>{participant.userData.name}</Title>
+            <Title
+              lineClamp={1}
+              size={16}
+            >
+              {/* @ts-ignore */}
+              {participant.userData.name}
+            </Title>
             <FriendsConditionalRendering
               renderIf="FRIENDS"
               // @ts-ignore
@@ -85,6 +91,7 @@ export const RoomSideMenuParticipant = ({ participant }: Props) => {
             <Text
               c="dimmed"
               size={14}
+              lineClamp={1}
             >
               {/* @ts-ignore */}
               {participant.userData.email}

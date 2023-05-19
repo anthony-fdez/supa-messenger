@@ -5,7 +5,7 @@ import useGlobalStore from "../../../store/useGlobalStore";
 import Messages from "./Messages/Messages";
 import MessagesTextInput from "./MessagesTextInput/MessagesTextInput";
 import RoomHeader from "./RoomHeader/RoomHeader";
-import RoomSettingsDrawer from "./RoomSideMenu/RoomSideMenu";
+import RoomSideMenu from "./RoomSideMenu/RoomSideMenu";
 import useRoomStyles from "./useRoomStyles";
 import useListenToMessagesChanges from "../../../Hooks/rooms/useListenToMessagesChanges";
 import useTypingStatus from "../../../Hooks/rooms/useTypingStatus";
@@ -68,7 +68,7 @@ const Room = ({ roomId, getRoomData }: Props): JSX.Element => {
         )}
       </div>
       <div className={classes.desktopSideMenu}>
-        <RoomSettingsDrawer isDrawer={false} />
+        <RoomSideMenu isDrawer={false} />
       </div>
     </div>
   );

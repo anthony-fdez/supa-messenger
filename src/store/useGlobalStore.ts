@@ -38,13 +38,12 @@ export interface IRoom extends IDatabaseRoom {
 }
 
 interface IApp {
-  isFriendsMenuOpen: boolean;
   isLoading: boolean;
   isLoadingRooms: boolean;
   isMobileMenuOpen: boolean;
   isTldrMenuOpen: boolean;
   mainActiveSideMenu: string | null;
-  messageAccordionSelected: string;
+  messageAccordionSelected: string | null;
   onlineUsers: RealtimePresenceState | null;
   registerUserActiveStep: number;
   secondaryActiveSideMenu: string | null;
@@ -65,6 +64,7 @@ export interface IFriend extends IDatabaseFriends {
 
 export interface ICurrentRoom {
   isLoading: boolean;
+  isLoadingMessages: boolean;
   isRoomMember: boolean;
   messages: IDatabaseMessages[] | null;
   myMessage: string;
@@ -80,7 +80,7 @@ interface IFriendships {
   requests: IFriend[];
 }
 
-interface IUnreadMessages {
+export interface IUnreadMessages {
   message_count: number;
   room_id: string;
 }
@@ -116,7 +116,7 @@ export interface IGlobalState extends IGlobalStateValues {
   setUser: (state: Partial<IUser>) => void;
 }
 
-const initialState: IGlobalStateValues = {
+export const initialState: IGlobalStateValues = {
   rooms: [],
   unreadMessages: [],
   dms: [],
@@ -133,6 +133,7 @@ const initialState: IGlobalStateValues = {
     registerComplete: false,
   },
   currentRoom: {
+    isLoadingMessages: false,
     isLoading: false,
     isRoomMember: false,
     myMessage: "",
@@ -143,7 +144,6 @@ const initialState: IGlobalStateValues = {
     usersTyping: [],
   },
   app: {
-    isFriendsMenuOpen: false,
     isTldrMenuOpen: false,
     isMobileMenuOpen: false,
     messageAccordionSelected: "chat-rooms",

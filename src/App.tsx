@@ -13,7 +13,6 @@ import RoomLayout from "./pages/app/Room/index";
 import useGlobalStore from "./store/useGlobalStore";
 import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
-import FriendsMenu from "./components/Friends/FriendsMenu/FriendsMenu";
 import ChatGptModal from "./components/OpenAI/Modal/ChatGPTModal";
 import constants from "./constants/constants";
 
@@ -27,7 +26,6 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <>
-        <FriendsMenu />
         <ChatGptModal />
         <Root />
       </>

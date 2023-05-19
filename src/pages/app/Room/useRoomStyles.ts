@@ -12,7 +12,7 @@ const useRoomStyles = createStyles((theme) => ({
     width: "100%",
 
     "@media (min-width: 901px)": {
-      minHeight: "85vh",
+      minHeight: "calc(100vh - 120px)",
       position: "relative",
       height: "calc(100vh - 200px)",
     },
@@ -35,7 +35,9 @@ const useRoomStyles = createStyles((theme) => ({
       theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[8]
+        : theme.colors.gray[0],
     height: "100%",
     padding: 20,
     "@media (max-width: 1200px)": {

@@ -50,6 +50,9 @@ export interface Database {
           id: number
           is_edited: boolean
           message_body: string
+          replying_to: number | null
+          replying_to_message: string | null
+          replying_to_name: string | null
           room_id: string
           thread_id: number | null
           updated_at: string | null
@@ -60,6 +63,9 @@ export interface Database {
           id?: number
           is_edited?: boolean
           message_body: string
+          replying_to?: number | null
+          replying_to_message?: string | null
+          replying_to_name?: string | null
           room_id: string
           thread_id?: number | null
           updated_at?: string | null
@@ -70,6 +76,9 @@ export interface Database {
           id?: number
           is_edited?: boolean
           message_body?: string
+          replying_to?: number | null
+          replying_to_message?: string | null
+          replying_to_name?: string | null
           room_id?: string
           thread_id?: number | null
           updated_at?: string | null
