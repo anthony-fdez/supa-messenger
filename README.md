@@ -1,1 +1,1 @@
-# supabase-chat
+# Supa-Messenger
