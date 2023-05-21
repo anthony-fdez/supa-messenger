@@ -12,7 +12,11 @@ const EmptyRoom = (): JSX.Element => {
     >
       <RandomAvatarAnimated size={200} />
       <h1>No messages... yet</h1>
-      <Text>Be a MAN, and say something!</Text>
+      <Text sx={{ maxWidth: 600, textAlign: "center" }}>
+        Pull yourself up, partner. Time to cowboy up and start spittin&apos; out
+        some words. Ain&apos;t no room here for silence. Be a man, start saying
+        something.
+      </Text>
     </Flex>
   );
 };

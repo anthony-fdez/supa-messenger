@@ -15,6 +15,7 @@ import useGlobalStore, { initialState } from "../../store/useGlobalStore";
 import useListenToRoomChanges from "../../Hooks/rooms/useListenToRoomChanges";
 import useLoadUnreadMessages from "../../Hooks/rooms/useLoadUnreadMessages";
 import useListenToUnreadMessagesChanges from "../../Hooks/rooms/useListenToUnreadMessages";
+import RootEmpty from "../../components/RootEmpty/RootEmpty";
 
 const Root = (): JSX.Element => {
   const { getUserFriends, getUserRoomData } = useLoadUserData();
@@ -138,6 +139,7 @@ const Root = (): JSX.Element => {
         <SideMenu />
       )}
       <div className={classes.content}>
+        <RootEmpty />
         <Outlet />
       </div>
     </div>
