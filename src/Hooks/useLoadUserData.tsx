@@ -42,9 +42,6 @@ const useLoadUserData = () => {
 
     if (error || !data) {
       setUser({
-        name: null,
-        email: null,
-        imageUrl: null,
         registerComplete: false,
         uid: null,
       });
