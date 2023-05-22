@@ -16,7 +16,11 @@ const Step1 = ({ nextStep }: IStepProps): JSX.Element => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormValues>();
+  } = useForm<IFormValues>({
+    defaultValues: {
+      name: user.name || "",
+    },
+  });
 
   const onSubmit = handleSubmit((data) => {
     setUser({ name: data.name });

@@ -1,5 +1,13 @@
-import { Alert, Button, Flex, Text, Title, Tooltip } from "@mantine/core";
-import React from "react";
+import {
+  Alert,
+  Button,
+  Flex,
+  Loader,
+  Text,
+  Title,
+  Tooltip,
+} from "@mantine/core";
+import React, { useState } from "react";
 import { X } from "react-feather";
 import useGlobalStore from "../../../store/useGlobalStore";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
@@ -14,6 +22,8 @@ const FriendsPendingList = (): JSX.Element => {
   } = useGlobalStore();
 
   const { isLoading, handleDeleteFriendship } = useHandleFriendsRequests();
+
+  const [loadingElement, setLoadingElement] = useState<number | null>(null);
 
   if (pending.length === 0) {
     return (
@@ -94,12 +104,22 @@ const FriendsPendingList = (): JSX.Element => {
               <Button
                 color="red"
                 variant="light"
-                loading={isLoading}
                 onClick={() => {
-                  handleDeleteFriendship({ friendship });
+                  setLoadingElement(friendship.id);
+
+                  handleDeleteFriendship({ friendship }).finally(() => {
+                    setLoadingElement(null);
+                  });
                 }}
               >
-                <X size={14} />
+                {isLoading && loadingElement === friendship.id ? (
+                  <Loader
+                    color="red"
+                    size={14}
+                  />
+                ) : (
+                  <X size={14} />
+                )}
               </Button>
             </Tooltip>
           </Flex>
