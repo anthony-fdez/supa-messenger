@@ -1,5 +1,6 @@
 import { Box, Collapse, Divider, ScrollArea, Skeleton } from "@mantine/core";
 import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import useGlobalStore from "../../../../store/useGlobalStore";
 
 import EmptyRoom from "../../../../components/InfoScreens/EmptyRoom";
@@ -105,27 +106,35 @@ const Messages = (): JSX.Element => {
       <Box>
         {messages.map((message) => {
           return (
-            <>
-              <Message
-                key={message.id}
-                message={message}
-              />
-              <Collapse
-                in={
-                  lastMessageRead === message.id &&
-                  lastMessageRead !== messages[messages.length - 1].id &&
-                  showLastReadLabel
-                }
-              >
-                <Divider
-                  mt={10}
-                  mb={20}
-                  labelPosition="left"
-                  label="NEW"
-                  color="red"
-                />
-              </Collapse>
-            </>
+            <motion.div layout>
+              <AnimatePresence>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                >
+                  <Message
+                    key={message.id}
+                    message={message}
+                  />
+                </motion.div>
+
+                <Collapse
+                  in={
+                    lastMessageRead === message.id &&
+                    lastMessageRead !== messages[messages.length - 1].id &&
+                    showLastReadLabel
+                  }
+                >
+                  <Divider
+                    mt={10}
+                    mb={20}
+                    labelPosition="left"
+                    label="NEW"
+                    color="red"
+                  />
+                </Collapse>
+              </AnimatePresence>
+            </motion.div>
           );
         })}
         <div ref={messagesEndRef} />
