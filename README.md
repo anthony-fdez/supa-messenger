@@ -40,8 +40,6 @@ oparation, using its ORM like api on the front end. A custom server was necesary
 handle things that needed full control, and security, like generationg a hashed passwrod
 for private rooms.
 
-## Source Code
-
-- [https://github.com/anthony-fdez/supa-messenger](https://github.com/anthony-fdez/supa-messenger)
+## Contributing
 
 This project is open for contributions and encourages participation from other developers who are interested in real-time applications, ReactJS, Supabase, or TypeScript.
