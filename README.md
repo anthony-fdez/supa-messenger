@@ -21,6 +21,11 @@ npm i
 npm run dev
 ```
 
+## Documentation:
+
+- [PostgreSQL Functions](/docs/postgres-functions.md)
+- [Database Schema](/docs/database-schema.md)
+
 ## Technologies Used
 
 ### Front End / App:
