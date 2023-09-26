@@ -2,4 +2,4 @@
 
 Here is a database schema (thanks to supabase this graph is awesome)
 
-![imaage desc](/public/db-schema.png)
+![Supabase Schema Visualization](/public/db-schema.png)
