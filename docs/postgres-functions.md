@@ -1,16 +1,16 @@
 # PostgreSQL Functions
 
-In this project there are several kind of complicated queries that were not possible with just the Supabase client library. To achieve the result I wanted, I resorted to custom postgreSQL fucntions. This functions are not something you can see in the code, as they just get called, do their thing and return the data. Below are some of these functions and what they do:
+In this project, several kinds of complicated queries were not achievable with just the Supabase client library. To achieve the desired result, I resorted to custom PostgreSQL functions. These functions are not visible in the code, as they are called, perform their operations, and return the data. Below are some of these functions and their descriptions:
 
 ### `get_message_count`
 
-This function is to get the unread messages the user has on each room. 
+This function retrieves the count of unread messages a user has in each room. 
 
 ##### How does it work?
 
-To be able to how many unread messages a user has, we first need to know what was the last message they read, thats something that can be easily stored. 
+To determine how many unread messages a user has, we first need to identify the last message they read. This information can be easily stored. 
 
-On the participants table, each record represents a user that belongs to a room. I added a column: `last_message_read`, this field gets updated every time a new messages is recieved or sent while the user is currently in the room. Knowing what was the last message read, we can run something like this SQL query that will return the `room_id` and the `message_count` (`unread_messages_count` would've been a better name, oh well)
+In the `participants` table, each record represents a user in a room. I added a column named `last_message_read`, which gets updated every time a new message is received or sent while the user is in the room. Knowing the last message read, we can execute an SQL query like the one below, which returns the `room_id` and the `message_count` (naming it `unread_messages_count` would have been more descriptive).
 
 ```sql
 DECLARE
@@ -31,10 +31,9 @@ BEGIN
 END; 
 ```
 
+`is_user_participant_in_room`
 
-### `is_user_participant_in_room`
-
-This function will return a boolean `is_participant`, if a user is a participant of a certain room.
+This function returns a boolean is_participant, indicating if a user is a participant in a certain room.
 
 ```sql
 DECLARE
@@ -53,16 +52,15 @@ END;
 
 ## Database triggers:
 
-Some database triggeres were also necesary since I don't have a 'real' backend I can fully customize.
+Some database triggers were also necessary as I don't have a 'real' backend that I can fully customize.
 
 ### `create_dm_room`
 
 This is a `AFTER INSERT` && `AFTER UPDATE` trigger.
 
-This trigger will create a private room for a DM (direct message) room between two users as soon as they become friends.
+This trigger creates a private room for a DM (direct message) between two users as soon as they become friends.
 
 ```sql
-
 DECLARE
   new_room_id uuid;
 BEGIN
@@ -91,6 +89,7 @@ END;
 This is a `AFTER DELETE` trigger.
 
 In the app, either of the users in a friendship can end such friendship. Whenever either of them ends the friendship, their private conversation and all the messages in it will be deleted with a pretty simple query.
+
 
 ```sql
 BEGIN
