@@ -2,6 +2,8 @@
 
 Here are most of the database definitions and SQL functions used in the project. Note that all of these tables have row level security enabled in my project.
 
+[Tables Row Level Security](./rls-policies.md)
+
 ## Databases
 
 ### Users

@@ -1,10 +1,10 @@
 # Row level security policies
 
-## Note on Row Level Security (RLS) Policies
+> **Note:**
+>
+> I'm sharing the Row Level Security (RLS) policies for this project to provide full transparency and to help anyone interested in learning more about how RLS works in Supabase. This chat project was created just for fun, and it's not intended to be used as a main communication platform, so security isn’t a primary concern here. In a production setting, it's generally recommended to keep RLS policies private, as they can expose sensitive details about your data access controls. However, for this project, I'm comfortable sharing them for educational purposes.
 
-I'm sharing the Row Level Security (RLS) policies for this project to provide full transparency and to help anyone interested in learning more about how RLS works in Supabase. This chat project was created just for fun, and it's not intended to be used as a main communication platform, so security isn’t a primary concern here. In a production setting, it's generally recommended to keep RLS policies private, as they can expose sensitive details about your data access controls. However, for this project, I'm comfortable sharing them for educational purposes.
-
-### `friendships`
+## `friendships`
 
 DELETE:
 
@@ -53,7 +53,7 @@ using (
 );
 ```
 
-### `messages`
+## `messages`
 
 DELETE:
 
@@ -127,7 +127,7 @@ using (
 );
 ```
 
-### `participants`
+## `participants`
 
 ALL:
 
@@ -165,7 +165,7 @@ using (
 );
 ```
 
-### `rooms`
+## `rooms`
 
 ALL:
 
@@ -223,7 +223,7 @@ using (
 );
 ```
 
-### `users`
+## `users`
 
 ALL:
 
@@ -251,6 +251,6 @@ using (
 );
 ```
 
-### `room_passwords`
+## `room_passwords`
 
 The rooms_passwords table has Row Level Security (RLS) disabled because it is only accessible through the backend using Supabase's backend-only key. Since this table contains sensitive information, passwords are hashed before being stored. The backend provides secure endpoints for hashing, decrypting, and granting users access to this data, ensuring that access is tightly controlled and only handled server-side.
