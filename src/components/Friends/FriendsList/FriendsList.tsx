@@ -1,4 +1,4 @@
-import { Alert, Flex, Text, Title, useMantineTheme } from "@mantine/core";
+import { Alert, Flex, Title, useMantineTheme } from "@mantine/core";
 import React from "react";
 import useGlobalStore from "../../../store/useGlobalStore";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
@@ -75,14 +75,6 @@ const FriendsList = (): JSX.Element => {
                     {friendData.name}
                   </Title>
                 </Flex>
-                <Text
-                  lineClamp={1}
-                  c="dimmed"
-                  size={14}
-                >
-                  {/* @ts-ignore */}
-                  {friendData.email}
-                </Text>
               </div>
             </Flex>
           </UserPopup>

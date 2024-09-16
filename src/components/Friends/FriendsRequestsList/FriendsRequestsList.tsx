@@ -1,12 +1,4 @@
-import {
-  ActionIcon,
-  Alert,
-  Flex,
-  Loader,
-  Menu,
-  Text,
-  Title,
-} from "@mantine/core";
+import { ActionIcon, Alert, Flex, Loader, Menu, Title } from "@mantine/core";
 import React from "react";
 import { MoreHorizontal, Trash, UserPlus } from "react-feather";
 import useGlobalStore from "../../../store/useGlobalStore";
@@ -81,13 +73,6 @@ const FriendsRequestsList = (): JSX.Element => {
                     {friendData.name}
                   </Title>
                 </Flex>
-                <Text
-                  lineClamp={1}
-                  c="dimmed"
-                  size={14}
-                >
-                  {friendData.email}
-                </Text>
               </div>
             </Flex>
             <Menu

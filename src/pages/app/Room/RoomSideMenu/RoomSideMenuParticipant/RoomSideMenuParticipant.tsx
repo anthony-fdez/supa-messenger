@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Badge,
-  Flex,
-  Loader,
-  Text,
-  Title,
-  useMantineTheme,
-} from "@mantine/core";
+import { Badge, Flex, Loader, Title, useMantineTheme } from "@mantine/core";
 import UserPopup from "../../../../../components/UserPopup/UserPopup";
 import UserAvatarWithIndicator from "../../../../../components/UserAvatarWithIndicator/UserAvatarWithIndicator";
 import FriendsConditionalRendering from "../../../../../components/Friends/FriendsConditionalRendering/FriendsConditionalrendering";
@@ -87,16 +80,7 @@ export const RoomSideMenuParticipant = ({ participant }: Props) => {
             (user) => user.uid === participant.userData.id,
           ) ? (
             <Loader variant="dots" />
-          ) : (
-            <Text
-              c="dimmed"
-              size={14}
-              lineClamp={1}
-            >
-              {/* @ts-ignore */}
-              {participant.userData.email}
-            </Text>
-          )}
+          ) : null}
         </div>
       </Flex>
     </UserPopup>

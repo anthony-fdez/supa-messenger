@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge, Button, Flex, Loader, Menu, Text, Title } from "@mantine/core";
+import { Badge, Button, Flex, Loader, Menu, Title } from "@mantine/core";
 import { MessageSquare, UserPlus, X } from "react-feather";
 import { openConfirmModal } from "@mantine/modals";
 import { useNavigate } from "react-router";
@@ -66,13 +66,6 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
           >
             {user.id === uid ? `You (${user.name})` : user.name}
           </Title>
-          <Text
-            size={12}
-            lineClamp={1}
-            sx={{ maxWidth: "100%" }}
-          >
-            {user.email}
-          </Text>
         </Flex>
 
         <Flex
