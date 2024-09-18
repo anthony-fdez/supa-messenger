@@ -9,7 +9,7 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { MessageSquare, Settings, Users } from "react-feather";
+import { GitHub, MessageSquare, Settings, Users } from "react-feather";
 import getUnreadMessagesInDms from "../../helpers/getUnreadMessagesInDms";
 import getUnreadMessagesInRooms from "../../helpers/getUnreadMessagesInRooms";
 import useGlobalStore from "../../store/useGlobalStore";
@@ -31,6 +31,11 @@ const topLinks: MainLinkType[] = [
 ];
 
 const bottomLinks: MainLinkType[] = [
+  {
+    icon: <GitHub size={16} />,
+    label: "GitHub",
+    path: "https://github.com/anthony-fdez/supa-messenger",
+  },
   { icon: <Settings size={16} />, label: "Settings", path: "/settings" },
 ];
 
@@ -95,6 +100,10 @@ const SideMenu = (): JSX.Element => {
             })}
             onClick={(): void => {
               setApp({ mainActiveSideMenu: link.label });
+
+              if (link.label === "GitHub") {
+                window.open(link.path, "_blank");
+              }
             }}
           >
             {link.icon}
