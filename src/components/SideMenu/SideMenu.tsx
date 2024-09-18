@@ -9,7 +9,7 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { GitHub, MessageSquare, Settings, Users } from "react-feather";
+import { GitHub, MessageSquare, Search, Settings, Users } from "react-feather";
 import getUnreadMessagesInDms from "../../helpers/getUnreadMessagesInDms";
 import getUnreadMessagesInRooms from "../../helpers/getUnreadMessagesInRooms";
 import useGlobalStore from "../../store/useGlobalStore";
@@ -28,6 +28,7 @@ type MainLinkType = {
 const topLinks: MainLinkType[] = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
   { icon: <Users size={16} />, label: "Friends", path: "/friends" },
+  { icon: <Search size={16} />, label: "Search", path: "/search" },
 ];
 
 const bottomLinks: MainLinkType[] = [
@@ -99,11 +100,17 @@ const SideMenu = (): JSX.Element => {
               [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
             })}
             onClick={(): void => {
-              setApp({ mainActiveSideMenu: link.label });
-
               if (link.label === "GitHub") {
                 window.open(link.path, "_blank");
+                return;
               }
+
+              if (link.label === "Search") {
+                setApp({ isSearchOpen: true });
+                return;
+              }
+
+              setApp({ mainActiveSideMenu: link.label });
             }}
           >
             {link.icon}

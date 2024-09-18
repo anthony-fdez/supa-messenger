@@ -55,6 +55,7 @@ interface IApp {
   isLoading: boolean;
   isLoadingRooms: boolean;
   isMobileMenuOpen: boolean;
+  isSearchOpen: boolean;
   isTldrMenuOpen: boolean;
   mainActiveSideMenu: string | null;
   messageAccordionSelected: string | null;
@@ -158,6 +159,7 @@ export const initialState: IGlobalStateValues = {
     usersTyping: [],
   },
   app: {
+    isSearchOpen: false,
     isTldrMenuOpen: false,
     isMobileMenuOpen: false,
     messageAccordionSelected: "chat-rooms",
