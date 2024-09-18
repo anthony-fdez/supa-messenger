@@ -117,7 +117,7 @@ const Root = (): JSX.Element => {
       {isMobile ? (
         <>
           <div className={classes.header}>
-            <h3>App name</h3>
+            <h3>SupaMessenger</h3>
             <ActionIcon
               onClick={(): void => setApp({ isMobileMenuOpen: true })}
             >
