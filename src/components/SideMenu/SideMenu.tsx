@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { GitHub, MessageSquare, Search, Settings, Users } from "react-feather";
+import { spotlight } from "@mantine/spotlight";
 import getUnreadMessagesInDms from "../../helpers/getUnreadMessagesInDms";
 import getUnreadMessagesInRooms from "../../helpers/getUnreadMessagesInRooms";
 import useGlobalStore from "../../store/useGlobalStore";
@@ -44,7 +45,6 @@ const SideMenu = (): JSX.Element => {
   const {
     app,
     setApp,
-
     unreadMessages,
     dms,
     rooms,
@@ -106,7 +106,7 @@ const SideMenu = (): JSX.Element => {
               }
 
               if (link.label === "Search") {
-                setApp({ isSearchOpen: true });
+                spotlight.open();
                 return;
               }
 

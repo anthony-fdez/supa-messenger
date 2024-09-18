@@ -2,11 +2,11 @@ import { MantineProvider } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
-import { SpotlightAction, SpotlightProvider } from "@mantine/spotlight";
+import { SpotlightProvider } from "@mantine/spotlight";
 import React from "react";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { createClient } from "@supabase/supabase-js";
-import { Home, Search } from "react-feather";
+import { Search } from "react-feather";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
@@ -17,6 +17,7 @@ import RoomLayout from "./pages/app/Room/index";
 import Root from "./pages/app/root";
 import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
 import useGlobalStore from "./store/useGlobalStore";
+import { useGetSpotLightActions } from "./Hooks/useGetSpotlightActions";
 
 const supabase = createClient(
   constants.supabaseUrl || "",
@@ -50,17 +51,10 @@ const router = createBrowserRouter([
   },
 ]);
 
-export const actions: SpotlightAction[] = [
-  {
-    title: "Home",
-    description: "Get to home page",
-    onTrigger: () => console.log("Home"),
-    icon: <Home size="1.2rem" />,
-  },
-];
-
 const App = (): JSX.Element => {
   const colorScheme = useColorScheme();
+
+  const { actions } = useGetSpotLightActions();
 
   const {
     preferences: { theme, uiColor },

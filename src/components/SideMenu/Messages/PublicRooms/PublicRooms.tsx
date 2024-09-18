@@ -1,107 +1,22 @@
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
-import React, { useEffect, useState } from "react";
-import { showNotification } from "@mantine/notifications";
-import { Alert, Button, Skeleton, Text } from "@mantine/core";
+import { Alert, Button, Text } from "@mantine/core";
 import { openModal } from "@mantine/modals";
 import { useNavigate } from "react-router";
-import useGlobalStore, {
-  IDatabaseRoom,
-} from "../../../../store/useGlobalStore";
-import { Database } from "../../../../../types/database.types";
-import NewRoomModal from "../ChatRooms/Components/NewRoomModal";
+import React from "react";
+import useGlobalStore from "../../../../store/useGlobalStore";
 import useSideMenuStyles from "../../SideMenu.styles";
+import NewRoomModal from "../ChatRooms/Components/NewRoomModal";
+import { PublicRoomsLoaderSkeleton } from "./PublicRoomsLoaderSkeleton";
+import { useGetPublicRooms } from "../../../../Hooks/useGetPublicRooms";
 
 const PublicRooms = (): JSX.Element => {
-  const supabase = useSupabaseClient<Database>();
-  const session = useSession();
   const navigate = useNavigate();
   const { classes, cx } = useSideMenuStyles();
   const { app, setApp } = useGlobalStore();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [publicRooms, setPublicRooms] = useState<IDatabaseRoom[] | null>(null);
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    const getPublicRooms = async (): Promise<void> => {
-      if (!session?.user.id) {
-        setIsLoading(false);
-
-        return showNotification({
-          title: "Error, unable to get public rooms.",
-          message:
-            "Please reload the page, if the error persists try logging out and back in.",
-        });
-      }
-
-      const { data, error } = await supabase
-        .from("rooms")
-        .select("*")
-        .eq("is_private", false);
-
-      if (error || !data) {
-        return showNotification({
-          title: "Error, unable to get public rooms.",
-          message:
-            "Please reload the page, if the error persists try logging out and back in.",
-        });
-      }
-
-      return setPublicRooms(data);
-    };
-
-    getPublicRooms().finally(() => {
-      setIsLoading(false);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { isLoading, publicRooms } = useGetPublicRooms();
 
   if (isLoading) {
-    return (
-      <>
-        <Skeleton
-          height={40}
-          m={10}
-          width="calc(100% - 20px)"
-        />
-        <Skeleton
-          height={40}
-          m={10}
-          width="calc(100% - 20px)"
-        />
-        <Skeleton
-          height={40}
-          m={10}
-          width="calc(100% - 20px)"
-        />
-        <Skeleton
-          height={40}
-          m={10}
-          width="calc(100% - 20px)"
-        />
-        <Skeleton
-          height={40}
-          m={10}
-          width="calc(100% - 20px)"
-        />
-        <Skeleton
-          height={40}
-          m={10}
-          width="calc(100% - 20px)"
-        />
-        <Skeleton
-          height={40}
-          m={10}
-          width="calc(100% - 20px)"
-        />
-        <Skeleton
-          height={40}
-          m={10}
-          width="calc(100% - 20px)"
-        />
-      </>
-    );
+    return <PublicRoomsLoaderSkeleton />;
   }
 
   if (!publicRooms) {
