@@ -62,20 +62,20 @@ const App = (): JSX.Element => {
           // @ts-ignore
           colorScheme: theme === "system" ? colorScheme : theme,
           primaryColor: uiColor,
-          defaultRadius: "md",
+          defaultRadius: "lg",
           colors: {
             // override dark colors to change them for all components
             dark: [
-              "#c2c2c2",
-              "#a7a7a7",
-              "#7e7e7e",
-              "#636363",
-              "#474747",
-              "#3f3f3f",
-              "#202020",
-              "#1a1a1a",
-              "#141414",
-              "#111111",
+              "#b0b0b0",
+              "#949494",
+              "#6e6e6e",
+              "#535353",
+              "#373737",
+              "#2f2f2f",
+              "#101010",
+              "#0e0e0e",
+              "#0a0a0a",
+              "#0c0c0c",
             ],
           },
           components: {
