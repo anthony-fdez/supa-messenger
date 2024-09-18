@@ -14,10 +14,10 @@ import getUnreadMessagesInDms from "../../helpers/getUnreadMessagesInDms";
 import getUnreadMessagesInRooms from "../../helpers/getUnreadMessagesInRooms";
 import useGlobalStore from "../../store/useGlobalStore";
 import useSideMenuStyles from "./SideMenu.styles";
-import MessagesSideMenuScreen from "./SideMenuScreens/MessagesSideMenuScreen";
-import SettingsSideMenuScreen from "./SideMenuScreens/SettingsSideMenuScreen";
-import FriendsSideMenuScreen from "./SideMenuScreens/FriendsSideMenuScreen";
 import Latency from "../Latency/Latency";
+import { SideMenuSettings } from "./Settings/SideMenuSettings";
+import { SideMenuFriends } from "./Friends/FriendsSideMenuScreen";
+import { SideMenuMessages } from "./Messages/SideMenuMessages";
 
 const mainLinksMockdata = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
@@ -95,14 +95,14 @@ const SideMenu = (): JSX.Element => {
 
   const links = (): JSX.Element | JSX.Element[] => {
     if (app.mainActiveSideMenu === "Settings") {
-      return <SettingsSideMenuScreen />;
+      return <SideMenuSettings />;
     }
 
     if (app.mainActiveSideMenu === "Friends") {
-      return <FriendsSideMenuScreen />;
+      return <SideMenuFriends />;
     }
 
-    return <MessagesSideMenuScreen />;
+    return <SideMenuMessages />;
   };
 
   return (

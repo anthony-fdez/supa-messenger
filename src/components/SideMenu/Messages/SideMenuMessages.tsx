@@ -1,13 +1,13 @@
 import { Accordion, Badge, Collapse, Flex, Loader, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
-import PublicRooms from "../PublicRooms/PublicRooms";
-import ChatRooms from "../ChatRooms/ChatRooms";
-import DMs from "../DMs/DMs";
+import PublicRooms from "./PublicRooms/PublicRooms";
+import ChatRooms from "./ChatRooms/ChatRooms";
+import DMs from "./DMs/DMs";
 import useGlobalStore from "../../../store/useGlobalStore";
 import getUnreadMessagesInDms from "../../../helpers/getUnreadMessagesInDms";
 import getUnreadMessagesInRooms from "../../../helpers/getUnreadMessagesInRooms";
 
-const MessagesSideMenuScreen = (): JSX.Element => {
+export const SideMenuMessages = (): JSX.Element => {
   const { app, setApp, unreadMessages, dms, rooms } = useGlobalStore();
 
   const [unreadDms, setUnreadDms] = useState<number>(0);
@@ -107,5 +107,3 @@ const MessagesSideMenuScreen = (): JSX.Element => {
     </>
   );
 };
-
-export default MessagesSideMenuScreen;

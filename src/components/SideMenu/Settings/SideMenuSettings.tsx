@@ -5,10 +5,10 @@ import { useNavigate } from "react-router";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../store/useGlobalStore";
 import useSideMenuStyles from "../SideMenu.styles";
-import ChangeThemeModal from "../ChangeThemeModal/ChangeThemeModal";
 import useHandleSignout from "../../../Hooks/useHandleSignout";
+import { ChangeTheme } from "./ChangeTheme/ChangeTheme";
 
-const SettingsSideMenuScreen = (): JSX.Element => {
+export const SideMenuSettings = (): JSX.Element => {
   const { classes, cx } = useSideMenuStyles();
   const navigate = useNavigate();
   const { handleSignout } = useHandleSignout();
@@ -66,7 +66,7 @@ const SettingsSideMenuScreen = (): JSX.Element => {
           event.preventDefault();
           openModal({
             title: "Change Theme",
-            children: <ChangeThemeModal />,
+            children: <ChangeTheme />,
             overlayProps: {
               blur: 5,
             },
@@ -105,5 +105,3 @@ const SettingsSideMenuScreen = (): JSX.Element => {
     </>
   );
 };
-
-export default SettingsSideMenuScreen;
