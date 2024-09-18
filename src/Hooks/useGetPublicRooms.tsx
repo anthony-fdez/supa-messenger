@@ -10,39 +10,50 @@ export const useGetPublicRooms = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [publicRooms, setPublicRooms] = useState<IDatabaseRoom[] | null>(null);
 
-  useEffect(() => {
-    setIsLoading(true);
-
-    const getPublicRooms = async (): Promise<void> => {
-      if (!session?.user.id) {
-        setIsLoading(false);
-
-        return showNotification({
-          title: "Error, unable to get public rooms.",
-          message:
-            "Please reload the page, if the error persists try logging out and back in.",
-        });
-      }
-
-      const { data, error } = await supabase
-        .from("rooms")
-        .select("*")
-        .eq("is_private", false);
-
-      if (error || !data) {
-        return showNotification({
-          title: "Error, unable to get public rooms.",
-          message:
-            "Please reload the page, if the error persists try logging out and back in.",
-        });
-      }
-
-      return setPublicRooms(data);
-    };
-
-    getPublicRooms().finally(() => {
+  const getPublicRooms = async (): Promise<IDatabaseRoom[] | null> => {
+    if (!session?.user.id) {
       setIsLoading(false);
-    });
+
+      showNotification({
+        title: "Error, unable to get public rooms.",
+        message:
+          "Please reload the page, if the error persists try logging out and back in.",
+      });
+
+      return null;
+    }
+
+    const { data, error } = await supabase
+      .from("rooms")
+      .select("*")
+      .eq("is_private", false);
+
+    if (error || !data) {
+      showNotification({
+        title: "Error, unable to get public rooms.",
+        message:
+          "Please reload the page, if the error persists try logging out and back in.",
+      });
+
+      return null;
+    }
+
+    return data;
+  };
+
+  useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+
+      const rooms = await getPublicRooms();
+
+      if (rooms) {
+        setPublicRooms(rooms);
+      }
+
+      setIsLoading(false);
+    })();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
