@@ -45,7 +45,7 @@ const ChatRooms = (): JSX.Element => {
                   secondaryActiveSideMenu: room.id.toString(),
                   isMobileMenuOpen: false,
                 });
-                navigate(`/chat/${room.id}`);
+                navigate(`/app/chat/${room.id}`);
               }}
             >
               <Flex

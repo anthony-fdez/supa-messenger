@@ -24,6 +24,10 @@ const supabase = createClient(
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <h1>Home</h1>,
+  },
+  {
+    path: "/app",
     element: (
       <>
         <ChatGptModal />
@@ -33,11 +37,11 @@ const router = createBrowserRouter([
     errorElement: <Error404 />,
     children: [
       {
-        path: "/chat/:roomId",
+        path: "/app/chat/:roomId",
         element: <RoomLayout />,
       },
       {
-        path: "/account",
+        path: "/app/account",
         element: <UserPreferences />,
       },
     ],
@@ -47,16 +51,17 @@ const router = createBrowserRouter([
 const App = (): JSX.Element => {
   const colorScheme = useColorScheme();
 
-  const { preferences } = useGlobalStore();
+  const {
+    preferences: { theme, uiColor },
+  } = useGlobalStore();
 
   return (
     <SessionContextProvider supabaseClient={supabase}>
       <MantineProvider
         theme={{
           // @ts-ignore
-          colorScheme:
-            preferences.theme === "system" ? colorScheme : preferences.theme,
-          primaryColor: "blue",
+          colorScheme: theme === "system" ? colorScheme : theme,
+          primaryColor: uiColor,
           defaultRadius: "md",
           colors: {
             // override dark colors to change them for all components
@@ -77,7 +82,7 @@ const App = (): JSX.Element => {
             Button: {
               defaultProps: {
                 size: "xs",
-                color: "blue",
+                color: uiColor,
               },
             },
             Modal: {

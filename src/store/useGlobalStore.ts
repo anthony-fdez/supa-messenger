@@ -21,6 +21,19 @@ export interface IUser {
 
 interface IPreferences {
   theme: string;
+  uiColor:
+    | "red"
+    | "pink"
+    | "grape"
+    | "violet"
+    | "indigo"
+    | "blue"
+    | "cyan"
+    | "teal"
+    | "green"
+    | "lime"
+    | "yellow"
+    | "orange";
 }
 
 export interface IDatabaseParticipants
@@ -156,6 +169,7 @@ export const initialState: IGlobalStateValues = {
   },
   preferences: {
     theme: "system",
+    uiColor: "blue",
   },
 };
 

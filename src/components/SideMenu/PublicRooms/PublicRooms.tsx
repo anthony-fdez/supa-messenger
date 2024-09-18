@@ -160,7 +160,7 @@ const PublicRooms = (): JSX.Element => {
                 secondaryActiveSideMenu: room.id.toString(),
                 isMobileMenuOpen: false,
               });
-              navigate(`/chat/${room.id}`);
+              navigate(`/app/chat/${room.id}`);
             }}
           >
             <Text lineClamp={1}>{room.name}</Text>

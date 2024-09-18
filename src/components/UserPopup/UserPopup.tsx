@@ -92,7 +92,7 @@ const UserPopup = ({ user, children }: Props): JSX.Element => {
                     secondaryActiveSideMenu: friendship?.room_id,
                   });
 
-                  navigate(`/chat/${friendship?.room_id}`);
+                  navigate(`/app/chat/${friendship?.room_id}`);
                 }}
               >
                 {`Message ${user.name}`}

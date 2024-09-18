@@ -130,7 +130,7 @@ const NewRoomModal = ({ navigate }: Props): JSX.Element => {
     setApp({
       secondaryActiveSideMenu: roomFormattedData.id.toString(),
     });
-    navigate(`/chat/${roomFormattedData.id}`);
+    navigate(`/app/chat/${roomFormattedData.id}`);
 
     setIsLoadingCreatingRoom(false);
     return closeAllModals();
