@@ -19,9 +19,18 @@ import { SideMenuSettings } from "./Settings/SideMenuSettings";
 import { SideMenuFriends } from "./Friends/FriendsSideMenuScreen";
 import { SideMenuMessages } from "./Messages/SideMenuMessages";
 
-const mainLinksMockdata = [
+type MainLinkType = {
+  icon: JSX.Element;
+  label: string;
+  path: string;
+};
+
+const topLinks: MainLinkType[] = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
   { icon: <Users size={16} />, label: "Friends", path: "/friends" },
+];
+
+const bottomLinks: MainLinkType[] = [
   { icon: <Settings size={16} />, label: "Settings", path: "/settings" },
 ];
 
@@ -58,40 +67,42 @@ const SideMenu = (): JSX.Element => {
     return 0;
   };
 
-  const mainLinks = mainLinksMockdata.map((link) => (
-    <Tooltip
-      key={link.label}
-      label={link.label}
-      position="right"
-      transitionProps={{ duration: 0 }}
-      withArrow
-    >
-      <Indicator
-        label={getUnreadNotificationsForMostLeftMenu({ menu: link.label })}
-        disabled={
-          getUnreadNotificationsForMostLeftMenu({
-            menu: link.label,
-          }) === 0
-        }
-        inline
-        color="red"
-        size={16}
-        offset={5}
-        position="bottom-end"
+  const mainLink = (link: MainLinkType) => {
+    return (
+      <Tooltip
+        key={link.label}
+        label={link.label}
+        position="right"
+        transitionProps={{ duration: 0 }}
+        withArrow
       >
-        <UnstyledButton
-          className={cx(classes.mainLink, {
-            [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
-          })}
-          onClick={(): void => {
-            setApp({ mainActiveSideMenu: link.label });
-          }}
+        <Indicator
+          label={getUnreadNotificationsForMostLeftMenu({ menu: link.label })}
+          disabled={
+            getUnreadNotificationsForMostLeftMenu({
+              menu: link.label,
+            }) === 0
+          }
+          inline
+          color="red"
+          size={16}
+          offset={5}
+          position="bottom-end"
         >
-          {link.icon}
-        </UnstyledButton>
-      </Indicator>
-    </Tooltip>
-  ));
+          <UnstyledButton
+            className={cx(classes.mainLink, {
+              [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
+            })}
+            onClick={(): void => {
+              setApp({ mainActiveSideMenu: link.label });
+            }}
+          >
+            {link.icon}
+          </UnstyledButton>
+        </Indicator>
+      </Tooltip>
+    );
+  };
 
   const links = (): JSX.Element | JSX.Element[] => {
     if (app.mainActiveSideMenu === "Settings") {
@@ -114,7 +125,14 @@ const SideMenu = (): JSX.Element => {
         className={classes.wrapper}
         grow
       >
-        <div className={classes.aside}>{mainLinks}</div>
+        <div className={classes.aside}>
+          <div className={classes.aside_top}>
+            {topLinks.map((link) => mainLink(link))}
+          </div>
+          <div className={classes.aside_bottom}>
+            {bottomLinks.map((link) => mainLink(link))}
+          </div>
+        </div>
         <div className={classes.main}>
           <Title
             className={classes.title}
