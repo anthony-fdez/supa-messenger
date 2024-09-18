@@ -57,5 +57,5 @@ export const useGetPublicRooms = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { isLoading, publicRooms };
+  return { isLoading, publicRooms, getPublicRooms };
 };

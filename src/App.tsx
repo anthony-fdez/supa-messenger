@@ -6,7 +6,7 @@ import { SpotlightProvider } from "@mantine/spotlight";
 import React from "react";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { createClient } from "@supabase/supabase-js";
-import { Search } from "react-feather";
+import { AlertTriangle, Search } from "react-feather";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
@@ -17,7 +17,6 @@ import RoomLayout from "./pages/app/Room/index";
 import Root from "./pages/app/root";
 import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
 import useGlobalStore from "./store/useGlobalStore";
-import { useGetSpotLightActions } from "./Hooks/useGetSpotlightActions";
 
 const supabase = createClient(
   constants.supabaseUrl || "",
@@ -54,7 +53,14 @@ const router = createBrowserRouter([
 const App = (): JSX.Element => {
   const colorScheme = useColorScheme();
 
-  const { actions } = useGetSpotLightActions();
+  const actions = [
+    {
+      title: "No actions...",
+      description: "Something seems to not have loaded right, try again.",
+      onTrigger: () => {},
+      icon: <AlertTriangle size={16} />,
+    },
+  ];
 
   const {
     preferences: { theme, uiColor },
