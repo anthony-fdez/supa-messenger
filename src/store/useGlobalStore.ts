@@ -19,21 +19,22 @@ export interface IUser {
   uid: string | null;
 }
 
+export type UiColorsType =
+  | "red"
+  | "pink"
+  | "grape"
+  | "violet"
+  | "indigo"
+  | "blue"
+  | "cyan"
+  | "teal"
+  | "green"
+  | "lime"
+  | "yellow"
+  | "orange";
 interface IPreferences {
   theme: string;
-  uiColor:
-    | "red"
-    | "pink"
-    | "grape"
-    | "violet"
-    | "indigo"
-    | "blue"
-    | "cyan"
-    | "teal"
-    | "green"
-    | "lime"
-    | "yellow"
-    | "orange";
+  uiColor: UiColorsType;
 }
 
 export interface IDatabaseParticipants

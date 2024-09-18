@@ -7,6 +7,7 @@ import useGlobalStore from "../../../store/useGlobalStore";
 import useSideMenuStyles from "../SideMenu.styles";
 import useHandleSignout from "../../../Hooks/useHandleSignout";
 import { ChangeTheme } from "./ChangeTheme/ChangeTheme";
+import { ChangeUiColor } from "./ChangeUiColor/ChangeUiColor";
 
 export const SideMenuSettings = (): JSX.Element => {
   const { classes, cx } = useSideMenuStyles();
@@ -39,29 +40,27 @@ export const SideMenuSettings = (): JSX.Element => {
           </Title>
         </div>
       </Flex>
-      <a
+      <span
         className={cx(classes.link, {
           [classes.linkActive]:
             app.secondaryActiveSideMenu === "Settings/Account",
         })}
-        href="/"
         onClick={(event): void => {
           event.preventDefault();
           setApp({
             secondaryActiveSideMenu: "Settings/Account",
             isMobileMenuOpen: false,
           });
-          navigate("/account");
+          navigate("/app/account");
         }}
       >
         User Preferences
-      </a>
-      <a
+      </span>
+      <span
         className={cx(classes.link, {
           [classes.linkActive]:
             app.secondaryActiveSideMenu === "Settings/Theme",
         })}
-        href="/"
         onClick={(event): void => {
           event.preventDefault();
           openModal({
@@ -74,13 +73,30 @@ export const SideMenuSettings = (): JSX.Element => {
         }}
       >
         {`Theme: ${preferences.theme}`}
-      </a>
-      <a
+      </span>
+      <span
         className={cx(classes.link, {
           [classes.linkActive]:
             app.secondaryActiveSideMenu === "Settings/Theme",
         })}
-        href="/"
+        onClick={(event): void => {
+          event.preventDefault();
+          openModal({
+            title: "Change UI Color",
+            children: <ChangeUiColor />,
+            overlayProps: {
+              blur: 5,
+            },
+          });
+        }}
+      >
+        {`Color: ${preferences.uiColor}`}
+      </span>
+      <span
+        className={cx(classes.link, {
+          [classes.linkActive]:
+            app.secondaryActiveSideMenu === "Settings/Theme",
+        })}
         onClick={(event): void => {
           event.preventDefault();
 
@@ -101,7 +117,7 @@ export const SideMenuSettings = (): JSX.Element => {
         }}
       >
         Sign out
-      </a>
+      </span>
     </>
   );
 };

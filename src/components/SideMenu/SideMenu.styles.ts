@@ -100,6 +100,7 @@ const useSideMenuStyles = createStyles((theme) => ({
     marginBottom: 20,
   },
   link: {
+    cursor: "pointer",
     boxSizing: "border-box",
     display: "flex",
     alignItems: "center",
@@ -126,6 +127,7 @@ const useSideMenuStyles = createStyles((theme) => ({
 
   linkActive: {
     "&, &:hover": {
+      cursor: "pointer",
       borderLeftColor: theme.fn.variant({
         variant: "filled",
         color: theme.primaryColor,
