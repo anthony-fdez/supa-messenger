@@ -2,22 +2,19 @@ import { MantineProvider } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
-import { SpotlightProvider } from "@mantine/spotlight";
 import React from "react";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { createClient } from "@supabase/supabase-js";
-import { Search } from "react-feather";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
-import ChatGptModal from "./components/OpenAI/Modal/ChatGPTModal";
 import constants from "./constants/constants";
 import Error404 from "./pages/404/Error404";
 import RoomLayout from "./pages/app/Room/index";
 import Root from "./pages/app/root";
 import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
 import useGlobalStore from "./store/useGlobalStore";
-import { getSpotlightActions } from "./helpers/getSpotlightActions";
+import { Search } from "./pages/app/Search/Search";
 
 const supabase = createClient(
   constants.supabaseUrl || "",
@@ -31,12 +28,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/app",
-    element: (
-      <>
-        <ChatGptModal />
-        <Root />
-      </>
-    ),
+    element: <Root />,
     errorElement: <Error404 />,
     children: [
       {
@@ -46,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/app/account",
         element: <UserPreferences />,
+      },
+      {
+        path: "/app/search",
+        element: <Search />,
       },
     ],
   },
@@ -104,19 +100,11 @@ const App = (): JSX.Element => {
         }}
         withGlobalStyles
       >
-        <SpotlightProvider
-          actions={getSpotlightActions({ globalStore: useGlobalStore() })}
-          searchIcon={<Search size={16} />}
-          searchPlaceholder="Search..."
-          shortcut="mod + k"
-          nothingFoundMessage="Nothing found..."
-        >
-          <Notifications />
-          <ModalsProvider>
-            <RouterProvider router={router} />
-            <LoadingOverlay />
-          </ModalsProvider>
-        </SpotlightProvider>
+        <Notifications />
+        <ModalsProvider>
+          <RouterProvider router={router} />
+          <LoadingOverlay />
+        </ModalsProvider>
       </MantineProvider>
     </SessionContextProvider>
   );

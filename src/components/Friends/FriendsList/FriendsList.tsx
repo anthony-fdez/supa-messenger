@@ -32,6 +32,7 @@ const FriendsList = (): JSX.Element => {
 
         return (
           <UserPopup
+            key={friendship.id}
             user={{
               email: friendData.email || "",
               imageUrl: friendData.image_url || "",

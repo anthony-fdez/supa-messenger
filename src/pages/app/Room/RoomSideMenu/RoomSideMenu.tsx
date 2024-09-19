@@ -334,7 +334,12 @@ const RoomSideMenu = ({
             {roomParticipants.map((participant) => {
               if (!participant.userData) return null;
 
-              return <RoomSideMenuParticipant participant={participant} />;
+              return (
+                <RoomSideMenuParticipant
+                  key={participant.id}
+                  participant={participant}
+                />
+              );
             })}
           </Box>
         </ScrollArea>

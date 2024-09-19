@@ -106,7 +106,10 @@ const Messages = (): JSX.Element => {
       <Box>
         {messages.map((message) => {
           return (
-            <motion.div layout>
+            <motion.div
+              key={message.created_at}
+              layout
+            >
               <AnimatePresence>
                 <motion.div
                   initial={{ opacity: 0 }}

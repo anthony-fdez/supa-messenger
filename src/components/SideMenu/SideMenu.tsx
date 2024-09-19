@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { GitHub, MessageSquare, Search, Settings, Users } from "react-feather";
-import { spotlight } from "@mantine/spotlight";
+import { useNavigate } from "react-router";
 import getUnreadMessagesInDms from "../../helpers/getUnreadMessagesInDms";
 import getUnreadMessagesInRooms from "../../helpers/getUnreadMessagesInRooms";
 import useGlobalStore from "../../store/useGlobalStore";
@@ -50,6 +50,8 @@ const SideMenu = (): JSX.Element => {
     rooms,
     friendships: { requests },
   } = useGlobalStore();
+
+  const navigate = useNavigate();
 
   const { classes, cx } = useSideMenuStyles();
   const isMobile = useMediaQuery("(max-width: 900px)");
@@ -106,8 +108,7 @@ const SideMenu = (): JSX.Element => {
               }
 
               if (link.label === "Search") {
-                spotlight.open();
-                return;
+                navigate("/app/search");
               }
 
               setApp({ mainActiveSideMenu: link.label });
