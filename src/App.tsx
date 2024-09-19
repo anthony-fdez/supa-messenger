@@ -14,7 +14,6 @@ import RoomLayout from "./pages/app/Room/index";
 import Root from "./pages/app/root";
 import UserPreferences from "./pages/app/UserPreferences/UserPreferences";
 import useGlobalStore from "./store/useGlobalStore";
-import { Search } from "./pages/app/Search/Search";
 
 const supabase = createClient(
   constants.supabaseUrl || "",
@@ -38,10 +37,6 @@ const router = createBrowserRouter([
       {
         path: "/app/account",
         element: <UserPreferences />,
-      },
-      {
-        path: "/app/search",
-        element: <Search />,
       },
     ],
   },

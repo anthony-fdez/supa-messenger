@@ -1,7 +1,7 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Auth } from "@supabase/auth-ui-react";
 import React, { useState } from "react";
-import { Card, useMantineTheme, Alert, Button, HoverCard } from "@mantine/core";
+import { useMantineTheme, Alert, Button, HoverCard } from "@mantine/core";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useColorScheme } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
@@ -36,60 +36,67 @@ const AuthUser = (): JSX.Element => {
   };
 
   return (
-    <Card
-      className={styles.container}
-      withBorder
-    >
-      <h1>Account.</h1>
-      <Auth
-        appearance={{
-          theme: ThemeSupa,
+    <div className={styles.container}>
+      <section className={styles.wrapper}>
+        <div className={styles.hero} />
+        <div className={styles.content}>
+          <h1 className={styles.title}>SupaMessenger</h1>
+        </div>
+      </section>
+      <div className={styles.auth_container}>
+        <h1>Login</h1>
+        <Auth
+          appearance={{
+            theme: ThemeSupa,
 
-          variables: {
-            default: {
-              colors: {
-                brand: theme.colors.blue[6],
-                brandAccent: theme.colors.blue[7],
+            variables: {
+              default: {
+                colors: {
+                  brand: theme.colors.blue[6],
+                  brandAccent: theme.colors.blue[7],
+                },
               },
             },
-          },
-        }}
-        providers={[]}
-        redirectTo="/"
-        socialLayout="horizontal"
-        supabaseClient={supabase}
-        theme={preferences.theme === "system" ? colorScheme : preferences.theme}
-      />
+          }}
+          providers={[]}
+          redirectTo="/"
+          socialLayout="horizontal"
+          supabaseClient={supabase}
+          theme={
+            preferences.theme === "system" ? colorScheme : preferences.theme
+          }
+        />
 
-      <Alert
-        mt={10}
-        title="Don't want to create an account?"
-      >
-        <p>Sign up with a demo account to explore the app</p>
-        <HoverCard
-          withArrow
-          withinPortal
-          width={300}
+        <Alert
+          mt={10}
+          title="Don't want to create an account?"
         >
-          <HoverCard.Target>
-            <Button
-              onClick={() => handleDemoSignup()}
-              loading={isLoadingDemoSignup}
-              fullWidth
-              mt={20}
-            >
-              Skip signup
-            </Button>
-          </HoverCard.Target>
-          <HoverCard.Dropdown>
-            <p>
-              You will be signed up with a randomly generated email, and your
-              password will be &quote;123456&quot;
-            </p>
-          </HoverCard.Dropdown>
-        </HoverCard>
-      </Alert>
-    </Card>
+          <p>Sign up with a demo account to explore the app</p>
+          <HoverCard
+            withArrow
+            withinPortal
+            width={300}
+          >
+            <HoverCard.Target>
+              <Button
+                onClick={() => handleDemoSignup()}
+                loading={isLoadingDemoSignup}
+                fullWidth
+                mt={20}
+              >
+                Skip signup
+              </Button>
+            </HoverCard.Target>
+            <HoverCard.Dropdown>
+              <p>
+                You will be signed up with a randomly generated email, and your
+                password will be &quot;123456&quot;
+              </p>
+            </HoverCard.Dropdown>
+          </HoverCard>
+        </Alert>
+      </div>
+    </div>
   );
 };
 
