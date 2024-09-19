@@ -49,7 +49,7 @@ const useRoomStyles = createStyles((theme) => ({
     zIndex: 100,
     width: "100%",
     left: 0,
-    top: 0,
+    bottom: 0,
   },
 }));
 

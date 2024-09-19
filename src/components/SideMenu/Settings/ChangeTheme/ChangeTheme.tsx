@@ -1,10 +1,10 @@
 import React from "react";
 import { Select, Divider, Flex, Button } from "@mantine/core";
 import { closeAllModals } from "@mantine/modals";
-import useGlobalStore from "../../../store/useGlobalStore";
+import useGlobalStore from "../../../../store/useGlobalStore";
 
-const ChangeThemeModal = (): JSX.Element => {
-  const { setState } = useGlobalStore();
+export const ChangeTheme = (): JSX.Element => {
+  const { setPreferences } = useGlobalStore();
 
   return (
     <div>
@@ -18,10 +18,8 @@ const ChangeThemeModal = (): JSX.Element => {
         onChange={(value): void => {
           if (!value) return;
 
-          setState({
-            preferences: {
-              theme: value,
-            },
+          setPreferences({
+            theme: value,
           });
         }}
         placeholder="Dark's better..."
@@ -43,5 +41,3 @@ const ChangeThemeModal = (): JSX.Element => {
     </div>
   );
 };
-
-export default ChangeThemeModal;

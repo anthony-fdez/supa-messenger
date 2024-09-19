@@ -1,4 +1,4 @@
-import { Alert, Button, Text } from "@mantine/core";
+import { Alert, Button } from "@mantine/core";
 import React, { useState } from "react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { showNotification } from "@mantine/notifications";
@@ -13,6 +13,7 @@ const JoinPublicRoom = () => {
 
   const {
     currentRoom: { roomData, isRoomMember },
+    preferences: { uiColor },
   } = useGlobalStore();
 
   const handleJoinRoom = async () => {
@@ -43,16 +44,11 @@ const JoinPublicRoom = () => {
     <Alert
       variant="filled"
       mt={20}
-      color="gray"
-      title="Unleash Your Inner Comedian in this Chat Room"
+      color={uiColor}
+      title="Want to participate in the fun?"
     >
-      <Text>
-        Join our uproarious chat room for laughter-filled connections and
-        side-splitting conversations with fellow humor enthusiasts. Don&apos;t
-        miss out on the fun – hop in and let the good times roll!
-      </Text>
       <Button
-        mt={20}
+        variant="white"
         onClick={() => {
           setIsLoadingJoiningRoom(true);
 

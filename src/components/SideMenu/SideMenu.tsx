@@ -9,19 +9,34 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { MessageSquare, Settings, Users } from "react-feather";
+import { GitHub, MessageSquare, Settings, Users } from "react-feather";
+import { useNavigate } from "react-router";
 import getUnreadMessagesInDms from "../../helpers/getUnreadMessagesInDms";
 import getUnreadMessagesInRooms from "../../helpers/getUnreadMessagesInRooms";
 import useGlobalStore from "../../store/useGlobalStore";
 import useSideMenuStyles from "./SideMenu.styles";
-import MessagesSideMenuScreen from "./SideMenuScreens/MessagesSideMenuScreen";
-import SettingsSideMenuScreen from "./SideMenuScreens/SettingsSideMenuScreen";
-import FriendsSideMenuScreen from "./SideMenuScreens/FriendsSideMenuScreen";
 import Latency from "../Latency/Latency";
+import { SideMenuSettings } from "./Settings/SideMenuSettings";
+import { SideMenuFriends } from "./Friends/FriendsSideMenuScreen";
+import { SideMenuMessages } from "./Messages/SideMenuMessages";
 
-const mainLinksMockdata = [
+type MainLinkType = {
+  icon: JSX.Element;
+  label: string;
+  path: string;
+};
+
+const topLinks: MainLinkType[] = [
   { icon: <MessageSquare size={16} />, label: "Messages", path: "/" },
   { icon: <Users size={16} />, label: "Friends", path: "/friends" },
+];
+
+const bottomLinks: MainLinkType[] = [
+  {
+    icon: <GitHub size={16} />,
+    label: "GitHub",
+    path: "https://github.com/anthony-fdez/supa-messenger",
+  },
   { icon: <Settings size={16} />, label: "Settings", path: "/settings" },
 ];
 
@@ -29,12 +44,13 @@ const SideMenu = (): JSX.Element => {
   const {
     app,
     setApp,
-
     unreadMessages,
     dms,
     rooms,
     friendships: { requests },
   } = useGlobalStore();
+
+  const navigate = useNavigate();
 
   const { classes, cx } = useSideMenuStyles();
   const isMobile = useMediaQuery("(max-width: 900px)");
@@ -58,51 +74,58 @@ const SideMenu = (): JSX.Element => {
     return 0;
   };
 
-  const mainLinks = mainLinksMockdata.map((link) => (
-    <Tooltip
-      key={link.label}
-      label={link.label}
-      position="right"
-      transitionProps={{ duration: 0 }}
-      withArrow
-    >
-      <Indicator
-        label={getUnreadNotificationsForMostLeftMenu({ menu: link.label })}
-        disabled={
-          getUnreadNotificationsForMostLeftMenu({
-            menu: link.label,
-          }) === 0
-        }
-        inline
-        color="red"
-        size={16}
-        offset={5}
-        position="bottom-end"
+  const mainLink = (link: MainLinkType) => {
+    return (
+      <Tooltip
+        key={link.label}
+        label={link.label}
+        position="right"
+        transitionProps={{ duration: 0 }}
+        withArrow
       >
-        <UnstyledButton
-          className={cx(classes.mainLink, {
-            [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
-          })}
-          onClick={(): void => {
-            setApp({ mainActiveSideMenu: link.label });
-          }}
+        <Indicator
+          label={getUnreadNotificationsForMostLeftMenu({ menu: link.label })}
+          disabled={
+            getUnreadNotificationsForMostLeftMenu({
+              menu: link.label,
+            }) === 0
+          }
+          inline
+          color="red"
+          size={16}
+          offset={5}
+          position="bottom-end"
         >
-          {link.icon}
-        </UnstyledButton>
-      </Indicator>
-    </Tooltip>
-  ));
+          <UnstyledButton
+            className={cx(classes.mainLink, {
+              [classes.mainLinkActive]: link.label === app.mainActiveSideMenu,
+            })}
+            onClick={(): void => {
+              if (link.label === "GitHub") {
+                window.open(link.path, "_blank");
+                return;
+              }
+
+              setApp({ mainActiveSideMenu: link.label });
+            }}
+          >
+            {link.icon}
+          </UnstyledButton>
+        </Indicator>
+      </Tooltip>
+    );
+  };
 
   const links = (): JSX.Element | JSX.Element[] => {
     if (app.mainActiveSideMenu === "Settings") {
-      return <SettingsSideMenuScreen />;
+      return <SideMenuSettings />;
     }
 
     if (app.mainActiveSideMenu === "Friends") {
-      return <FriendsSideMenuScreen />;
+      return <SideMenuFriends />;
     }
 
-    return <MessagesSideMenuScreen />;
+    return <SideMenuMessages />;
   };
 
   return (
@@ -114,7 +137,14 @@ const SideMenu = (): JSX.Element => {
         className={classes.wrapper}
         grow
       >
-        <div className={classes.aside}>{mainLinks}</div>
+        <div className={classes.aside}>
+          <div className={classes.aside_top}>
+            {topLinks.map((link) => mainLink(link))}
+          </div>
+          <div className={classes.aside_bottom}>
+            {bottomLinks.map((link) => mainLink(link))}
+          </div>
+        </div>
         <div className={classes.main}>
           <Title
             className={classes.title}

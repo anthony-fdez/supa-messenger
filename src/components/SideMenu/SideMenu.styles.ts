@@ -6,15 +6,26 @@ const useSideMenuStyles = createStyles((theme) => ({
   },
 
   aside: {
-    backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white,
     borderRight: `1px solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[3]
     }`,
     padding: 5,
+  },
+  aside_top: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  aside_bottom: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   container: {
     position: "fixed",
@@ -32,6 +43,7 @@ const useSideMenuStyles = createStyles((theme) => ({
   linkContainer: {
     maxHeight: "calc(100vh - 100px)",
     overflowY: "auto",
+    overflowX: "hidden",
   },
   mainLink: {
     width: 44,
@@ -100,6 +112,7 @@ const useSideMenuStyles = createStyles((theme) => ({
     marginBottom: 20,
   },
   link: {
+    cursor: "pointer",
     boxSizing: "border-box",
     display: "flex",
     alignItems: "center",
@@ -126,6 +139,7 @@ const useSideMenuStyles = createStyles((theme) => ({
 
   linkActive: {
     "&, &:hover": {
+      cursor: "pointer",
       borderLeftColor: theme.fn.variant({
         variant: "filled",
         color: theme.primaryColor,

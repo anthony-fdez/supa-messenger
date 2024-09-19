@@ -5,10 +5,11 @@ import { useNavigate } from "react-router";
 import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
 import useGlobalStore from "../../../store/useGlobalStore";
 import useSideMenuStyles from "../SideMenu.styles";
-import ChangeThemeModal from "../ChangeThemeModal/ChangeThemeModal";
 import useHandleSignout from "../../../Hooks/useHandleSignout";
+import { ChangeTheme } from "./ChangeTheme/ChangeTheme";
+import { ChangeUiColor } from "./ChangeUiColor/ChangeUiColor";
 
-const SettingsSideMenuScreen = (): JSX.Element => {
+export const SideMenuSettings = (): JSX.Element => {
   const { classes, cx } = useSideMenuStyles();
   const navigate = useNavigate();
   const { handleSignout } = useHandleSignout();
@@ -39,12 +40,11 @@ const SettingsSideMenuScreen = (): JSX.Element => {
           </Title>
         </div>
       </Flex>
-      <a
+      <span
         className={cx(classes.link, {
           [classes.linkActive]:
             app.secondaryActiveSideMenu === "Settings/Account",
         })}
-        href="/"
         onClick={(event): void => {
           event.preventDefault();
           setApp({
@@ -55,18 +55,17 @@ const SettingsSideMenuScreen = (): JSX.Element => {
         }}
       >
         User Preferences
-      </a>
-      <a
+      </span>
+      <span
         className={cx(classes.link, {
           [classes.linkActive]:
             app.secondaryActiveSideMenu === "Settings/Theme",
         })}
-        href="/"
         onClick={(event): void => {
           event.preventDefault();
           openModal({
             title: "Change Theme",
-            children: <ChangeThemeModal />,
+            children: <ChangeTheme />,
             overlayProps: {
               blur: 5,
             },
@@ -74,13 +73,30 @@ const SettingsSideMenuScreen = (): JSX.Element => {
         }}
       >
         {`Theme: ${preferences.theme}`}
-      </a>
-      <a
+      </span>
+      <span
         className={cx(classes.link, {
           [classes.linkActive]:
             app.secondaryActiveSideMenu === "Settings/Theme",
         })}
-        href="/"
+        onClick={(event): void => {
+          event.preventDefault();
+          openModal({
+            title: "Change UI Color",
+            children: <ChangeUiColor />,
+            overlayProps: {
+              blur: 5,
+            },
+          });
+        }}
+      >
+        {`Color: ${preferences.uiColor}`}
+      </span>
+      <span
+        className={cx(classes.link, {
+          [classes.linkActive]:
+            app.secondaryActiveSideMenu === "Settings/Theme",
+        })}
         onClick={(event): void => {
           event.preventDefault();
 
@@ -101,9 +117,7 @@ const SettingsSideMenuScreen = (): JSX.Element => {
         }}
       >
         Sign out
-      </a>
+      </span>
     </>
   );
 };
-
-export default SettingsSideMenuScreen;

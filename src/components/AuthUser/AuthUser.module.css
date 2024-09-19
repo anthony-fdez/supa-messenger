@@ -1,5 +1,149 @@
 .container {
-  max-width: 500px;
+  display: flex;
+}
+
+.auth_container {
+  width: 500px;
+  padding: 30px;
   margin: auto;
-  margin-top: 3rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  height: 100vh;
+  z-index: 20;
+  backdrop-filter: blur(50px);
+}
+
+:global(:root) {
+  font-family: Inter, sans-serif;
+  --stripe-color: #000000;
+  --bg: rgb(0, 0, 0);
+  --maincolor: var(--bg);
+}
+
+@keyframes smoothBg {
+  from {
+    background-position: 50% 50%, 50% 50%;
+  }
+  to {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
+.wrapper {
+  width: 100%;
+  height: auto;
+  left: 0;
+  position: relative;
+  margin-right: -500px;
+}
+
+/* Hero section with animation */
+.hero {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  place-content: center;
+  margin-right: 500px;
+  --stripes: repeating-linear-gradient(
+    100deg,
+    var(--stripe-color) 0%,
+    var(--stripe-color) 7%,
+    transparent 10%,
+    transparent 12%,
+    var(--stripe-color) 16%
+  );
+  --rainbow: repeating-linear-gradient(
+    100deg,
+    #fafafa 10%,
+    #02a2ff 15%,
+    #b4d3ff 20%,
+    #0e0acf 25%,
+    #426de3 30%
+  );
+  background-image: var(--stripes), var(--rainbow);
+  background-size: 500%, 300%;
+  background-position: 50% 50%, 50% 50%;
+  filter: blur(50px);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--stripes), var(--rainbow);
+  background-size: 200%, 100%;
+  animation: smoothBg 60s linear infinite;
+  background-attachment: fixed;
+  mix-blend-mode: difference;
+}
+
+:global(:has(:checked) .hero),
+:global(:has(:checked) .hero::after) {
+  filter: blur(10px) opacity(50%) saturate(200%);
+}
+
+/* Content wrapper */
+.content {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  flex-flow: column;
+  gap: 4.5%;
+  text-align: center;
+  mix-blend-mode: difference;
+  padding-right: 500px;
+}
+
+/* Scaling text effect */
+.title {
+  font-size: calc(1rem - -5vw);
+  position: relative;
+}
+
+/* Scaling text with advanced styling */
+.title::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: white;
+  text-shadow: 0 0 1px #ffffff;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-color: white;
+  -webkit-mask: linear-gradient(#000 0 0) luminance;
+  mask: linear-gradient(#000 0 0) luminance, alpha;
+  backdrop-filter: blur(19px) brightness(12.5);
+  -webkit-text-stroke: 1px white;
+  display: flex;
+  margin: auto;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .auth_container {
+    position: absolute;
+    width: 100vw;
+    padding: 30px;
+    margin: auto;
+    background-color: rgba(10, 10, 10, 0.8);
+    height: 100vh;
+    z-index: 20;
+    backdrop-filter: blur(20px);
+  }
+  .wrapper {
+    width: 100vw;
+    height: auto;
+    left: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .title {
+    display: none;
+  }
 }

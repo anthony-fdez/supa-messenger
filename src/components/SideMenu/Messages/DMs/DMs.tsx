@@ -4,10 +4,10 @@ import { useNavigate } from "react-router";
 import useGlobalStore, {
   IDatabaseUser,
   IFriend,
-} from "../../../store/useGlobalStore";
-import useSideMenuStyles from "../SideMenu.styles";
-import getFriend from "../../../utils/friendships/getFriend";
-import UserAvatarWithIndicator from "../../UserAvatarWithIndicator/UserAvatarWithIndicator";
+} from "../../../../store/useGlobalStore";
+import useSideMenuStyles from "../../SideMenu.styles";
+import getFriend from "../../../../utils/friendships/getFriend";
+import UserAvatarWithIndicator from "../../../UserAvatarWithIndicator/UserAvatarWithIndicator";
 
 const DMs = (): JSX.Element => {
   const { classes, cx } = useSideMenuStyles();

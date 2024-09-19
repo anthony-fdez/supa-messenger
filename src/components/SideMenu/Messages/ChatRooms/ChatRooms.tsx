@@ -3,8 +3,8 @@ import { openModal } from "@mantine/modals";
 import React from "react";
 import { MessageSquare } from "react-feather";
 import { useNavigate } from "react-router";
-import useGlobalStore from "../../../store/useGlobalStore";
-import useSideMenuStyles from "../SideMenu.styles";
+import useGlobalStore from "../../../../store/useGlobalStore";
+import useSideMenuStyles from "../../SideMenu.styles";
 import NewRoomModal from "./Components/NewRoomModal";
 
 const ChatRooms = (): JSX.Element => {

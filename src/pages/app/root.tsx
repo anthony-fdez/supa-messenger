@@ -3,19 +3,19 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React, { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
+import { Database } from "../../../types/database.types";
 import AuthUser from "../../components/AuthUser/AuthUser";
 import RegisterUser from "../../components/RegisterUser/RegisterUser";
+import RootEmpty from "../../components/RootEmpty/RootEmpty";
 import SideMenu from "../../components/SideMenu/SideMenu";
-import useLoadUserData from "../../Hooks/useLoadUserData";
-import useRootStyles from "./useRootStyles";
-import { Database } from "../../../types/database.types";
 import removeTypingIndicatorFromOfflineUsers from "../../helpers/removeTypingIndicatorFromOfflineUsers";
 import useListenToFriendshipChanges from "../../Hooks/friendships/useListenToFrienshipChanges";
-import useGlobalStore, { initialState } from "../../store/useGlobalStore";
 import useListenToRoomChanges from "../../Hooks/rooms/useListenToRoomChanges";
-import useLoadUnreadMessages from "../../Hooks/rooms/useLoadUnreadMessages";
 import useListenToUnreadMessagesChanges from "../../Hooks/rooms/useListenToUnreadMessages";
-import RootEmpty from "../../components/RootEmpty/RootEmpty";
+import useLoadUnreadMessages from "../../Hooks/rooms/useLoadUnreadMessages";
+import useLoadUserData from "../../Hooks/useLoadUserData";
+import useGlobalStore, { initialState } from "../../store/useGlobalStore";
+import useRootStyles from "./useRootStyles";
 
 const Root = (): JSX.Element => {
   const { getUserFriends, getUserRoomData } = useLoadUserData();
@@ -117,7 +117,7 @@ const Root = (): JSX.Element => {
       {isMobile ? (
         <>
           <div className={classes.header}>
-            <h3>App name</h3>
+            <h3>SupaMessenger</h3>
             <ActionIcon
               onClick={(): void => setApp({ isMobileMenuOpen: true })}
             >
