@@ -40,7 +40,7 @@ const useRoomData = ({ roomId }: Props) => {
         ))`,
         )
         .eq("participants.user_id", session.user.id)
-        .eq("id", roomId)
+        .eq("id", roomId || "")
         .single();
 
       if (!roomDataReq || roomDataError) {

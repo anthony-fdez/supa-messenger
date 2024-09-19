@@ -42,7 +42,7 @@ const ChangeRoomPrivacy = (): JSX.Element => {
         .update({
           is_private: isPrivate,
         })
-        .eq("id", roomData?.id)
+        .eq("id", roomData?.id || "")
         .select("*")
         .single();
 
