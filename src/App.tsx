@@ -23,19 +23,15 @@ const supabase = createClient(
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <h1>Home</h1>,
-  },
-  {
-    path: "/app",
     element: <Root />,
     errorElement: <Error404 />,
     children: [
       {
-        path: "/app/chat/:roomId",
+        path: "/chat/:roomId",
         element: <RoomLayout />,
       },
       {
-        path: "/app/account",
+        path: "/account",
         element: <UserPreferences />,
       },
     ],

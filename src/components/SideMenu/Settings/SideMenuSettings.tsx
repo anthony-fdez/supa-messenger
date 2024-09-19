@@ -51,7 +51,7 @@ export const SideMenuSettings = (): JSX.Element => {
             secondaryActiveSideMenu: "Settings/Account",
             isMobileMenuOpen: false,
           });
-          navigate("/app/account");
+          navigate("/account");
         }}
       >
         User Preferences
