@@ -6,10 +6,10 @@
   width: 500px;
   padding: 30px;
   margin: auto;
-  background-color: rgba(10, 10, 10, 0.9);
+  background-color: rgba(0, 0, 0, 0.8);
   height: 100vh;
   z-index: 20;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(50px);
 }
 
 :global(:root) {
@@ -123,4 +123,27 @@
   margin: auto;
   z-index: 1;
   pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .auth_container {
+    position: absolute;
+    width: 100vw;
+    padding: 30px;
+    margin: auto;
+    background-color: rgba(10, 10, 10, 0.8);
+    height: 100vh;
+    z-index: 20;
+    backdrop-filter: blur(20px);
+  }
+  .wrapper {
+    width: 100vw;
+    height: auto;
+    left: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .title {
+    display: none;
+  }
 }
