@@ -40,8 +40,8 @@ const useListenToMessagesChanges = ({ getRoomData }: Props) => {
               .update({
                 last_message_read: payload.new.id,
               })
-              .eq("room_id", currentRoom.roomData?.id)
-              .eq("user_id", uid);
+              .eq("room_id", currentRoom.roomData?.id || "")
+              .eq("user_id", uid || "");
 
             if (lastReadError) {
               showNotification({

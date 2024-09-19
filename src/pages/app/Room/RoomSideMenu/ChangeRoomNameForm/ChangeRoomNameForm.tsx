@@ -36,7 +36,7 @@ const ChangeRoomNameForm = (): JSX.Element => {
     const { data: newRoomData, error } = await supabase
       .from("rooms")
       .update({ name: data.roomName })
-      .eq("id", roomData?.id)
+      .eq("id", roomData?.id || "")
       .select("*")
       .single();
 

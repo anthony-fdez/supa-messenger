@@ -50,8 +50,8 @@ const useGetRoomMessages = () => {
       .update({
         last_message_read: reversedMessages[reversedMessages.length - 1].id,
       })
-      .eq("room_id", currentRoom.roomData?.id)
-      .eq("user_id", uid);
+      .eq("room_id", currentRoom.roomData?.id || "")
+      .eq("user_id", uid || "");
 
     if (lastReadError) {
       showNotification({
